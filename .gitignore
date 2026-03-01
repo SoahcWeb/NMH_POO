@@ -1,0 +1,23 @@
+# Build outputs
+bin/
+obj/
+
+# Visual Studio files
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Local database
+*.db
+*.db-journal
+
+# Rider
+.idea/
+
+# Publish output
+publish/
+
+# Npm/node
+node_modules/
