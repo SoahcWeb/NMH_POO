@@ -6,9 +6,6 @@ Ce projet est un prototype Blazor WebAssembly Hosted utilisant ASP.NET Core pour
 L'objectif principal est de créer une application modulable avec une API minimaliste pour gérer des films et préparer l'intégration future de fonctionnalités plus avancées.
 
 🟨 Jour 1 – Workflow et avancement
-
-Étapes réalisées :
-
 Préparation du projet
 
 Création du workspace dans Visual Studio Code.
@@ -51,9 +48,6 @@ Test de l’endpoint /api/test renvoyant :
 
 "Hello NMH API is working 🚀"
 Migration et création de la base SQLite
-
-Commandes EF Core utilisées :
-
 dotnet ef migrations add InitialCreate
 dotnet ef database update
 
@@ -63,7 +57,7 @@ Test final
 
 Lancement du serveur et vérification que l’API fonctionne correctement via navigateur ou Postman.
 
-📂 Structure du projet
+Structure du projet
 
 NMH.Client – Frontend Blazor WebAssembly
 
@@ -71,11 +65,11 @@ NMH.Server – Backend ASP.NET Core
 
 NMH.Shared – Modèles partagés entre client et serveur
 
-nmh.db – Base de données SQLite locale (exclue du dépôt via .gitignore)
+nmh.db – Base SQLite locale (exclue du dépôt via .gitignore)
 
 🟨 Jour 2 – Authentification complète (JWT)
 
-🎯 Objectif
+Objectif
 Créer un système d’authentification complet côté serveur et client avec JWT, protection des routes et gestion des utilisateurs.
 
 1️⃣ Installation des packages JWT
@@ -181,15 +175,15 @@ Accès aux endpoints protégés (/api/movies) avec le JWT → succès
 
 Vérification que l’accès sans JWT renvoie 401 Unauthorized
 
-📂 Structure du projet après Jour 2
+Structure après Jour 2
 
-NMH/ – Serveur et client Blazor Server (tout regroupé dans un seul projet)
+NMH/ – Serveur et client Blazor Server
 
 Shared/ – Modèles et DTOs (Movie, RegisterDto, LoginDto)
 
-nmh.db – Base SQLite locale (exclue du dépôt via .gitignore)
+nmh.db – Base SQLite locale
 
-✅ Résultat
+Résultat
 
 Authentification fonctionnelle avec JWT
 
@@ -199,7 +193,7 @@ JWT centralisé et stocké côté client
 
 Flow complet testé et opérationnel
 
-🚀 Prochaines étapes
+Prochaines étapes
 
 Gestion des rôles et permissions
 
