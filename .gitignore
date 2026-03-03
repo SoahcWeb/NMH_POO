@@ -21,3 +21,13 @@ publish/
 
 # Npm/node
 node_modules/
+
+# Logs
+*.log
+
+# Secrets / configuration locale
+appsettings.Local.json
+secrets.json
+
+# JetBrains Rider caches
+*.iml
