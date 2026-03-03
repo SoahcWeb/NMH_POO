@@ -63,7 +63,173 @@ Ce projet est un **prototype Blazor WebAssembly Hosted** utilisant ASP.NET Core 
 ## 📂 Structure du projet
 
 - `NMH.Client` – Frontend Blazor WebAssembly
-- `NMH.Server` – Backend ASP.NET Core avec API et Identity
+- `NMH.Server`🟦 Jour 2 – Authentification complète (JWT)
+🎯 Objectif
+
+Créer un système d’authentification complet côté serveur et client.
+
+Pages Register et Login fonctionnelles.
+
+Génération et utilisation de JWT pour sécuriser les endpoints.
+
+Protection des routes avec [Authorize].
+
+Tester que l’utilisateur peut s’inscrire, se connecter et accéder à une page protégée.
+
+🛠 Étapes réalisées
+
+1️⃣ Ajout des packages nécessaires pour JWT
+
+Dans NMH/ (serveur) :
+
+dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
+dotnet add package System.IdentityModel.Tokens.Jwt
+
+2️⃣ Configuration JWT dans Program.cs
+
+Dans NMH/Program.cs :
+
+var jwtSecretKey = builder.Configuration["Jwt:Key"] ?? "SuperSecretKeyPourJWT123!1234567890";
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecretKey)),
+        ValidateLifetime = true
+    };
+});
+
+// Middleware
+app.UseAuthentication();
+app.UseAuthorization();
+
+Bonus astuce : Stocker la clé JWT dans appsettings.json pour ne pas la coder en dur et simplifier la maintenance future.
+
+3️⃣ Création du AuthController
+
+Dans NMH/Controllers/AuthController.cs :
+
+Endpoints créés :
+
+POST /api/auth/register → inscription
+
+POST /api/auth/login → génération du JWT
+
+POST /api/auth/logout → déconnexion (optionnelle)
+
+Exemple minimal pour générer un JWT :
+
+var tokenHandler = new JwtSecurityTokenHandler();
+var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
+var tokenDescriptor = new SecurityTokenDescriptor
+{
+    Subject = new ClaimsIdentity(new Claim[]
+    {
+        new Claim(ClaimTypes.Name, user.UserName)
+    }),
+    Expires = DateTime.UtcNow.AddHours(1),
+    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+};
+var token = tokenHandler.CreateToken(tokenDescriptor);
+return Ok(new { token = tokenHandler.WriteToken(token) });
+
+4️⃣ Création des DTOs pour Auth
+
+Dans Shared/DTOs :
+
+public class RegisterDto
+{
+    public string UserName { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
+}
+
+public class LoginDto
+{
+    public string UserName { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
+}
+
+5️⃣ Pages Blazor côté client
+
+Comme le projet est maintenant tout dans NMH_POO/NMH, les pages client sont dans le même projet, utilisant Blazor Server.
+
+Register.razor → formulaire d’inscription via /api/auth/register
+
+Login.razor → formulaire de connexion via /api/auth/login et stockage du JWT dans localStorage
+
+Protection d’une page :
+
+@attribute [Authorize]
+
+<h3>Page protégée</h3>
+<p>Seuls les utilisateurs connectés peuvent voir ce contenu.</p>
+
+Program.cs côté client :
+
+builder.Services.AddAuthorizationCore();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+
+6️⃣ Protection des endpoints côté serveur
+
+Exemple : /api/movies accessible uniquement aux utilisateurs authentifiés :
+
+app.MapGet("/api/movies", [Authorize] async (ApplicationDbContext db) =>
+    await db.Movies.ToListAsync());
+
+app.MapPost("/api/movies", [Authorize] async (Movie movie, ApplicationDbContext db) =>
+{
+    db.Movies.Add(movie);
+    await db.SaveChangesAsync();
+    return Results.Created($"/api/movies/{movie.Id}", movie);
+});
+
+7️⃣ Test complet du flow JWT
+
+Inscription via Postman ou page Register.
+
+Connexion via Login → récupération du JWT.
+
+Accès aux endpoints protégés (/api/movies) avec le JWT → succès.
+
+Vérification que l’accès sans JWT renvoie 401 Unauthorized.
+
+📂 Structure du projet après Jour 2
+
+NMH/ – Serveur et client Blazor Server (tout regroupé dans un seul projet)
+
+Shared/ – Modèles et DTOs (Movie, RegisterDto, LoginDto)
+
+nmh.db – Base SQLite locale (exclue du dépôt via .gitignore)
+
+✅ Résultat
+
+Authentification fonctionnelle avec JWT
+
+Endpoints sécurisés via [Authorize]
+
+JWT centralisé et stocké côté client
+
+Flow complet testé et opérationnel
+
+🚀 Prochaines étapes
+
+Gestion des rôles et permissions
+
+Expiration et refresh token
+
+Intégration du CRUD films côté client
+
+Amélioration UX/UI pour Register et Login – Backend ASP.NET Core avec API et Identity
 - `NMH.Shared` – Modèles partagés entre client et serveur
 - `nmh.db` – Base de données SQLite locale (exclue du dépôt via `.gitignore`)
 
