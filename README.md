@@ -63,7 +63,10 @@ Ce projet est un **prototype Blazor WebAssembly Hosted** utilisant ASP.NET Core 
 ## 📂 Structure du projet
 
 - `NMH.Client` – Frontend Blazor WebAssembly
-- `NMH.Server`🟦 Jour 2 – Authentification complète (JWT)
+- `NMH.Server
+-
+`🟦 Jour 2 – Authentification complète (JWT)
+
 🎯 Objectif
 
 Créer un système d’authentification complet côté serveur et client.
