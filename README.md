@@ -1,22 +1,22 @@
-# NMH_POO
+NMH_POO
+Projet NMH_POO – Blazor WebAssembly Hosted avec EF Core et Identity
 
-## Projet NMH_POO – Blazor WebAssembly Hosted avec EF Core et Identity
-
-**Description**  
-Ce projet est un prototype Blazor WebAssembly Hosted utilisant ASP.NET Core pour le backend, SQLite comme base de données et ASP.NET Core Identity pour la gestion des utilisateurs.  
+Description
+Ce projet est un prototype Blazor WebAssembly Hosted utilisant ASP.NET Core pour le backend, SQLite comme base de données et ASP.NET Core Identity pour la gestion des utilisateurs.
 L'objectif principal est de créer une application modulable avec une API minimaliste pour gérer des films et préparer l'intégration future de fonctionnalités plus avancées.
 
----
+🟨 Jour 1 – Workflow et avancement
 
-## 🟨 Jour 1 – Workflow et avancement
+Étapes réalisées :
 
-**Étapes réalisées :**
+Préparation du projet
 
-### Préparation du projet
-- Création du workspace dans Visual Studio Code.  
-- Placement dans le dossier du projet `C:/Projet/NMH_POO`.  
-- Création de la solution Blazor Hosted :  
-```bash
+Création du workspace dans Visual Studio Code.
+
+Placement dans le dossier du projet C:/Projet/NMH_POO.
+
+Création de la solution Blazor Hosted :
+
 dotnet new blazorwasm -n NMH.Client --hosted --framework net8.0
 
 Vérification que le projet compile correctement.
