@@ -7,9 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- Packages si tu en as besoin dans Shared -->
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0" />
   </ItemGroup>
+
+  <!-- Supprime complètement le Compile Include pour DTOs -->
+  <!-- <ItemGroup>
+    <Compile Include="DTOs\*.cs" />
+  </ItemGroup> -->
 
 </Project>
