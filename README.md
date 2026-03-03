@@ -77,8 +77,6 @@ nmh.db – Base de données SQLite locale (exclue du dépôt via .gitignore)
 🎯 Objectif
 Créer un système d’authentification complet côté serveur et client avec JWT, protection des routes et gestion des utilisateurs.
 
-Étapes réalisées :
-
 1️⃣ Installation des packages JWT
 
 Dans le projet serveur NMH/ :
@@ -185,13 +183,13 @@ app.MapPost("/api/movies", [Authorize] async (Movie movie, ApplicationDbContext 
 });
 7️⃣ Test complet du flow JWT
 
-Inscription via Postman ou page Register.
+Inscription via Postman ou page Register
 
-Connexion via Login → récupération du JWT.
+Connexion via Login → récupération du JWT
 
-Accès aux endpoints protégés (/api/movies) avec le JWT → succès.
+Accès aux endpoints protégés (/api/movies) avec le JWT → succès
 
-Vérification que l’accès sans JWT renvoie 401 Unauthorized.
+Vérification que l’accès sans JWT renvoie 401 Unauthorized
 
 📂 Structure du projet après Jour 2
 
