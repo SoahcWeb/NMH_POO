@@ -1,105 +1,99 @@
-# NMH_POO
+NMH_POO
+Projet NMH_POO – Blazor WebAssembly Hosted avec EF Core et Identity
 
-Projet NMH_POO – Blazor WebAssembly Hosted avec EF Core et Identity.
+Description
+Ce projet est un prototype Blazor WebAssembly Hosted utilisant ASP.NET Core pour le backend, SQLite comme base de données et ASP.NET Core Identity pour la gestion des utilisateurs. L'objectif principal est de créer une application modulable avec une API minimaliste pour gérer des films et préparer l'intégration future de fonctionnalités plus avancées.
 
-## Description
+🟨 Jour 1 – Workflow et avancement
 
-Ce projet est un **prototype Blazor WebAssembly Hosted** utilisant ASP.NET Core pour le backend, SQLite comme base de données et ASP.NET Core Identity pour la gestion des utilisateurs. L'objectif principal est de créer une application modulable avec une API minimaliste pour gérer des films et préparer l'intégration future de fonctionnalités plus avancées.
+Étapes réalisées :
 
----
+Préparation du projet
 
-## 🟨 Jour 1 – Workflow et avancement
+Création du workspace dans Visual Studio Code.
 
-### Étapes réalisées :
+Placement dans le dossier du projet C:/Projet/NMH_POO.
 
-1. **Préparation du projet**
-   - Création du workspace dans Visual Studio Code.
-   - Placement dans le dossier du projet `C:/Projet/NMH_POO`.
+Création de la solution Blazor Hosted :
 
-2. **Création de la solution Blazor Hosted**
-   - Commande utilisée :  
-     ```bash
-     dotnet new blazorwasm -n NMH.Client --hosted --framework net8.0
-     ```
-   - Vérification que le projet compile correctement.
+dotnet new blazorwasm -n NMH.Client --hosted --framework net8.0
 
-3. **Installation des packages nécessaires**
-   - Entity Framework Core avec SQLite :
-     ```bash
-     dotnet add package Microsoft.EntityFrameworkCore.Sqlite
-     dotnet add package Microsoft.EntityFrameworkCore.Tools
-     dotnet add package Microsoft.EntityFrameworkCore.Design
-     dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore
-     ```
+Vérification que le projet compile correctement.
 
-4. **Création des classes principales**
-   - `Movie` dans `NMH.Shared` avec les propriétés :
-     - Id (int)
-     - Title (string)
-     - ReleaseDate (DateTime)
-   - `ApplicationDbContext` dans `NMH.Server/Data` héritant de `IdentityDbContext` et incluant `DbSet<Movie>`.
+Installation des packages nécessaires
 
-5. **Configuration du serveur**
-   - Ajout des services DbContext et Identity dans `Program.cs`.
-   - Configuration des endpoints minimal API et des Razor Pages.
-   - Test de l’endpoint `/api/test` renvoyant :
-     ```
-     "Hello NMH API is working 🚀"
-     ```
+Entity Framework Core avec SQLite :
 
-6. **Migration et création de la base SQLite**
-   - Commandes EF Core utilisées :
-     ```bash
-     dotnet ef migrations add InitialCreate
-     dotnet ef database update
-     ```
-   - Vérification que le fichier `nmh.db` est créé et la base est prête.
+dotnet add package Microsoft.EntityFrameworkCore.Sqlite
+dotnet add package Microsoft.EntityFrameworkCore.Tools
+dotnet add package Microsoft.EntityFrameworkCore.Design
+dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore
+Création des classes principales
 
-7. **Test final**
-   - Lancement du serveur et vérification que l’API fonctionne correctement via navigateur ou Postman.
+Movie dans NMH.Shared avec les propriétés :
 
----
+Id (int)
 
-## 📂 Structure du projet
+Title (string)
 
-- `NMH.Client` – Frontend Blazor WebAssembly
-- `NMH.Server
--
-`🟦 Jour 2 – Authentification complète (JWT)
+ReleaseDate (DateTime)
+
+ApplicationDbContext dans NMH.Server/Data héritant de IdentityDbContext et incluant DbSet<Movie>.
+
+Configuration du serveur
+
+Ajout des services DbContext et Identity dans Program.cs.
+
+Configuration des endpoints minimal API et des Razor Pages.
+
+Test de l’endpoint /api/test renvoyant :
+
+"Hello NMH API is working 🚀"
+Migration et création de la base SQLite
+
+Commandes EF Core utilisées :
+
+dotnet ef migrations add InitialCreate
+dotnet ef database update
+
+Vérification que le fichier nmh.db est créé et la base est prête.
+
+Test final
+
+Lancement du serveur et vérification que l’API fonctionne correctement via navigateur ou Postman.
+
+📂 Structure du projet
+
+NMH.Client – Frontend Blazor WebAssembly
+
+NMH.Server – Backend ASP.NET Core
+
+NMH.Shared – Modèles partagés entre client et serveur
+
+nmh.db – Base de données SQLite locale (exclue du dépôt via .gitignore)
+
+🟨 Jour 2 – Authentification complète (JWT)
 
 🎯 Objectif
+Créer un système d’authentification complet côté serveur et client avec JWT, protection des routes et gestion des utilisateurs.
 
-Créer un système d’authentification complet côté serveur et client.
+Étapes réalisées :
 
-Pages Register et Login fonctionnelles.
+1️⃣ Installation des packages JWT
 
-Génération et utilisation de JWT pour sécuriser les endpoints.
-
-Protection des routes avec [Authorize].
-
-Tester que l’utilisateur peut s’inscrire, se connecter et accéder à une page protégée.
-
-🛠 Étapes réalisées
-
-1️⃣ Ajout des packages nécessaires pour JWT
-
-Dans NMH/ (serveur) :
+Dans le projet serveur NMH/ :
 
 dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
 dotnet add package System.IdentityModel.Tokens.Jwt
-
 2️⃣ Configuration JWT dans Program.cs
-
-Dans NMH/Program.cs :
-
 var jwtSecretKey = builder.Configuration["Jwt:Key"] ?? "SuperSecretKeyPourJWT123!1234567890";
 
-builder.Services.AddAuthentication(options =>
+builder.Services.AddAuthentication(options => 
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
-.AddJwtBearer(options =>
+.AddJwtBearer(options => 
 {
     options.TokenValidationParameters = new TokenValidationParameters
     {
@@ -115,7 +109,7 @@ builder.Services.AddAuthentication(options =>
 app.UseAuthentication();
 app.UseAuthorization();
 
-Bonus astuce : Stocker la clé JWT dans appsettings.json pour ne pas la coder en dur et simplifier la maintenance future.
+Astuce : Stocker la clé JWT dans appsettings.json pour éviter le hardcoding.
 
 3️⃣ Création du AuthController
 
@@ -129,7 +123,7 @@ POST /api/auth/login → génération du JWT
 
 POST /api/auth/logout → déconnexion (optionnelle)
 
-Exemple minimal pour générer un JWT :
+Exemple minimal pour générer un JWT :
 
 var tokenHandler = new JwtSecurityTokenHandler();
 var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
@@ -144,10 +138,9 @@ var tokenDescriptor = new SecurityTokenDescriptor
 };
 var token = tokenHandler.CreateToken(tokenDescriptor);
 return Ok(new { token = tokenHandler.WriteToken(token) });
-
 4️⃣ Création des DTOs pour Auth
 
-Dans Shared/DTOs :
+Dans Shared/DTOs/ :
 
 public class RegisterDto
 {
@@ -161,41 +154,35 @@ public class LoginDto
     public string UserName { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
 }
-
 5️⃣ Pages Blazor côté client
-
-Comme le projet est maintenant tout dans NMH_POO/NMH, les pages client sont dans le même projet, utilisant Blazor Server.
 
 Register.razor → formulaire d’inscription via /api/auth/register
 
 Login.razor → formulaire de connexion via /api/auth/login et stockage du JWT dans localStorage
 
-Protection d’une page :
+Protection d’une page :
 
 @attribute [Authorize]
 
-<h3>Page protégée</h3>
-<p>Seuls les utilisateurs connectés peuvent voir ce contenu.</p>
+Page protégée
+Seuls les utilisateurs connectés peuvent voir ce contenu.
 
-Program.cs côté client :
+Program.cs côté client :
 
 builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
-
 6️⃣ Protection des endpoints côté serveur
 
-Exemple : /api/movies accessible uniquement aux utilisateurs authentifiés :
+Exemple : /api/movies accessible uniquement aux utilisateurs authentifiés :
 
-app.MapGet("/api/movies", [Authorize] async (ApplicationDbContext db) =>
-    await db.Movies.ToListAsync());
+app.MapGet("/api/movies", [Authorize] async (ApplicationDbContext db) => await db.Movies.ToListAsync());
 
-app.MapPost("/api/movies", [Authorize] async (Movie movie, ApplicationDbContext db) =>
+app.MapPost("/api/movies", [Authorize] async (Movie movie, ApplicationDbContext db) => 
 {
     db.Movies.Add(movie);
     await db.SaveChangesAsync();
     return Results.Created($"/api/movies/{movie.Id}", movie);
 });
-
 7️⃣ Test complet du flow JWT
 
 Inscription via Postman ou page Register.
@@ -232,14 +219,4 @@ Expiration et refresh token
 
 Intégration du CRUD films côté client
 
-Amélioration UX/UI pour Register et Login – Backend ASP.NET Core avec API et Identity
-- `NMH.Shared` – Modèles partagés entre client et serveur
-- `nmh.db` – Base de données SQLite locale (exclue du dépôt via `.gitignore`)
-
----
-
-## 🚀 Prochaines étapes
-
-- Ajouter des endpoints CRUD pour les films.
-- Implémenter l’authentification et la gestion des utilisateurs.
-- Préparer le workflow GitHub pour les prochains commits et branches de développement.
+Amélioration UX/UI pour Register et Login
