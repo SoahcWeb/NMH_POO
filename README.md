@@ -1,21 +1,22 @@
-NMH_POO
-Projet NMH_POO – Blazor WebAssembly Hosted avec EF Core et Identity
+# NMH_POO
 
-Description
-Ce projet est un prototype Blazor WebAssembly Hosted utilisant ASP.NET Core pour le backend, SQLite comme base de données et ASP.NET Core Identity pour la gestion des utilisateurs. L'objectif principal est de créer une application modulable avec une API minimaliste pour gérer des films et préparer l'intégration future de fonctionnalités plus avancées.
+## Projet NMH_POO – Blazor WebAssembly Hosted avec EF Core et Identity
 
-🟨 Jour 1 – Workflow et avancement
+**Description**  
+Ce projet est un prototype Blazor WebAssembly Hosted utilisant ASP.NET Core pour le backend, SQLite comme base de données et ASP.NET Core Identity pour la gestion des utilisateurs.  
+L'objectif principal est de créer une application modulable avec une API minimaliste pour gérer des films et préparer l'intégration future de fonctionnalités plus avancées.
 
-Étapes réalisées :
+---
 
-Préparation du projet
+## 🟨 Jour 1 – Workflow et avancement
 
-Création du workspace dans Visual Studio Code.
+**Étapes réalisées :**
 
-Placement dans le dossier du projet C:/Projet/NMH_POO.
-
-Création de la solution Blazor Hosted :
-
+### Préparation du projet
+- Création du workspace dans Visual Studio Code.  
+- Placement dans le dossier du projet `C:/Projet/NMH_POO`.  
+- Création de la solution Blazor Hosted :  
+```bash
 dotnet new blazorwasm -n NMH.Client --hosted --framework net8.0
 
 Vérification que le projet compile correctement.
@@ -78,9 +79,6 @@ nmh.db – Base de données SQLite locale (exclue du dépôt via .gitignore)
 Créer un système d’authentification complet côté serveur et client avec JWT, protection des routes et gestion des utilisateurs.
 
 1️⃣ Installation des packages JWT
-
-Dans le projet serveur NMH/ :
-
 dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
 dotnet add package System.IdentityModel.Tokens.Jwt
 2️⃣ Configuration JWT dans Program.cs
@@ -111,8 +109,6 @@ Astuce : Stocker la clé JWT dans appsettings.json pour éviter le hardcoding.
 
 3️⃣ Création du AuthController
 
-Dans NMH/Controllers/AuthController.cs :
-
 Endpoints créés :
 
 POST /api/auth/register → inscription
@@ -137,9 +133,6 @@ var tokenDescriptor = new SecurityTokenDescriptor
 var token = tokenHandler.CreateToken(tokenDescriptor);
 return Ok(new { token = tokenHandler.WriteToken(token) });
 4️⃣ Création des DTOs pour Auth
-
-Dans Shared/DTOs/ :
-
 public class RegisterDto
 {
     public string UserName { get; set; } = string.Empty;
@@ -170,9 +163,6 @@ Program.cs côté client :
 builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 6️⃣ Protection des endpoints côté serveur
-
-Exemple : /api/movies accessible uniquement aux utilisateurs authentifiés :
-
 app.MapGet("/api/movies", [Authorize] async (ApplicationDbContext db) => await db.Movies.ToListAsync());
 
 app.MapPost("/api/movies", [Authorize] async (Movie movie, ApplicationDbContext db) => 
