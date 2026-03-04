@@ -1,0 +1,42 @@
+@page "/movies"
+@inject NMH.Services.TmdbService TmdbService
+
+<h3>🎬 Films tendances</h3>
+
+@if (movies == null)
+{
+    <p>Chargement des films...</p>
+}
+else if (!movies.Any())
+{
+    <p>Aucun film trouvé.</p>
+}
+else
+{
+    <div class="movie-grid">
+        @foreach (var movie in movies)
+        {
+            <div class="movie-card">
+                @if (!string.IsNullOrEmpty(movie.PosterFullPath))
+                {
+                    <img src="@movie.PosterFullPath" alt="@movie.Title" />
+                }
+                else
+                {
+                    <div class="no-poster">Pas d'affiche</div>
+                }
+                <h4>@movie.Title (@movie.ReleaseDate?.ToString("yyyy"))</h4>
+                <p>@movie.Overview</p>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private List<NMH.Shared.DTOs.MovieDto>? movies;
+
+    protected override async Task OnInitializedAsync()
+    {
+        movies = await TmdbService.GetTrendingMoviesAsync();
+    }
+}

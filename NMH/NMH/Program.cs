@@ -3,7 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using NMH.Shared;
+using NMH.Data;
 using System.Text;
+using MovieEntity = NMH.Data.Movie;
+using NMH.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +26,10 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
 
 builder.Services.AddRazorPages();
 builder.Services.AddControllers();
+
+// ✅ AJOUTÉ POUR BLazor
+builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents();
 
 // 🔹 JWT Authentication
 builder.Services.AddAuthentication(options =>
@@ -44,6 +51,9 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+// 🔹 Ajouter le service TMDB
+builder.Services.AddHttpClient<NMH.Services.TmdbService>();
+
 var app = builder.Build();
 
 // Middleware
@@ -53,20 +63,38 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Endpoints
+app.UseAntiforgery(); 
+
+// Endpoints API
 app.MapGet("/api/test", () => "Hello NMH API is working 🚀");
 
 app.MapGet("/api/movies", [Microsoft.AspNetCore.Authorization.Authorize] async (ApplicationDbContext db) =>
     await db.Movies.ToListAsync());
 
-app.MapPost("/api/movies", [Microsoft.AspNetCore.Authorization.Authorize] async (Movie movie, ApplicationDbContext db) =>
+app.MapPost("/api/movies", [Microsoft.AspNetCore.Authorization.Authorize] async (MovieEntity movie, ApplicationDbContext db) =>
 {
     db.Movies.Add(movie);
     await db.SaveChangesAsync();
     return Results.Created($"/api/movies/{movie.Id}", movie);
 });
 
-app.MapRazorPages();
+// 🔹 Endpoints TMDB
+app.MapGet("/api/tmdb/movies", async (NMH.Services.TmdbService tmdb) =>
+{
+    var movies = await tmdb.GetTrendingMoviesAsync();
+    return Results.Ok(movies);
+});
+
+app.MapGet("/api/tmdb/series", async (NMH.Services.TmdbService tmdb) =>
+{
+    var series = await tmdb.GetTrendingSeriesAsync();
+    return Results.Ok(series);
+});
+
 app.MapControllers();
+
+// ✅ AJOUTÉ POUR BLazor (IMPORTANT)
+app.MapRazorComponents<App>()
+    .AddInteractiveServerRenderMode();
 
 app.Run();

@@ -1,0 +1,44 @@
+@page "/series"
+@inject NMH.Services.TmdbService TmdbService
+
+<h3>📺 Séries tendances</h3>
+
+@if (series == null)
+{
+    <p>Chargement des séries...</p>
+}
+else if (!series.Any())
+{
+    <p>Aucune série trouvée.</p>
+}
+else
+{
+    <div class="movie-grid">
+        @foreach (var tv in series)
+        {
+            <div class="movie-card">
+                @if (!string.IsNullOrEmpty(tv.PosterFullPath))
+                {
+                    <img src="@tv.PosterFullPath" alt="@tv.Name" />
+                }
+                else
+                {
+                    <div class="no-poster">Pas d'affiche</div>
+                }
+
+                <h4>@tv.Name (@tv.FirstAirDate?.ToString("yyyy"))</h4>
+                <p>@tv.Overview</p>
+                <p>⭐ @tv.VoteAverage / 10</p>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private List<NMH.Shared.DTOs.SeriesDto>? series;
+
+    protected override async Task OnInitializedAsync()
+    {
+        series = await TmdbService.GetTrendingSeriesAsync();
+    }
+}
