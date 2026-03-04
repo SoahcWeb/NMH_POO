@@ -1,5 +1,6 @@
 @page "/register"
-@using Shared.DTOs
+@using NMH.Shared.DTOs
+@using Microsoft.AspNetCore.Components.Forms
 @inject HttpClient Http
 @inject NavigationManager Navigation
 
@@ -15,7 +16,7 @@
 <p>@message</p>
 
 @code {
-    private RegisterDto registerModel = new();
+    private RegisterDto registerModel = new RegisterDto();
     private string message = "";
 
     private async Task HandleRegister()

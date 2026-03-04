@@ -1,26 +1,27 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace NMH.Shared;
-
-/// <summary>
-/// Database context for the application, integrating EF Core with ASP.NET Core Identity.
-/// </summary>
-public class ApplicationDbContext : IdentityDbContext
+namespace NMH.Data
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-        : base(options)
+    /// <summary>
+    /// Database context for the application, integrating EF Core with ASP.NET Core Identity.
+    /// </summary>
+    public class ApplicationDbContext : IdentityDbContext
     {
-    }
-
-    public DbSet<Movie> Movies { get; set; } = default!;
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        if (!optionsBuilder.IsConfigured)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options)
         {
-            optionsBuilder.UseSqlite("Data Source=nmh.db");
         }
-        base.OnConfiguring(optionsBuilder);
+
+        public DbSet<Movie> Movies { get; set; } = default!;
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlite("Data Source=nmh.db");
+            }
+            base.OnConfiguring(optionsBuilder);
+        }
     }
 }

@@ -1,4 +1,4 @@
-namespace NMH.Shared
+namespace NMH.Data
 {
     public class Movie
     {
