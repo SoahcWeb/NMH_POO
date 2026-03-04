@@ -1,25 +1,24 @@
-﻿@page "/"
+﻿@page "/home"
+@layout LandingLayout
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Nethra Media Hub</PageTitle>
 
-<h1>Bienvenue dans NMH App 🚀</h1>
+<section class="landing-content">
+    <h1>Bienvenue dans NMH App 🚀</h1>
+    <p>Découvrez votre hub de films et séries.</p>
 
-<p>Choisissez une action ci-dessous :</p>
+    <div class="cta-buttons">
+        <a href="/login" class="btn">Se connecter</a>
+        <a href="/register" class="btn">S'inscrire</a>
+    </div>
 
-<nav style="margin-bottom:20px;">
-    <a href="/register" style="margin-right:15px;">📝 S'inscrire</a>
-    <a href="/login" style="margin-right:15px;">🔑 Se connecter</a>
-    <a href="/protected">🔒 Page protégée</a>
-</nav>
+    <hr />
 
-<hr />
-
-<h2>Instructions rapides :</h2>
-<ul>
-    <li>Inscrivez un nouvel utilisateur via la page Register.</li>
-    <li>Connectez-vous avec Login.</li>
-    <li>Accédez à la page protégée pour tester [Authorize].</li>
-    <li>Déconnexion disponible sur la page protégée.</li>
-</ul>
-
-<p>Ce Home sert de point de départ pour ton application NMH Jour 2.</p>
+    <h2>Instructions rapides :</h2>
+    <ul>
+        <li>Inscrivez un nouvel utilisateur via la page Register.</li>
+        <li>Connectez-vous avec Login.</li>
+        <li>Accédez à votre Home utilisateur après connexion.</li>
+        <li>Testez l’accès aux pages protégées.</li>
+    </ul>
+</section>
