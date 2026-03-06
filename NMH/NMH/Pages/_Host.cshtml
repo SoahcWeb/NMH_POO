@@ -1,0 +1,26 @@
+@page "/"
+@namespace NMH.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nethra Media Hub</title>
+
+    <!-- CSS global -->
+    <link href="~/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+
+    <link rel="icon" type="image/png" href="~/favicon.png" />
+</head>
+<body>
+    <component type="typeof(NMH.Components.App)" render-mode="Server" />
+
+    <script src="_framework/blazor.server.js"></script>
+</body>
+</html>

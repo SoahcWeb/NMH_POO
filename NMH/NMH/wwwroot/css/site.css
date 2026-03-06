@@ -162,3 +162,40 @@ footer {
 .carousel-series::-webkit-scrollbar-thumb:hover {
     background-color: #555;
 }
+
+/* ----------------- Recherche Page ----------------- */
+.search-card {
+    transition: all 0.4s ease;
+    border-radius: 10px;
+}
+
+.advanced-options {
+    overflow: hidden;
+    transition: max-height 0.5s ease, padding 0.3s ease;
+}
+
+.result-card {
+    transition: transform 0.2s ease;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.result-card:hover {
+    transform: scale(1.05);
+}
+
+.result-card img {
+    object-fit: cover;
+    height: 300px;
+    width: 100%;
+}
+
+.result-card .card-body h6 {
+    font-size: 1em;
+    margin-bottom: 0.25rem;
+}
+
+.result-card .card-body small {
+    font-size: 0.8em;
+    color: #666;
+}

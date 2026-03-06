@@ -1,0 +1,119 @@
+@page "/search"
+@namespace NMH.Components.Pages
+@inject NMH.Services.TmdbService TmdbService
+@using NMH.Shared.DTOs
+
+<h2 class="mb-4">Recherche TEST</h2>
+
+
+<button class="btn btn-danger mb-3"
+        @onclick="TestClick">
+    TEST BLAZOR
+</button>
+
+<p>@testMessage</p>
+
+<hr>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+
+        <input class="form-control mb-3"
+               placeholder="Tape quelque chose..."
+               @bind="query"
+               @bind:event="oninput" />
+
+        <button class="btn btn-secondary mb-3"
+                @onclick="ToggleAdvancedSearch">
+            @(showAdvanced ? "Réduire" : "Afficher options")
+        </button>
+
+        @if (showAdvanced)
+        {
+            <div class="border p-3 mb-3">
+
+                <input class="form-control mb-2"
+                       placeholder="Année"
+                       @bind="year" />
+
+                <input class="form-control mb-2"
+                       placeholder="Acteur"
+                       @bind="actor" />
+
+            </div>
+        }
+
+        <div class="d-flex gap-2">
+
+            <button class="btn btn-primary"
+                    @onclick="SearchAsync"
+                    disabled="@(!CanSearch)">
+                Rechercher
+            </button>
+
+            <button class="btn btn-outline-secondary"
+                    @onclick="ResetSearch">
+                Reset
+            </button>
+
+        </div>
+
+    </div>
+</div>
+
+@if (isLoading)
+{
+    <p>Chargement...</p>
+}
+
+@if (!string.IsNullOrWhiteSpace(result))
+{
+    <div class="alert alert-success mt-3">
+        @result
+    </div>
+}
+
+@code {
+
+    private string query = "";
+    private string actor = "";
+    private string year = "";
+
+    private bool showAdvanced = false;
+    private bool isLoading = false;
+
+    private string result = "";
+    private string testMessage = "";
+
+    private bool CanSearch => !string.IsNullOrWhiteSpace(query);
+
+    private void TestClick()
+    {
+        testMessage = "Blazor fonctionne ✔";
+    }
+
+    private void ToggleAdvancedSearch()
+    {
+        showAdvanced = !showAdvanced;
+    }
+
+    private async Task SearchAsync()
+    {
+        isLoading = true;
+
+        await Task.Delay(1000);
+
+        result = $"Recherche : {query} | Acteur : {actor} | Année : {year}";
+
+        isLoading = false;
+    }
+
+    private void ResetSearch()
+    {
+        query = "";
+        actor = "";
+        year = "";
+        result = "";
+    }
+
+}

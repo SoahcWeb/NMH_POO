@@ -1,5 +1,4 @@
 using System.Net.Http.Json;
-using System.Text.Json.Serialization;
 using NMH.Shared.DTOs;
 
 namespace NMH.Services
@@ -14,7 +13,7 @@ namespace NMH.Services
         {
             _httpClient = httpClient;
             _configuration = configuration;
-            _apiKey = _configuration["TMDB:ApiKey"];
+            _apiKey = _configuration["TMDB:ApiKey"] ?? throw new InvalidOperationException("TMDB:ApiKey missing in configuration");
         }
 
         public async Task<List<MovieDto>> GetTrendingMoviesAsync()
@@ -35,10 +34,65 @@ namespace NMH.Services
             return response?.Results ?? new List<SeriesDto>();
         }
 
-        // 🔹 Wrapper générique pour la réponse TMDB
+        // 🔎 RECHERCHE MULTI SIMPLE
+        public async Task<SearchResponseDto> SearchMultiAsync(string query, int page = 1)
+        {
+            var response = await _httpClient.GetFromJsonAsync<SearchResponseDto>(
+                $"https://api.themoviedb.org/3/search/multi?api_key={_apiKey}&query={Uri.EscapeDataString(query)}&page={page}"
+            );
+
+            return response ?? new SearchResponseDto();
+        }
+
+        // 🔎 RECHERCHE AVANCÉE POUR BLAZOR
+        public async Task<SearchResponseDto> SearchAsync(
+            string query,
+            string mediaType = "movie",
+            int? year = null,
+            string? actor = null,
+            int? genreId = null,
+            int page = 1)
+        {
+            if (string.IsNullOrWhiteSpace(query) && !year.HasValue && string.IsNullOrWhiteSpace(actor) && !genreId.HasValue)
+                return new SearchResponseDto();
+
+            var url = $"https://api.themoviedb.org/3/search/{mediaType}?api_key={_apiKey}&page={page}";
+
+            if (!string.IsNullOrWhiteSpace(query))
+                url += $"&query={Uri.EscapeDataString(query)}";
+
+            if (year.HasValue)
+                url += $"&year={year.Value}";
+
+            if (genreId.HasValue)
+                url += $"&with_genres={genreId.Value}";
+
+            if (!string.IsNullOrWhiteSpace(actor))
+            {
+                var actorResponse = await _httpClient.GetFromJsonAsync<SearchResponseDto>(
+                    $"https://api.themoviedb.org/3/search/person?api_key={_apiKey}&query={Uri.EscapeDataString(actor)}");
+
+                var actorId = actorResponse?.Results?.FirstOrDefault()?.Id;
+                if (actorId.HasValue)
+                    url += $"&with_cast={actorId.Value}";
+            }
+
+            var response = await _httpClient.GetFromJsonAsync<SearchResponseDto>(url);
+            return response ?? new SearchResponseDto();
+        }
+
+        // 🔹 Liste des genres pour dropdown
+        public async Task<List<GenreDto>> GetGenresAsync(string mediaType = "movie")
+        {
+            var response = await _httpClient.GetFromJsonAsync<GenresResponseDto>(
+                $"https://api.themoviedb.org/3/genre/{mediaType}/list?api_key={_apiKey}&language=en-US");
+
+            return response?.Genres ?? new List<GenreDto>();
+        }
+
+        // 🔹 DTO interne pour TMDB Trending
         private class TmdbTrendingResponse<T>
         {
-            [JsonPropertyName("results")]
             public List<T>? Results { get; set; }
         }
     }
