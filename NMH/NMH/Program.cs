@@ -17,7 +17,7 @@ var jwtIssuer = jwtSettings.GetValue<string>("Issuer");
 var jwtAudience = jwtSettings.GetValue<string>("Audience");
 var jwtExpireHours = jwtSettings.GetValue<int>("ExpireHours");
 
-// Services
+// 🔹 Services
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=nmh.db"));
 
@@ -25,11 +25,15 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddRazorPages();
-builder.Services.AddControllers();
 
-// ✅ AJOUTÉ POUR BLazor
-builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
+// 🔹 Blazor Server avec erreurs détaillées
+builder.Services.AddServerSideBlazor()
+    .AddCircuitOptions(options =>
+    {
+        options.DetailedErrors = true;
+    });
+
+builder.Services.AddControllers();
 
 // 🔹 JWT Authentication
 builder.Services.AddAuthentication(options =>
@@ -51,21 +55,24 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// 🔹 Ajouter le service TMDB
+// 🔹 Service TMDB
 builder.Services.AddHttpClient<NMH.Services.TmdbService>();
 
 var app = builder.Build();
 
 // Middleware
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error");
+}
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseAntiforgery();
 
-app.UseAntiforgery(); 
-
-// Endpoints API
+// 🔹 Endpoints API
 app.MapGet("/api/test", () => "Hello NMH API is working 🚀");
 
 app.MapGet("/api/movies", [Microsoft.AspNetCore.Authorization.Authorize] async (ApplicationDbContext db) =>
@@ -78,7 +85,6 @@ app.MapPost("/api/movies", [Microsoft.AspNetCore.Authorization.Authorize] async 
     return Results.Created($"/api/movies/{movie.Id}", movie);
 });
 
-// 🔹 Endpoints TMDB
 app.MapGet("/api/tmdb/movies", async (NMH.Services.TmdbService tmdb) =>
 {
     var movies = await tmdb.GetTrendingMoviesAsync();
@@ -93,8 +99,8 @@ app.MapGet("/api/tmdb/series", async (NMH.Services.TmdbService tmdb) =>
 
 app.MapControllers();
 
-// ✅ AJOUTÉ POUR BLazor (IMPORTANT)
-app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
+// 🔹 Blazor Server endpoints
+app.MapBlazorHub();               // WebSocket pour @onclick et interactivité
+app.MapFallbackToPage("/_Host"); // Fallback vers ton App.razor / Search.razor
 
 app.Run();

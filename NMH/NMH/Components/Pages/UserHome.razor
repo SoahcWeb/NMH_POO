@@ -1,0 +1,68 @@
+@page "/user/home"
+@using NMH.Services
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthStateProvider
+@inject TmdbService Tmdb
+@inject HttpClient Http
+
+@layout MainLayout
+<PageTitle>Home Utilisateur</PageTitle>
+
+<h1>Bienvenue, @userName ! 🎬</h1>
+
+<section class="carousels">
+    <h2>Films tendances</h2>
+    <div class="carousel-movies">
+        @if (movies is null)
+        {
+            <p>Chargement des films...</p>
+        }
+        else
+        {
+            @foreach (var movie in movies)
+            {
+                <div class="carousel-item">
+                    <img src="@($"https://image.tmdb.org/t/p/w200{movie.PosterPath}")" alt="@movie.Title" />
+                    <p>@movie.Title</p>
+                </div>
+            }
+        }
+    </div>
+
+    <h2>Séries tendances</h2>
+    <div class="carousel-series">
+        @if (series is null)
+        {
+            <p>Chargement des séries...</p>
+        }
+        else
+        {
+            @foreach (var s in series)
+            {
+                <div class="carousel-item">
+                    <img src="@($"https://image.tmdb.org/t/p/w200{s.PosterPath}")" alt="@s.Name" />
+                    <p>@s.Name</p>
+                </div>
+            }
+        }
+    </div>
+</section>
+
+@code {
+    private List<MovieDto>? movies;
+    private List<SeriesDto>? series;
+    private string userName = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        if (user.Identity?.IsAuthenticated ?? false)
+        {
+            userName = user.Identity.Name ?? "Utilisateur";
+        }
+
+        movies = await Tmdb.GetTrendingMoviesAsync();
+        series = await Tmdb.GetTrendingSeriesAsync();
+    }
+}
