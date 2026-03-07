@@ -71,16 +71,6 @@
     background-color: #FFC107;
 }
 
-/* ----------------- Footer ----------------- */
-footer {
-    background-color: #f8f8f8;
-    border-top: 1px solid #ddd;
-    text-align: center;
-    padding: 20px;
-    font-size: 0.9em;
-    color: #555;
-}
-
 /* ----------------- Landing Page ----------------- */
 .landing-content {
     max-width: 800px;
@@ -198,4 +188,96 @@ footer {
 .result-card .card-body small {
     font-size: 0.8em;
     color: #666;
+}
+
+/* ----------------- NMH Footer Compact Netflix-style ----------------- */
+.nmh-footer {
+    background-color: #0F0F2F;  /* fond bleu nuit sombre */
+    color: #A8B4C8;             /* texte secondaire gris bleu clair */
+    padding: 30px 20px;         /* compact */
+    font-size: 0.9rem;
+    font-family: sans-serif;
+}
+
+.footer-container {
+    max-width: 1000px;
+    margin: auto;
+}
+
+.footer-top {
+    margin-bottom: 15px;
+    color: #E0E6F0;  /* texte principal clair */
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;          /* responsive : stack sur mobile */
+    justify-content: space-between;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.footer-col {
+    flex: 1 1 22%;            /* chaque colonne prend ~1/4 avec marge */
+    min-width: 150px;         /* pour mobile */
+    display: flex;
+    flex-direction: column;
+    padding: 0 10px;
+    border-right: 1px solid #0F4F8F;  /* séparateur vertical */
+}
+
+.footer-col:last-child {
+    border-right: none;       /* pas de séparateur sur la dernière colonne */
+}
+
+.footer-col a {
+    color: #A8B4C8;           /* texte secondaire */
+    text-decoration: none;
+    margin-bottom: 6px;       /* compact */
+    font-size: 0.85rem;
+    line-height: 1.2;
+    transition: color 0.3s, text-shadow 0.3s;
+}
+
+.footer-col a:hover {
+    color: #52C5FF;           /* bleu néon accent */
+    text-shadow: 0 0 8px #52C5FF;
+}
+
+.footer-bottom {
+    color: #A8B4C8;
+    font-size: 0.75rem;
+    text-align: center;
+    line-height: 1.2;
+}
+
+.footer-bottom span {
+    color: #C96BFF;           /* violet néon pour accent futuriste */
+    font-weight: 500;
+    text-shadow: 0 0 8px #C96BFF;
+}
+
+/* Ligne top gradient optionnelle */
+.nmh-footer::before {
+    content: "";
+    display: block;
+    height: 2px;
+    width: 100%;
+    margin-bottom: 15px;
+    background: linear-gradient(to right, #0F0F2F, #0F4F8F, #0F0F2F);
+}
+
+/* ----------------- Responsive mobile ----------------- */
+@media (max-width: 768px) {
+    .footer-links {
+        flex-direction: column;
+        gap: 15px;
+    }
+    .footer-col {
+        flex: 1 1 100%;
+        border-right: none;
+        padding: 0;
+    }
 }
