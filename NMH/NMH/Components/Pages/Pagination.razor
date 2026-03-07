@@ -1,0 +1,16 @@
+<nav>
+    <ul class="pagination">
+        @for (int i = 1; i <= TotalPages; i++)
+        {
+            <li class="page-item @(i == CurrentPage ? "active" : "")">
+                <a class="page-link" @onclick="() => OnPageChanged.InvokeAsync(i)">@i</a>
+            </li>
+        }
+    </ul>
+</nav>
+
+@code {
+    [Parameter] public int CurrentPage { get; set; } = 1;
+    [Parameter] public int TotalPages { get; set; } = 1;
+    [Parameter] public EventCallback<int> OnPageChanged { get; set; }
+}

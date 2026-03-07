@@ -3,11 +3,9 @@
 @inject NMH.Services.TmdbService TmdbService
 @using NMH.Shared.DTOs
 
-<h2 class="mb-4">Recherche TEST</h2>
+<h2 class="mb-4">Recherche Films & Séries</h2>
 
-
-<button class="btn btn-danger mb-3"
-        @onclick="TestClick">
+<button class="btn btn-danger mb-3" @onclick="TestClick">
     TEST BLAZOR
 </button>
 
@@ -23,58 +21,56 @@
                @bind="query"
                @bind:event="oninput" />
 
-        <button class="btn btn-secondary mb-3"
-                @onclick="ToggleAdvancedSearch">
+        <button class="btn btn-secondary mb-3" @onclick="ToggleAdvancedSearch">
             @(showAdvanced ? "Réduire" : "Afficher options")
         </button>
 
         @if (showAdvanced)
         {
             <div class="border p-3 mb-3">
-
-                <input class="form-control mb-2"
-                       placeholder="Année"
-                       @bind="year" />
-
-                <input class="form-control mb-2"
-                       placeholder="Acteur"
-                       @bind="actor" />
-
+                <input class="form-control mb-2" placeholder="Année" @bind="year" />
+                <input class="form-control mb-2" placeholder="Acteur" @bind="actor" />
             </div>
         }
 
         <div class="d-flex gap-2">
-
-            <button class="btn btn-primary"
-                    @onclick="SearchAsync"
-                    disabled="@(!CanSearch)">
+            <button class="btn btn-primary" @onclick="SearchAsync" disabled="@(!CanSearch)">
                 Rechercher
             </button>
-
-            <button class="btn btn-outline-secondary"
-                    @onclick="ResetSearch">
+            <button class="btn btn-outline-secondary" @onclick="ResetSearch">
                 Reset
             </button>
-
         </div>
-
     </div>
 </div>
 
 @if (isLoading)
 {
-    <p>Chargement...</p>
+    <div class="alert alert-info">Chargement...</div>
 }
 
-@if (!string.IsNullOrWhiteSpace(result))
+@if (results?.Any() == true)
 {
-    <div class="alert alert-success mt-3">
-        @result
+    <div class="row row-cols-4 g-3 mb-3">
+        @foreach (var movie in PaginatedResults)
+        {
+            <div class="col">
+                <MovieCard Movie="@movie" />
+            </div>
+        }
     </div>
+
+    <!-- Pagination -->
+    <Pagination CurrentPage="@CurrentPage"
+                TotalPages="@TotalPages"
+                OnPageChanged="ChangePage" />
+}
+else if (!string.IsNullOrWhiteSpace(resultMessage))
+{
+    <div class="alert alert-warning mt-3">@resultMessage</div>
 }
 
 @code {
-
     private string query = "";
     private string actor = "";
     private string year = "";
@@ -82,28 +78,60 @@
     private bool showAdvanced = false;
     private bool isLoading = false;
 
-    private string result = "";
+    private string resultMessage = "";
     private string testMessage = "";
+
+    private List<MovieDto> results = new();
+
+    private int PageSize = 20;
+    private int CurrentPage = 1;
+
+    private int TotalPages => (int)Math.Ceiling((double)results.Count / PageSize);
 
     private bool CanSearch => !string.IsNullOrWhiteSpace(query);
 
-    private void TestClick()
-    {
-        testMessage = "Blazor fonctionne ✔";
-    }
+    private IEnumerable<MovieDto> PaginatedResults => results
+        .Skip((CurrentPage - 1) * PageSize)
+        .Take(PageSize);
 
-    private void ToggleAdvancedSearch()
-    {
-        showAdvanced = !showAdvanced;
-    }
+    private void TestClick() => testMessage = "Blazor fonctionne ✔";
+
+    private void ToggleAdvancedSearch() => showAdvanced = !showAdvanced;
 
     private async Task SearchAsync()
     {
         isLoading = true;
+        resultMessage = "";
+        results.Clear();
+        CurrentPage = 1;
 
-        await Task.Delay(1000);
+        try
+        {
+            // Appel TMDB
+            var response = await TmdbService.SearchAsync(
+                query,
+                mediaType: "movie",
+                year: string.IsNullOrWhiteSpace(year) ? null : int.Parse(year),
+                actor: string.IsNullOrWhiteSpace(actor) ? null : actor,
+                page: CurrentPage
+            );
 
-        result = $"Recherche : {query} | Acteur : {actor} | Année : {year}";
+            results = response?.Results?.Select(r => new MovieDto
+            {
+                Id = r.Id,
+                Title = r.Title ?? r.Name ?? "",
+                Overview = r.Overview ?? "",
+                PosterPath = r.PosterPath ?? "",
+                ReleaseDate = DateTime.TryParse(r.ReleaseDate, out var dt) ? dt : null
+            }).ToList() ?? new List<MovieDto>();
+
+            if (!results.Any())
+                resultMessage = "Aucun résultat trouvé.";
+        }
+        catch
+        {
+            resultMessage = "Erreur lors de la recherche.";
+        }
 
         isLoading = false;
     }
@@ -113,7 +141,13 @@
         query = "";
         actor = "";
         year = "";
-        result = "";
+        results.Clear();
+        resultMessage = "";
     }
 
+    private void ChangePage(int page)
+    {
+        CurrentPage = page;
+        _ = SearchAsync(); // Recharge les résultats pour la nouvelle page
+    }
 }

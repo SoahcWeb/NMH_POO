@@ -1,0 +1,22 @@
+@using NMH.Shared.DTOs
+@inject NavigationManager Navigation
+
+<div class="card h-100">
+    <a @onclick="() => NavigateToMovie(Movie.Id)">
+        <img src="@Movie.PosterFullPath" class="card-img-top" alt="@Movie.Title" />
+    </a>
+    <div class="card-body">
+        <h5 class="card-title">@Movie.Title</h5>
+        <p class="card-text">@Movie.Overview?.Substring(0, Math.Min(80, Movie.Overview?.Length ?? 0))...</p>
+        <p class="card-text"><small>Année : @(Movie.ReleaseDate?.Year.ToString() ?? "N/A")</small></p>
+    </div>
+</div>
+
+@code {
+    [Parameter] public MovieDto Movie { get; set; } = new MovieDto();
+
+    private void NavigateToMovie(int id)
+    {
+        Navigation.NavigateTo($"/movie/{id}");
+    }
+}
