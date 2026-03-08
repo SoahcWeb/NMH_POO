@@ -1,0 +1,24 @@
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthStateProvider
+
+<div>
+    @if (IsAuthenticated)
+    {
+        <HeaderConnected />
+    }
+    else
+    {
+        <HeaderDisconnected />
+    }
+</div>
+
+@code {
+    private bool IsAuthenticated;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        IsAuthenticated = user.Identity != null && user.Identity.IsAuthenticated;
+    }
+}

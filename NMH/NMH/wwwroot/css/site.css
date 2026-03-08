@@ -1,17 +1,22 @@
+/* ============================================================ */
 /* ----------------- Header1 (MainLayout) ----------------- */
+/* ============================================================ */
+
+
 .header1 {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 30px;
-    background-color: #f8f8f8;
-    border-bottom: 1px solid #ddd;
+     width: 100%;
+    height: 33vw;    /* hauteur = 30% de la largeur de l’écran */
+    max-height: 350px; /* limite la hauteur pour grands écrans */
+    background-image: url('/images/ban003.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .header1 .logo {
     font-weight: bold;
     font-size: 1.5em;
-    color: #333;
+    color: #52C5FF; /* accent bleu néon */
 }
 
 .header1 nav ul {
@@ -24,172 +29,206 @@
 
 .header1 nav ul li a {
     text-decoration: none;
-    color: #333;
+    color: #A8B4C8; /* texte secondaire */
     font-weight: 500;
+    transition: color 0.3s, text-shadow 0.3s;
 }
 
-.header1 .user-info {
-    font-weight: bold;
-    color: #555;
+.header1 nav ul li a:hover,
+.header1 nav ul li a.active {
+    color: #52C5FF;
+    text-shadow: 0 0 6px #52C5FF;
 }
 
+/* ============================================================ */
 /* ----------------- Header2 (LandingLayout) ----------------- */
+/* ============================================================ */
 .header2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: #0F0F2F; /* bleu nuit sombre */
+    border-bottom: 1px solid #0F4F8F;
+    color: #E0E6F0;
+    font-family: sans-serif;
+}
+
+.header2 .logo img {
+    height: 50px;       /* tu choisis la hauteur */
+    width: auto;
+}
+
+.header2 nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    padding: 0;
+    margin: 0;
+}
+
+.header2 nav ul li a {
+    text-decoration: none;
+    color: #A8B4C8; /* texte secondaire */
+    font-weight: 500;
+    transition: color 0.3s, text-shadow 0.3s;
+}
+
+.header2 nav ul li a:hover,
+.header2 nav ul li a.active {
+    color: #52C5FF;
+    text-shadow: 0 0 6px #52C5FF;
+}
+
+/* ===== SEPARATOR ===== */
+
+.section-divider {
+    height: 2px;
+    width: 100%;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    background: linear-gradient(to right, #0F0F2F, #0F4F8F, #0F0F2F);
+}
+
+/* ===== FOND GLOBAL ===== */
+.home-main {
+    min-height: 100vh;
+    padding: 6rem 1.5rem;
+    text-align: center;
+    background: #0F0F2F;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 50px 20px;
-    background-color: #4B0082; /* violet NMH */
-    color: #fff;
-    text-align: center;
 }
 
-.header2 .logo {
-    font-size: 2em;
+
+/* ===== TITRE HERO ===== */
+.home-title {
+    font-size: 3.5rem;
     font-weight: bold;
-    margin-bottom: 10px;
+    color: #52C5FF;
+    text-shadow: 0 0 20px rgba(82,197,255,0.7);
+    margin-bottom: 1rem;
+
+    border: none;
+    outline: none;
+    background: transparent;
+    box-shadow: none;
 }
 
-.header2 h1 {
-    font-size: 2.5em;
-    margin-bottom: 20px;
+
+/* ===== DESCRIPTION ===== */
+.home-desc {
+    color: #E0E6F0;
+    font-size: 1.2rem;
+    max-width: 700px;
+    margin-bottom: 2.5rem;
 }
 
-.header2 .buttons .btn {
+
+/* ===== SECTION FEATURES ===== */
+.home-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
+    max-width: 900px;
+    width: 100%;
+    margin-bottom: 3rem;
+}
+
+
+/* ===== CARTES ===== */
+.feature-card {
+    background: rgba(15,15,47,0.8);
+    border: 1px solid rgba(15,15,47,0.5);
+    border-radius: 16px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+}
+
+
+/* TITRE CARTE */
+.feature-card h2 {
+    color: #52C5FF;
+    font-size: 1.4rem;
+    margin-bottom: 0.8rem;
+}
+
+
+/* TEXTE CARTE */
+.feature-card p {
+    color: #E0E6F0;
+    font-size: 0.95rem;
+}
+
+
+/* HOVER STYLE COMME TEMPLATE */
+.feature-card:hover {
+    border-color: #C96BFF;
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px rgba(201,107,255,0.45);
+}
+
+
+/* ===== BOUTONS ===== */
+.home-buttons {
+    margin-top: 1.5rem;
+}
+
+
+.home-buttons a {
     display: inline-block;
-    margin: 0 10px;
-    padding: 10px 25px;
-    background-color: #FFD700; /* jaune Nethra */
-    color: #000;
+    padding: 0.9rem 2rem;
+    border-radius: 12px;
     font-weight: bold;
     text-decoration: none;
-    border-radius: 5px;
+    margin: 0 0.5rem;
+    transition: all 0.3s ease;
 }
 
-.header2 .buttons .btn:hover {
-    background-color: #FFC107;
+
+/* Bouton login */
+.btn-login {
+    background: #C96BFF;
+    color: black;
+    box-shadow: 0 0 20px rgba(201,107,255,0.45);
 }
 
-/* ----------------- Landing Page ----------------- */
-.landing-content {
-    max-width: 800px;
-    margin: 30px auto;
-    text-align: center;
-}
 
-.landing-content .cta-buttons {
-    margin: 20px 0;
-}
-
-.landing-content .cta-buttons a.btn {
-    margin: 0 10px;
-    padding: 10px 20px;
-    background-color: #FFD700;
-    color: #000;
-    text-decoration: none;
-    font-weight: bold;
-    border-radius: 5px;
-}
-
-.landing-content .cta-buttons a.btn:hover {
-    background-color: #FFC107;
-}
-
-/* ----------------- Carousels ----------------- */
-.carousels {
-    margin: 20px 30px;
-}
-
-.carousels h2 {
-    margin-top: 30px;
-    margin-bottom: 15px;
-    font-size: 1.5em;
-    color: #333;
-}
-
-.carousel-movies, .carousel-series {
-    display: flex;
-    overflow-x: auto;
-    gap: 15px;
-    padding-bottom: 10px;
-}
-
-.carousel-item {
-    flex: 0 0 auto;
-    width: 150px;
-    text-align: center;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 5px;
-    background-color: #fff;
-}
-
-.carousel-item img {
-    width: 100%;
-    border-radius: 5px;
-}
-
-.carousel-item p {
-    margin-top: 5px;
-    font-size: 0.9em;
-    color: #333;
-}
-
-/* Scrollbar minimal */
-.carousel-movies::-webkit-scrollbar,
-.carousel-series::-webkit-scrollbar {
-    height: 8px;
-}
-
-.carousel-movies::-webkit-scrollbar-thumb,
-.carousel-series::-webkit-scrollbar-thumb {
-    background-color: #888;
-    border-radius: 4px;
-}
-
-.carousel-movies::-webkit-scrollbar-thumb:hover,
-.carousel-series::-webkit-scrollbar-thumb:hover {
-    background-color: #555;
-}
-
-/* ----------------- Recherche Page ----------------- */
-.search-card {
-    transition: all 0.4s ease;
-    border-radius: 10px;
-}
-
-.advanced-options {
-    overflow: hidden;
-    transition: max-height 0.5s ease, padding 0.3s ease;
-}
-
-.result-card {
-    transition: transform 0.2s ease;
-    border-radius: 5px;
-    overflow: hidden;
-}
-
-.result-card:hover {
+.btn-login:hover {
     transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(201,107,255,0.7);
 }
 
-.result-card img {
-    object-fit: cover;
-    height: 300px;
-    width: 100%;
+
+/* Bouton register */
+.btn-register {
+    background: #52C5FF;
+    color: black;
+    box-shadow: 0 0 15px rgba(82,197,255,0.45);
 }
 
-.result-card .card-body h6 {
-    font-size: 1em;
-    margin-bottom: 0.25rem;
+
+.btn-register:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(82,197,255,0.7);
 }
 
-.result-card .card-body small {
-    font-size: 0.8em;
-    color: #666;
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+
+    .home-title {
+        font-size: 2.5rem;
+    }
+
+    .home-desc {
+        font-size: 1rem;
+    }
+
 }
 
+/* ============================================================ */
 /* ----------------- NMH Footer Compact Netflix-style ----------------- */
 .nmh-footer {
     background-color: #0F0F2F;  /* fond bleu nuit sombre */
@@ -197,6 +236,7 @@
     padding: 30px 20px;         /* compact */
     font-size: 0.9rem;
     font-family: sans-serif;
+    margin-top: auto;
 }
 
 .footer-container {
@@ -269,7 +309,8 @@
     background: linear-gradient(to right, #0F0F2F, #0F4F8F, #0F0F2F);
 }
 
-/* ----------------- Responsive mobile ----------------- */
+/* ============================================================ */
+/* ----------------- Responsive Footer ----------------- */
 @media (max-width: 768px) {
     .footer-links {
         flex-direction: column;
@@ -280,4 +321,18 @@
         border-right: none;
         padding: 0;
     }
+}
+
+/* ============================================================ */
+/* ----------------- Sticky footer layout ----------------- */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body > .container {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
 }
