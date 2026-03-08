@@ -1,21 +1,50 @@
-﻿@page "/home"
+﻿@page "/"
+@using NMH.Components
 
-<section class="landing-content">
-    <h1>Bienvenue dans NMH App 🚀</h1>
-    <p>Découvrez votre hub de films et séries.</p>
 
-    <div class="cta-buttons">
-        <a href="/login" class="btn">Se connecter</a>
-        <a href="/register" class="btn">S'inscrire</a>
+
+<main class="home-main">
+
+    <!-- Titre principal accrocheur -->
+    <h1 class="home-title">Explorez, Organisez et Profitez de vos Films et Séries</h1>
+
+    <!-- Courte présentation -->
+    <p class="home-desc">
+        Nethra Media Hub vous permet de retrouver rapidement vos films et séries préférés et de gérer votre expérience cinéma personnelle.
+    </p>
+
+<!-- SEPARATEUR -->
+    <div class="section-divider"></div>
+
+    <!-- Présentation en 3 points -->
+    <div class="home-features">
+        <div class="feature-card">
+            <h2>Moteur de recherche</h2>
+            <p>Trouvez rapidement n’importe quel film ou série grâce à notre moteur de recherche performant.</p>
+        </div>
+        <div class="feature-card">
+            <h2>Favoris</h2>
+            <p>Gardez en mémoire vos films et séries à voir pour ne jamais les oublier.</p>
+        </div>
+        <div class="feature-card">
+            <h2>Ma Bibliothèque</h2>
+            <p>Archivez vos films et séries pour les retrouver facilement quand vous le souhaitez.</p>
+        </div>
     </div>
 
-    <hr />
+<!-- SEPARATEUR -->
+    <div class="section-divider"></div>
 
-    <h2>Instructions rapides :</h2>
-    <ul>
-        <li>Inscrivez un nouvel utilisateur via la page Register.</li>
-        <li>Connectez-vous avec Login.</li>
-        <li>Accédez à votre Home utilisateur après connexion.</li>
-        <li>Testez l’accès aux pages protégées.</li>
-    </ul>
-</section>
+    <!-- Invitation à se connecter -->
+    <p class="home-desc mt-12">
+        Pour profiter pleinement de toutes ces fonctionnalités, inscrivez-vous et/ou connectez-vous dès maintenant !
+    </p>
+
+    <div class="home-buttons">
+        <a href="/login" class="btn-login">Se connecter</a>
+        <a href="/register" class="btn-register">S'inscrire</a>
+    </div>
+
+</main>
+
+
