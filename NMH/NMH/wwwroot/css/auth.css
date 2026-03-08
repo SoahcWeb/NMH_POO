@@ -1,0 +1,192 @@
+/* ===== FOND GLOBAL ===== */
+
+.auth-layout {
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    font-family: 'Segoe UI', sans-serif;
+    background: #0F0F2F;
+}
+
+/* ===== FOND GALAXIE / ÉTOILES ===== */
+
+.auth-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at bottom, #0F0F2F 0%, #000010 100%);
+    background-size: cover;
+    z-index: 0;
+
+    /* petites étoiles animées */
+    box-shadow: 
+        1000px 300px white,
+        500px 600px white,
+        300px 900px white,
+        800px 1200px white,
+        200px 1500px white,
+        1200px 1800px white;
+    animation: starsMove 100s linear infinite;
+}
+
+@keyframes starsMove {
+    from { transform: translateY(0); }
+    to { transform: translateY(-2000px); }
+}
+
+/* ===== CONTENEUR ===== */
+
+.auth-container {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ===== LOGO NMH ===== */
+
+.auth-logo {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #52C5FF;
+    text-shadow: 0 0 30px rgba(82,197,255,0.8), 0 0 60px rgba(201,107,255,0.6);
+    margin-bottom: 2rem;
+    animation: logoFadeIn 1.5s ease forwards;
+}
+
+@keyframes logoFadeIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* ===== CARTE LOGIN / REGISTER ===== */
+
+.auth-card {
+    background: rgba(15,15,47,0.85);
+    border: 1px solid rgba(15,15,47,0.5);
+    border-radius: 20px;
+    padding: 3rem;
+    width: 100%;
+    max-width: 420px;
+
+    box-shadow: 0 0 60px rgba(201,107,255,0.35), 0 0 40px rgba(82,197,255,0.25);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+
+    /* apparition animation */
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: cardFadeIn 1s ease forwards 0.3s;
+}
+
+.auth-card:hover {
+    border-color: #C96BFF;
+    box-shadow: 0 0 80px rgba(201,107,255,0.5), 0 0 50px rgba(82,197,255,0.35);
+}
+
+@keyframes cardFadeIn {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== TITRE ===== */
+
+.auth-title {
+    font-size: 2.3rem;
+    font-weight: bold;
+    color: #52C5FF;
+    text-shadow: 0 0 15px rgba(82,197,255,0.6);
+    margin-bottom: 2rem;
+}
+
+/* ===== INPUTS ===== */
+
+.auth-input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    margin-bottom: 1rem;
+
+    border-radius: 10px;
+    border: 1px solid rgba(82,197,255,0.2);
+
+    background: rgba(15,15,47,0.9);
+    color: white;
+
+    transition: all 0.25s ease;
+}
+
+.auth-input::placeholder {
+    color: rgba(224,230,240,0.5);
+}
+
+.auth-input:focus {
+    outline: none;
+    border-color: #52C5FF;
+
+    box-shadow: 0 0 10px rgba(82,197,255,0.5);
+}
+
+/* ===== BOUTONS ===== */
+
+.auth-button {
+    width: 100%;
+    padding: 0.9rem;
+
+    border-radius: 12px;
+    border: none;
+
+    font-weight: bold;
+
+    background: #C96BFF;
+    color: black;
+
+    box-shadow: 0 0 15px rgba(201,107,255,0.45);
+
+    transition: all 0.25s ease;
+}
+
+.auth-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(201,107,255,0.7);
+}
+
+/* ===== MESSAGE ===== */
+
+.auth-message {
+    margin-top: 1rem;
+    color: #E0E6F0;
+}
+
+/* ===== LIENS ===== */
+
+.auth-link {
+    margin-top: 1.5rem;
+    color: #52C5FF;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.auth-link:hover {
+    text-decoration: underline;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 768px) {
+
+    .auth-title {
+        font-size: 2rem;
+    }
+
+    .auth-logo {
+        font-size: 2.2rem;
+        margin-bottom: 1.5rem;
+    }
+}

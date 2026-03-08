@@ -1,4 +1,5 @@
 @page "/login"
+@layout AuthLayout
 @using NMH.Shared.DTOs
 @using Microsoft.AspNetCore.Components.Forms
 @inject HttpClient Http
@@ -6,15 +7,23 @@
 @using Microsoft.JSInterop
 @inject IJSRuntime JS
 
-<h3>Connexion</h3>
+<main class="auth-main">
+
+<div class="auth-card">
+
+<h3 class="auth-title">Connexion</h3>
 
 <EditForm Model="@loginModel" OnValidSubmit="@HandleLogin">
-    <InputText @bind-Value="loginModel.UserName" placeholder="Nom d'utilisateur" />
-    <InputText @bind-Value="loginModel.Password" type="password" placeholder="Mot de passe" />
-    <button type="submit">Se connecter</button>
+    <InputText class="auth-input" @bind-Value="loginModel.UserName" placeholder="Nom d'utilisateur" />
+    <InputText class="auth-input" @bind-Value="loginModel.Password" type="password" placeholder="Mot de passe" />
+    <button class="auth-button" type="submit">Se connecter</button>
 </EditForm>
 
-<p>@message</p>
+<p class="auth-message">@message</p>
+
+</div>
+
+</main>
 
 @code {
     private LoginDto loginModel = new LoginDto();
@@ -22,7 +31,7 @@
 
     private async Task HandleLogin()
     {
-        var response = await Http.PostAsJsonAsync("api/auth/login", loginModel);
+        var response = await Http.PostAsJsonAsync(Navigation.BaseUri + "api/auth/login", loginModel);
 
         if (response.IsSuccessStatusCode)
         {
@@ -31,7 +40,7 @@
                 await JS.InvokeVoidAsync("localStorage.setItem", "jwtToken", token.Token);
 
             message = "Connexion réussie !";
-            Navigation.NavigateTo("/home");
+            Navigation.NavigateTo("/userhome");
         }
         else
         {
