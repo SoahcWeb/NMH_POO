@@ -2,11 +2,10 @@
 /* ----------------- Header1 (MainLayout) ----------------- */
 /* ============================================================ */
 
-
 .header1 {
-     width: 100%;
-    height: 33vw;    /* hauteur = 30% de la largeur de l’écran */
-    max-height: 350px; /* limite la hauteur pour grands écrans */
+    width: 100%;
+    height: 33vw;
+    max-height: 350px;
     background-image: url('/images/ban003.png');
     background-size: cover;
     background-position: center;
@@ -16,7 +15,7 @@
 .header1 .logo {
     font-weight: bold;
     font-size: 1.5em;
-    color: #52C5FF; /* accent bleu néon */
+    color: #52C5FF;
 }
 
 .header1 nav ul {
@@ -29,7 +28,7 @@
 
 .header1 nav ul li a {
     text-decoration: none;
-    color: #A8B4C8; /* texte secondaire */
+    color: #A8B4C8;
     font-weight: 500;
     transition: color 0.3s, text-shadow 0.3s;
 }
@@ -48,14 +47,14 @@
     justify-content: space-between;
     align-items: center;
     padding: 15px 30px;
-    background-color: #0F0F2F; /* bleu nuit sombre */
+    background-color: #0F0F2F;
     border-bottom: 1px solid #0F4F8F;
     color: #E0E6F0;
     font-family: sans-serif;
 }
 
 .header2 .logo img {
-    height: 50px;       /* tu choisis la hauteur */
+    height: 50px;
     width: auto;
 }
 
@@ -69,7 +68,7 @@
 
 .header2 nav ul li a {
     text-decoration: none;
-    color: #A8B4C8; /* texte secondaire */
+    color: #A8B4C8;
     font-weight: 500;
     transition: color 0.3s, text-shadow 0.3s;
 }
@@ -81,7 +80,6 @@
 }
 
 /* ===== SEPARATOR ===== */
-
 .section-divider {
     height: 2px;
     width: 100%;
@@ -101,7 +99,6 @@
     align-items: center;
 }
 
-
 /* ===== TITRE HERO ===== */
 .home-title {
     font-size: 3.5rem;
@@ -109,13 +106,11 @@
     color: #52C5FF;
     text-shadow: 0 0 20px rgba(82,197,255,0.7);
     margin-bottom: 1rem;
-
     border: none;
     outline: none;
     background: transparent;
     box-shadow: none;
 }
-
 
 /* ===== DESCRIPTION ===== */
 .home-desc {
@@ -124,7 +119,6 @@
     max-width: 700px;
     margin-bottom: 2.5rem;
 }
-
 
 /* ===== SECTION FEATURES ===== */
 .home-features {
@@ -136,7 +130,6 @@
     margin-bottom: 3rem;
 }
 
-
 /* ===== CARTES ===== */
 .feature-card {
     background: rgba(15,15,47,0.8);
@@ -146,35 +139,27 @@
     transition: all 0.3s ease;
 }
 
-
-/* TITRE CARTE */
 .feature-card h2 {
     color: #52C5FF;
     font-size: 1.4rem;
     margin-bottom: 0.8rem;
 }
 
-
-/* TEXTE CARTE */
 .feature-card p {
     color: #E0E6F0;
     font-size: 0.95rem;
 }
 
-
-/* HOVER STYLE COMME TEMPLATE */
 .feature-card:hover {
     border-color: #C96BFF;
     transform: translateY(-5px);
     box-shadow: 0 0 20px rgba(201,107,255,0.45);
 }
 
-
 /* ===== BOUTONS ===== */
 .home-buttons {
     margin-top: 1.5rem;
 }
-
 
 .home-buttons a {
     display: inline-block;
@@ -186,54 +171,44 @@
     transition: all 0.3s ease;
 }
 
-
-/* Bouton login */
 .btn-login {
     background: #C96BFF;
     color: black;
     box-shadow: 0 0 20px rgba(201,107,255,0.45);
 }
 
-
 .btn-login:hover {
     transform: scale(1.05);
     box-shadow: 0 0 30px rgba(201,107,255,0.7);
 }
 
-
-/* Bouton register */
 .btn-register {
     background: #52C5FF;
     color: black;
     box-shadow: 0 0 15px rgba(82,197,255,0.45);
 }
 
-
 .btn-register:hover {
     transform: scale(1.05);
     box-shadow: 0 0 25px rgba(82,197,255,0.7);
 }
 
-
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
-
     .home-title {
         font-size: 2.5rem;
     }
-
     .home-desc {
         font-size: 1rem;
     }
-
 }
 
 /* ============================================================ */
 /* ----------------- NMH Footer Compact Netflix-style ----------------- */
 .nmh-footer {
-    background-color: #0F0F2F;  /* fond bleu nuit sombre */
-    color: #A8B4C8;             /* texte secondaire gris bleu clair */
-    padding: 30px 20px;         /* compact */
+    background-color: #0F0F2F;
+    color: #A8B4C8;
+    padding: 30px 20px;
     font-size: 0.9rem;
     font-family: sans-serif;
     margin-top: auto;
@@ -246,43 +221,43 @@
 
 .footer-top {
     margin-bottom: 15px;
-    color: #E0E6F0;  /* texte principal clair */
+    color: #E0E6F0;
     font-weight: 500;
     line-height: 1.2;
 }
 
 .footer-links {
     display: flex;
-    flex-wrap: wrap;          /* responsive : stack sur mobile */
+    flex-wrap: wrap;
     justify-content: space-between;
     margin-bottom: 20px;
     position: relative;
 }
 
 .footer-col {
-    flex: 1 1 22%;            /* chaque colonne prend ~1/4 avec marge */
-    min-width: 150px;         /* pour mobile */
+    flex: 1 1 22%;
+    min-width: 150px;
     display: flex;
     flex-direction: column;
     padding: 0 10px;
-    border-right: 1px solid #0F4F8F;  /* séparateur vertical */
+    border-right: 1px solid #0F4F8F;
 }
 
 .footer-col:last-child {
-    border-right: none;       /* pas de séparateur sur la dernière colonne */
+    border-right: none;
 }
 
 .footer-col a {
-    color: #A8B4C8;           /* texte secondaire */
+    color: #A8B4C8;
     text-decoration: none;
-    margin-bottom: 6px;       /* compact */
+    margin-bottom: 6px;
     font-size: 0.85rem;
     line-height: 1.2;
     transition: color 0.3s, text-shadow 0.3s;
 }
 
 .footer-col a:hover {
-    color: #52C5FF;           /* bleu néon accent */
+    color: #52C5FF;
     text-shadow: 0 0 8px #52C5FF;
 }
 
@@ -294,12 +269,11 @@
 }
 
 .footer-bottom span {
-    color: #C96BFF;           /* violet néon pour accent futuriste */
+    color: #C96BFF;
     font-weight: 500;
     text-shadow: 0 0 8px #C96BFF;
 }
 
-/* Ligne top gradient optionnelle */
 .nmh-footer::before {
     content: "";
     display: block;

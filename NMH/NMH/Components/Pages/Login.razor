@@ -40,7 +40,7 @@
                 await JS.InvokeVoidAsync("localStorage.setItem", "jwtToken", token.Token);
 
             message = "Connexion réussie !";
-            Navigation.NavigateTo("/userhome");
+            Navigation.NavigateTo("/user/home");
         }
         else
         {
