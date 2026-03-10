@@ -1,15 +1,60 @@
 /* ============================================================ */
+/* ----------------- Header Global (Netflix effect) ------------*/
+/* ============================================================ */
+
+.main-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    z-index: 1000;
+
+    transition: background 0.4s ease, backdrop-filter 0.4s ease;
+}
+
+/* effet quand on scroll */
+.main-header.scrolled {
+    background: rgba(15,15,47,0.95);
+    backdrop-filter: blur(8px);
+}
+
+/* ============================================================ */
 /* ----------------- Header1 (MainLayout) ----------------- */
 /* ============================================================ */
 
 .header1 {
     width: 100%;
-    height: 33vw;
-    max-height: 350px;
-    background-image: url('/images/ban003.png');
+    height: clamp(250px, 20vw, 450px);
+    background-image: url('/images/ban004.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+
+    display: flex;
+    align-items: center;
+    padding: 0 40px;
+    position: relative; /* nécessaire pour le dégradé */
+}
+
+.header1::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background: linear-gradient(
+        to bottom,
+        rgba(15,15,47,0.2) 0%,
+        rgba(15,15,47,0.6) 60%,
+        rgba(15,15,47,0.95) 100%
+    );
+
+    pointer-events: none;
+}
+
+.header1 nav {
+    position: relative;
+    z-index: 2; /* pour que le menu reste au-dessus du dégradé */
 }
 
 .header1 .logo {
@@ -42,6 +87,7 @@
 /* ============================================================ */
 /* ----------------- Header2 (LandingLayout) ----------------- */
 /* ============================================================ */
+
 .header2 {
     display: flex;
     justify-content: space-between;
@@ -77,6 +123,65 @@
 .header2 nav ul li a.active {
     color: #52C5FF;
     text-shadow: 0 0 6px #52C5FF;
+}
+
+/* ============================================================ */
+/* ----------------- Body offset (header fixe) ---------------- */
+/* ============================================================ */
+
+body {
+    padding-top: 80px;
+}
+
+.banner-content {
+    position: absolute;
+    bottom: 30px;
+    left: 50px;
+    color: #fff;
+    max-width: 600px;
+    z-index: 2;
+}
+
+.banner-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px rgba(0,0,0,0.7);
+}
+
+.banner-description {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    text-shadow: 0 0 8px rgba(0,0,0,0.6);
+}
+
+.banner-buttons button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    padding: 10px 20px;
+    margin-right: 10px;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.btn-watch {
+    background-color: #fff;
+    color: #000;
+}
+
+.btn-watch:hover {
+    background-color: #e6e6e6;
+}
+
+.btn-list {
+    background-color: rgba(109, 109, 110, 0.7);
+    color: #fff;
+}
+
+.btn-list:hover {
+    background-color: rgba(109, 109, 110, 0.9);
 }
 
 /* ===== SEPARATOR ===== */

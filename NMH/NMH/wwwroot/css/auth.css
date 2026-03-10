@@ -1,46 +1,22 @@
 /* ===== FOND GLOBAL ===== */
-
 .auth-layout {
-    min-height: 100vh;
-    position: relative;
+    min-height: 100vh;           /* prend toute la hauteur de l'écran */
     display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
+    justify-content: center;     /* centre horizontalement */
+    align-items: center;         /* centre verticalement */
     font-family: 'Segoe UI', sans-serif;
-    background: #0F0F2F;
-}
 
-/* ===== FOND GALAXIE / ÉTOILES ===== */
-
-.auth-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(ellipse at bottom, #0F0F2F 0%, #000010 100%);
-    background-size: cover;
-    z-index: 0;
-
-    /* petites étoiles animées */
-    box-shadow: 
-        1000px 300px white,
-        500px 600px white,
-        300px 900px white,
-        800px 1200px white,
-        200px 1500px white,
-        1200px 1800px white;
-    animation: starsMove 100s linear infinite;
-}
-
-@keyframes starsMove {
-    from { transform: translateY(0); }
-    to { transform: translateY(-2000px); }
+    /* Image de fond */
+    background-image: url('/images/bg.png'); /* ton image ici */
+    background-size: cover;        /* couvre tout l'écran */
+    background-position: center;   /* centre l'image */
+    background-repeat: no-repeat;  /* pas de répétition */
+    background-attachment: fixed;  /* fixe le fond */
+    overflow: hidden;              /* empêche tout scroll */
+    margin: 0;
 }
 
 /* ===== CONTENEUR ===== */
-
 .auth-container {
     position: relative;
     z-index: 10;
@@ -52,7 +28,6 @@
 }
 
 /* ===== LOGO NMH ===== */
-
 .auth-logo {
     font-size: 3rem;
     font-weight: bold;
@@ -68,9 +43,8 @@
 }
 
 /* ===== CARTE LOGIN / REGISTER ===== */
-
 .auth-card {
-    background: rgba(15,15,47,0.85);
+    background: rgba(15,15,47,0.85); /* semi-transparent pour voir le fond */
     border: 1px solid rgba(15,15,47,0.5);
     border-radius: 20px;
     padding: 3rem;
@@ -81,7 +55,6 @@
     backdrop-filter: blur(10px);
     transition: all 0.3s ease;
 
-    /* apparition animation */
     opacity: 0;
     transform: translateY(-20px);
     animation: cardFadeIn 1s ease forwards 0.3s;
@@ -97,7 +70,6 @@
 }
 
 /* ===== TITRE ===== */
-
 .auth-title {
     font-size: 2.3rem;
     font-weight: bold;
@@ -107,7 +79,6 @@
 }
 
 /* ===== INPUTS ===== */
-
 .auth-input {
     width: 100%;
     padding: 0.8rem 1rem;
@@ -129,12 +100,10 @@
 .auth-input:focus {
     outline: none;
     border-color: #52C5FF;
-
     box-shadow: 0 0 10px rgba(82,197,255,0.5);
 }
 
 /* ===== BOUTONS ===== */
-
 .auth-button {
     width: 100%;
     padding: 0.9rem;
@@ -158,14 +127,12 @@
 }
 
 /* ===== MESSAGE ===== */
-
 .auth-message {
     margin-top: 1rem;
     color: #E0E6F0;
 }
 
 /* ===== LIENS ===== */
-
 .auth-link {
     margin-top: 1.5rem;
     color: #52C5FF;
@@ -178,9 +145,7 @@
 }
 
 /* ===== RESPONSIVE ===== */
-
 @media (max-width: 768px) {
-
     .auth-title {
         font-size: 2rem;
     }

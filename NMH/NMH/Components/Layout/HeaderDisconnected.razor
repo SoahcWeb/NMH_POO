@@ -1,12 +1,23 @@
-<div class="header1">
+@using Microsoft.JSInterop
+@inject IJSRuntime JS
 
-    <nav>
-        <ul>
-            <li><NavLink href="">Accueil</NavLink></li>
-            <li><NavLink href="movies">Films populaires</NavLink></li>
-            <li><NavLink href="series">Séries</NavLink></li>
-            <li><NavLink href="register">Inscription</NavLink></li>
-            <li><NavLink href="login">Connexion</NavLink></li>
-        </ul>
-    </nav>
-</div>
+<header class="main-header header1">
+
+    <div class="banner-content">
+        <div class="banner-buttons">
+            <button class="btn-watch">▶ Regarder</button>
+            <button class="btn-list">+ Ma liste</button>
+        </div>
+    </div>
+
+</header>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("headerScrollEffect");
+        }
+    }
+}
