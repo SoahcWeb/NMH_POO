@@ -271,8 +271,8 @@
     margin-left: 20px;  /* espace entre formulaire et erreur */
     margin-top: 60px;
     
-    flex: 0 0 320px;
-    width: 320px;       /* largeur fixe de la carte erreur */
+    flex: 0 0 340px;
+    width: 340px;       /* largeur fixe de la carte erreur */
     padding: 20px;
     border-radius: 12px;
     background: rgba(20,20,40,0.92);
