@@ -17,16 +17,21 @@
 
     <!-- CSS global -->
     <link href="~/bootstrap/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/css/site.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />       <!-- global -->       <!-- styles spécifiques à Home -->
     <link href="~/css/auth.css" rel="stylesheet" />
-    <link href="~/css/userhome.css" rel="stylesheet" /> @* CSS spécifique carrousels *@
-
+    <link href="~/css/home.css" rel="stylesheet" />
+    <link href="~/css/userhome.css" rel="stylesheet" />   <!-- carrousels / bande de posters -->
     <link rel="icon" type="image/png" href="~/favicon.png" />
 </head>
 <body>
     <component type="typeof(NMH.Components.App)" render-mode="Server" />
 
+    <!-- JS pour scroll des carrousels -->
+    <script src="~/js/site.js"></script> 
+
+    <!-- JS pour l'image décorative qui glisse -->
+    <script src="~/js/scroll.js"></script>
+
     <script src="_framework/blazor.server.js"></script>
-    <script src="~/js/site.js"></script> @* JS pour scroll des carrousels *@
 </body>
 </html>

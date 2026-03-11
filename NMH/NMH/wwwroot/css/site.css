@@ -296,89 +296,6 @@ body {
     background: linear-gradient(to right, #0F0F2F, #0F4F8F, #0F0F2F);
 }
 
-/* ===== FOND GLOBAL ===== */
-.home-main {
-    min-height: 100vh;
-    padding: 6rem 160px; /* espace pour les bandes */
-    text-align: center;
-    background: #0F0F2F;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* ===== TITRE HERO ===== */
-.home-title {
-    font-size: 3.5rem;
-    font-weight: bold;
-    color: #52C5FF;
-    text-shadow: 0 0 20px rgba(82,197,255,0.7);
-    margin-bottom: 1rem;
-    border: none;
-    outline: none;
-    background: transparent;
-    box-shadow: none;
-}
-
-/* ===== DESCRIPTION ===== */
-.home-desc {
-    color: #E0E6F0;
-    font-size: 1.2rem;
-    max-width: 700px;
-    margin-bottom: 2.5rem;
-}
-
-/* ===== SECTION FEATURES ===== */
-.home-features {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 2rem;
-    max-width: 900px;
-    width: 100%;
-    margin-bottom: 3rem;
-}
-
-/* ===== CARTES ===== */
-.feature-card {
-    background: rgba(15,15,47,0.8);
-    border: 1px solid rgba(15,15,47,0.5);
-    border-radius: 16px;
-    padding: 2rem;
-    transition: all 0.3s ease;
-}
-
-.feature-card h2 {
-    color: #52C5FF;
-    font-size: 1.4rem;
-    margin-bottom: 0.8rem;
-}
-
-.feature-card p {
-    color: #E0E6F0;
-    font-size: 0.95rem;
-}
-
-.feature-card:hover {
-    border-color: #C96BFF;
-    transform: translateY(-5px);
-    box-shadow: 0 0 20px rgba(201,107,255,0.45);
-}
-
-/* ===== BOUTONS ===== */
-.home-buttons {
-    margin-top: 1.5rem;
-}
-
-.home-buttons a {
-    display: inline-block;
-    padding: 0.9rem 2rem;
-    border-radius: 12px;
-    font-weight: bold;
-    text-decoration: none;
-    margin: 0 0.5rem;
-    transition: all 0.3s ease;
-}
 
 .btn-login {
     background: #C96BFF;
@@ -552,60 +469,13 @@ body > .container {
             drop-shadow(0 0 12px #52C5FF);
 }
 
-/* ============================================================ */
-/* ----------------- TMDB Poster Side Bands ------------------- */
-/* ============================================================ */
 
-.poster-band {
-    position: fixed;
-    top: 0;
-    height: 100vh;
-    width: 120px;
-    overflow: hidden;
-    z-index: 0;
+.nethra {
+    color: #05fcfe;
+    font-weight: bold;
 }
 
-/* bande gauche */
-.poster-band.left {
-    left: 0;
-}
-
-/* bande droite */
-.poster-band.right {
-    right: 0;
-}
-
-/* conteneur animé */
-.poster-track {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-
-    animation: scrollPosters 40s linear infinite;
-}
-
-/* images */
-.poster-track img {
-    width: 100%;
-    border-radius: 6px;
-    opacity: 0.85;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.poster-track img:hover {
-    transform: scale(1.05);
-    opacity: 1;
-}
-
-/* animation verticale */
-@keyframes scrollPosters {
-
-    0% {
-        transform: translateY(0);
-    }
-
-    100% {
-        transform: translateY(-50%);
-    }
-
+.media-hub {
+    color: #ee46c9;
+    font-weight: bold;
 }
