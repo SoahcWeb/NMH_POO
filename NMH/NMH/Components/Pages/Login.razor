@@ -7,26 +7,66 @@
 @using Microsoft.JSInterop
 @inject IJSRuntime JS
 
-<main class="auth-layout">
+<main class="auth-main auth-offset">
 
-    <!-- Fond étoilé animé -->
-    <div class="auth-background"></div>
-
-    <!-- Conteneur central -->
     <div class="auth-container">
 
-        <div class="auth-card">
-            <h3 class="auth-title">Connexion</h3>
+        <!-- WRAPPER FORMULAIRE + ERREUR -->
+        <div class="auth-form-wrapper">
 
-            <EditForm Model="@loginModel" OnValidSubmit="@HandleLogin">
-                <InputText class="auth-input" @bind-Value="loginModel.UserName" placeholder="Nom d'utilisateur" />
-                <InputText class="auth-input" @bind-Value="loginModel.Password" type="password" placeholder="Mot de passe" />
-                <button class="auth-button" type="submit">Se connecter</button>
-            </EditForm>
+            <!-- FORMULAIRE -->
+            <div class="auth-card">
 
-            <p class="auth-message">@message</p>
+                <h3 class="auth-title">Connexion</h3>
 
-            <a class="auth-link" href="/register">Pas encore inscrit ?</a>
+                <EditForm Model="@loginModel" OnValidSubmit="@HandleLogin">
+
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+
+                    <InputText class="auth-input"
+                               @bind-Value="loginModel.UserName"
+                               placeholder="Nom d'utilisateur" />
+
+                    <div class="password-wrapper">
+                        <InputText class="auth-input"
+                                   @bind-Value="loginModel.Password"
+                                   type="@passwordFieldType"
+                                   placeholder="Mot de passe" />
+
+                        <button type="button"
+                                class="password-toggle"
+                                @onclick="TogglePassword">👁</button>
+                    </div>
+
+                    <!-- BOUTON CENTRÉ AVEC WRAPPER -->
+                    <div class="login-form-button-wrapper">
+                        <button type="submit" class="login-form-button">
+                            <img src="/images/co001.png"
+                                 alt="Se connecter" />
+                        </button>
+                    </div>
+
+                </EditForm>
+
+                <a class="auth-link auth-link-large" href="/register">
+                    Pas encore inscrit ?
+                </a>
+
+            </div>
+
+            <!-- CARTE ERREUR -->
+            @if (!string.IsNullOrWhiteSpace(message))
+            {
+                <div class="auth-error-card">
+
+                    <h4>⚠ Problème de connexion</h4>
+
+                    <p>@message</p>
+
+                </div>
+            }
+
         </div>
 
     </div>
@@ -36,6 +76,13 @@
 @code {
     private LoginDto loginModel = new LoginDto();
     private string message = "";
+
+    private string passwordFieldType = "password";
+
+    private void TogglePassword()
+    {
+        passwordFieldType = passwordFieldType == "password" ? "text" : "password";
+    }
 
     private async Task HandleLogin()
     {

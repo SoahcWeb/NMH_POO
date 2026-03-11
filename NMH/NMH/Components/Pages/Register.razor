@@ -5,22 +5,22 @@
 @inject HttpClient Http
 @inject NavigationManager Navigation
 
-<main class="auth-main">
+<main class="auth-main auth-offset">
 
-<div class="auth-card">
+    <div class="auth-card">
 
-<h3 class="auth-title">Inscription</h3>
+        <h3 class="auth-title">Inscription</h3>
 
-<EditForm Model="@registerModel" OnValidSubmit="@HandleRegister">
-    <InputText class="auth-input" @bind-Value="registerModel.UserName" placeholder="Nom d'utilisateur" />
-    <InputText class="auth-input" @bind-Value="registerModel.Email" placeholder="Email" />
-    <InputText class="auth-input" @bind-Value="registerModel.Password" type="password" placeholder="Mot de passe" />
-    <button class="auth-button" type="submit">S'inscrire</button>
-</EditForm>
+        <EditForm Model="@registerModel" OnValidSubmit="@HandleRegister">
+            <InputText class="auth-input" @bind-Value="registerModel.UserName" placeholder="Nom d'utilisateur" />
+            <InputText class="auth-input" @bind-Value="registerModel.Email" placeholder="Email" />
+            <InputText class="auth-input" @bind-Value="registerModel.Password" type="password" placeholder="Mot de passe" />
+            <button class="auth-button" type="submit">S'inscrire</button>
+        </EditForm>
 
-<p class="auth-message">@message</p>
+        <p class="auth-message">@message</p>
 
-</div>
+    </div>
 
 </main>
 

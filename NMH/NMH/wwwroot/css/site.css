@@ -91,13 +91,50 @@
 }
 
 /* ============================================================ */
+/* ----------- Bouton connexion formulaire Login -------------- */
+/* ============================================================ */
+/* Wrapper du bouton pour ajouter seulement un espace */
+.login-form-button-wrapper {
+    margin-top: 1rem; /* espace au-dessus du bouton */
+}
+
+/* Bouton connexion centré */
+.login-form-button {
+    background: rgba(15,15,47,0.85); /* même couleur que le formulaire */
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+
+    display: block;       /* important pour le centrage avec margin auto */
+    margin: 0 auto;       /* centre horizontalement */
+    padding: 0;
+
+    width: fit-content;   /* s’adapte à la largeur de l’image */
+    height: fit-content;  /* s’adapte à la hauteur de l’image */
+}
+
+.login-form-button img {
+    display: block; 
+    height: 55px;
+    width: auto;
+    border-radius: 8px;
+    transition: opacity 0.25s ease, transform 0.25s ease, filter 0.25s ease;
+}
+
+.login-form-button img:hover {
+    content: url('/images/co002.png');
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 6px #52C5FF) drop-shadow(0 0 12px #52C5FF);
+}
+
+/* ============================================================ */
 /* ----------- Bouton connexion image -------------------------- */
 /* ============================================================ */
 
 .login-button {
     position: absolute;
-    bottom: 30px;        /* bouton plus bas */
-    right: 520px;      /* bouton à droite */
+    bottom: 30px;        /* place le bouton en bas */
+    right: 520px;        /* place le bouton à droite */
     z-index: 5;
 }
 
@@ -114,15 +151,11 @@
 }
 
 .login-button img:hover {
-
-    content: url('/images/co002.png');
-
-    transform: scale(1.08);
-
+    content: url('/images/co002.png');  /* image au survol */
+    transform: scale(1.08);              /* léger zoom */
     filter:
         drop-shadow(0 0 6px #52C5FF)
-        drop-shadow(0 0 12px #52C5FF);
-
+        drop-shadow(0 0 12px #52C5FF);   /* glow bleu */
 }
 
 /* ============================================================ */
