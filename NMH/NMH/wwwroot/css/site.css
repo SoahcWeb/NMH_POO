@@ -299,9 +299,10 @@ body {
 /* ===== FOND GLOBAL ===== */
 .home-main {
     min-height: 100vh;
-    padding: 6rem 1.5rem;
+    padding: 6rem 160px; /* espace pour les bandes */
     text-align: center;
     background: #0F0F2F;
+
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -549,4 +550,62 @@ body > .container {
     transform: scale(1.08);
     filter: drop-shadow(0 0 6px #52C5FF)
             drop-shadow(0 0 12px #52C5FF);
+}
+
+/* ============================================================ */
+/* ----------------- TMDB Poster Side Bands ------------------- */
+/* ============================================================ */
+
+.poster-band {
+    position: fixed;
+    top: 0;
+    height: 100vh;
+    width: 120px;
+    overflow: hidden;
+    z-index: 0;
+}
+
+/* bande gauche */
+.poster-band.left {
+    left: 0;
+}
+
+/* bande droite */
+.poster-band.right {
+    right: 0;
+}
+
+/* conteneur animé */
+.poster-track {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    animation: scrollPosters 40s linear infinite;
+}
+
+/* images */
+.poster-track img {
+    width: 100%;
+    border-radius: 6px;
+    opacity: 0.85;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.poster-track img:hover {
+    transform: scale(1.05);
+    opacity: 1;
+}
+
+/* animation verticale */
+@keyframes scrollPosters {
+
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(-50%);
+    }
+
 }

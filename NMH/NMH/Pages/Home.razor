@@ -1,50 +1,104 @@
 ﻿@page "/"
-@using NMH.Components
+@using NMH.Services
+@using NMH.Shared.DTOs
+@inject TmdbService Tmdb
 
+<div class="home-layout">
 
-
-<main class="home-main">
-
-    <!-- Titre principal accrocheur -->
-    <h1 class="home-title">Explorez, Organisez et Profitez de vos Films et Séries</h1>
-
-    <!-- Courte présentation -->
-    <p class="home-desc">
-        Nethra Media Hub vous permet de retrouver rapidement vos films et séries préférés et de gérer votre expérience cinéma personnelle.
-    </p>
-
-<!-- SEPARATEUR -->
-    <div class="section-divider"></div>
-
-    <!-- Présentation en 3 points -->
-    <div class="home-features">
-        <div class="feature-card">
-            <h2>Moteur de recherche</h2>
-            <p>Trouvez rapidement n’importe quel film ou série grâce à notre moteur de recherche performant.</p>
-        </div>
-        <div class="feature-card">
-            <h2>Favoris</h2>
-            <p>Gardez en mémoire vos films et séries à voir pour ne jamais les oublier.</p>
-        </div>
-        <div class="feature-card">
-            <h2>Ma Bibliothèque</h2>
-            <p>Archivez vos films et séries pour les retrouver facilement quand vous le souhaitez.</p>
+    <!-- BANDE GAUCHE (ANIMÉE) -->
+    <div class="poster-band left">
+        <div class="poster-track">
+            @foreach (var movie in leftMovies)
+            {
+                <img src="@GetPosterUrl(movie.PosterPath)" />
+            }
+            @foreach (var movie in leftMovies)
+            {
+                <img src="@GetPosterUrl(movie.PosterPath)" />
+            }
         </div>
     </div>
 
-<!-- SEPARATEUR -->
-    <div class="section-divider"></div>
+    <!-- CONTENU PRINCIPAL -->
+    <main class="home-main">
 
-    <!-- Invitation à se connecter -->
-    <p class="home-desc mt-12">
-        Pour profiter pleinement de toutes ces fonctionnalités, inscrivez-vous et/ou connectez-vous dès maintenant !
-    </p>
+        <h1 class="home-title">Explorez, Organisez et Profitez de vos Films et Séries</h1>
 
-    <div class="home-buttons">
-        <a href="/login" class="btn-login">Se connecter</a>
-        <a href="/register" class="btn-register">S'inscrire</a>
+        <p class="home-desc">
+            Nethra Media Hub vous permet de retrouver rapidement vos films et séries préférés
+            et de gérer votre expérience cinéma personnelle.
+        </p>
+
+        <div class="section-divider"></div>
+
+        <div class="home-features">
+            <div class="feature-card">
+                <h2>Moteur de recherche</h2>
+                <p>Trouvez rapidement n’importe quel film ou série grâce à notre moteur de recherche performant.</p>
+            </div>
+
+            <div class="feature-card">
+                <h2>Favoris</h2>
+                <p>Gardez en mémoire vos films et séries à voir pour ne jamais les oublier.</p>
+            </div>
+
+            <div class="feature-card">
+                <h2>Ma Bibliothèque</h2>
+                <p>Archivez vos films et séries pour les retrouver facilement quand vous le souhaitez.</p>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <p class="home-desc mt-12">
+            Pour profiter pleinement de toutes ces fonctionnalités,
+            inscrivez-vous et/ou connectez-vous dès maintenant !
+        </p>
+
+        <div class="home-buttons">
+            <a href="/login" class="btn-login">Se connecter</a>
+            <a href="/register" class="btn-register">S'inscrire</a>
+        </div>
+
+    </main>
+
+    <!-- BANDE DROITE (ANIMÉE) -->
+    <div class="poster-band right">
+        <div class="poster-track">
+            @foreach (var movie in rightMovies)
+            {
+                <img src="@GetPosterUrl(movie.PosterPath)" />
+            }
+            @foreach (var movie in rightMovies)
+            {
+                <img src="@GetPosterUrl(movie.PosterPath)" />
+            }
+        </div>
     </div>
 
-</main>
+</div>
 
+@code {
 
+    private List<MovieDto> leftMovies = new();
+    private List<MovieDto> rightMovies = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var movies = await Tmdb.GetPopularMoviesAsync(20);
+
+        var random = new Random();
+        movies = movies.OrderBy(x => random.Next()).ToList();
+
+        leftMovies = movies.Take(6).ToList();
+        rightMovies = movies.Skip(6).Take(6).ToList();
+    }
+
+    private string GetPosterUrl(string? path)
+    {
+        if (string.IsNullOrEmpty(path))
+            return "";
+
+        return $"https://image.tmdb.org/t/p/w342{path}";
+    }
+}
