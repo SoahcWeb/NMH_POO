@@ -34,6 +34,23 @@ namespace NMH.Services
             return response?.Results ?? new List<SeriesDto>();
         }
 
+        // 🔹 NOUVELLES MÉTHODES POUR LES POPULAIRES
+        public async Task<List<MovieDto>> GetPopularMoviesAsync(int count = 10)
+        {
+            var response = await _httpClient.GetFromJsonAsync<TmdbTrendingResponse<MovieDto>>(
+                $"https://api.themoviedb.org/3/movie/popular?api_key={_apiKey}&language=fr-FR&page=1"
+            );
+            return response?.Results?.Take(count).ToList() ?? new List<MovieDto>();
+        }
+
+        public async Task<List<SeriesDto>> GetPopularSeriesAsync(int count = 10)
+        {
+            var response = await _httpClient.GetFromJsonAsync<TmdbTrendingResponse<SeriesDto>>(
+                $"https://api.themoviedb.org/3/tv/popular?api_key={_apiKey}&language=fr-FR&page=1"
+            );
+            return response?.Results?.Take(count).ToList() ?? new List<SeriesDto>();
+        }
+
         // 🔎 RECHERCHE MULTI SIMPLE
         public async Task<SearchResponseDto> SearchMultiAsync(string query, int page = 1)
         {

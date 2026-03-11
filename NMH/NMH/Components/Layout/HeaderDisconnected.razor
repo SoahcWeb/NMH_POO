@@ -1,12 +1,26 @@
-<div class="header1">
+@using Microsoft.JSInterop
+@inject IJSRuntime JS
 
-    <nav>
-        <ul>
-            <li><NavLink href="">Accueil</NavLink></li>
-            <li><NavLink href="movies">Films populaires</NavLink></li>
-            <li><NavLink href="series">Séries</NavLink></li>
-            <li><NavLink href="register">Inscription</NavLink></li>
-            <li><NavLink href="login">Connexion</NavLink></li>
-        </ul>
-    </nav>
-</div>
+<header class="main-header header1">
+    <a href="/login" class="login-button">
+        <img src="/images/co001.png" alt="Connexion" />
+    </a>
+
+    <a href="/nouveautes" class="new-button">
+        <img src="/images/new001.png" alt="Nouveautés" />
+    </a>
+
+    <div class="banner-content">
+        <!-- Contenu de la bannière -->
+    </div>
+</header>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("headerScrollEffect");
+        }
+    }
+}

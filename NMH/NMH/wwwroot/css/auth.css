@@ -1,0 +1,318 @@
+/* Descendre le formulaire Login et Register */
+.auth-offset {
+    padding-top: 150px; /* Ajuste ce nombre pour descendre plus ou moins */
+}
+
+/* ===== FOND GLOBAL ===== */
+.auth-layout {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    overflow: hidden;
+
+    /* IMAGE DE FOND */
+    background-image: url('/images/bg.png');
+    background-size: cover;           /* changez en contain si vous voulez toute l'image visible */
+    background-position: center 20%;  /* ajustez pour descendre l'image */
+    background-repeat: no-repeat;
+}
+
+/* ===== CLASSES POUR AJUSTER IMAGE RAPIDEMENT ===== */
+.auth-layout.bg-top {
+    background-position: center top;
+}
+
+.auth-layout.bg-center {
+    background-position: center center;
+}
+
+.auth-layout.bg-bottom {
+    background-position: center bottom;
+}
+
+.auth-layout.cover {
+    background-size: cover;
+}
+
+.auth-layout.contain {
+    background-size: contain;
+}
+
+/* ===== CONTENEUR LOGIN + ERREUR ===== */
+.auth-container {
+    width: 100%;
+    max-width: 900px;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;          /* empêcher le wrap */
+    justify-content: center; /* aligner les éléments à gauche */
+    align-items: flex-start;
+
+    gap: 40px;
+}
+
+/* ===== LOGO NMH ===== */
+.auth-logo {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #52C5FF;
+    text-shadow: 0 0 30px rgba(82,197,255,0.8), 0 0 60px rgba(201,107,255,0.6);
+    margin-bottom: 2rem;
+    animation: logoFadeIn 1.5s ease forwards;
+}
+
+@keyframes logoFadeIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* ===== CARTE LOGIN / REGISTER ===== */
+.auth-card {
+    flex: 0 0 320px; /* ne prend que 420px de largeur max */
+    max-width: 320px;
+    background: rgba(15,15,47,0.85);
+    border: 1px solid rgba(15,15,47,0.5);
+    border-radius: 20px;
+    padding: 3rem;
+
+    box-shadow: 0 0 60px rgba(201,107,255,0.35), 0 0 40px rgba(82,197,255,0.25);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: cardFadeIn 1s ease forwards 0.3s;
+}
+
+.auth-card:hover {
+    border-color: #C96BFF;
+    box-shadow: 0 0 80px rgba(201,107,255,0.5), 0 0 50px rgba(82,197,255,0.35);
+}
+
+@keyframes cardFadeIn {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== TITRE ===== */
+.auth-title {
+    font-size: 2.3rem;
+    font-weight: bold;
+    color: #52C5FF;
+    text-shadow: 0 0 15px rgba(82,197,255,0.6);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+/* ===== INPUTS ===== */
+.auth-input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    margin-bottom: 1rem;
+
+    border-radius: 10px;
+    border: 1px solid rgba(82,197,255,0.2);
+
+    background: rgba(15,15,47,0.9); /* même couleur que le password */
+    color: white;
+
+    transition: all 0.25s ease;
+}
+
+.auth-input::placeholder {
+    color: rgba(224,230,240,0.5);
+}
+
+.auth-input:focus {
+    outline: none;
+    border-color: #52C5FF;
+    box-shadow: 0 0 10px rgba(82,197,255,0.5);
+}
+
+/* Compatibilité pour tous types de champs (notamment Blazor InputText) */
+.auth-input[type="text"],
+.auth-input[type="email"],
+.auth-input[type="password"] {
+    background: rgba(15,15,47,0.9);
+    color: white;
+}
+
+/* Titre de la carte erreur */
+.auth-error-card h4 {
+    color: #52C5FF;   /* bleu identique au titre du formulaire */
+    text-align: center; /* pour être sûr que le texte reste centré */
+    margin-bottom: 10px; /* un petit espacement sous le titre */
+}
+
+/* ===== BOUTONS ===== */
+.auth-button {
+    width: 100%;
+    padding: 0.9rem;
+
+    border-radius: 12px;
+    border: none;
+
+    font-weight: bold;
+
+    background: #C96BFF;
+    color: black;
+
+    box-shadow: 0 0 15px rgba(201,107,255,0.45);
+
+    transition: all 0.25s ease;
+}
+
+.auth-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(201,107,255,0.7);
+}
+
+/* ===== MESSAGE ===== */
+.auth-message {
+    margin-top: 1rem;
+    color: #E0E6F0;
+}
+
+/* Lien "Pas encore inscrit ?" plus grand */
+.auth-link-large {
+    font-size: 1.1rem;
+    display: block;
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.auth-link {
+    margin-top: 1.5rem;
+    color: #52C5FF;
+    text-decoration: none;
+    display: block;       /* passer en block pour que text-align fonctionne */
+}
+
+.auth-link:hover {
+    text-decoration: underline;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .auth-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .auth-card, .auth-error-card {
+        flex: 0 0 auto;
+        width: 90%; /* s'adapte à l'écran */
+        margin-left: 0;
+        margin-top: 15px; /* espacement vertical pour erreur */
+    }
+}
+
+/* ===== ICÔNE “VOIR LE MOT DE PASSE” ===== */
+.password-wrapper {
+    position: relative;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #E0E6F0;
+    font-size: 1.2rem;
+    padding: 0;
+}
+
+/* Assurer que le texte reste blanc pour le password */
+.auth-input[type="password"] {
+    color: white;
+}
+
+/* Compatibilité pour IE/Edge */
+.auth-input[type="password"]::-ms-reveal {
+    color: #E0E6F0;
+}
+
+/* Compatibilité pour Chrome/Safari */
+.auth-input[type="password"]::-webkit-textfield-decoration-container {
+    color: #E0E6F0;
+}
+
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #E0E6F0; /* couleur de l’œil */
+    font-size: 1.2rem;
+    padding: 0;
+}
+
+/* Carte erreur positionnée à droite du formulaire */
+.auth-error-card {
+    position: absolute; /* sort du flux flex */
+    top: 0;             /* alignée avec le haut du formulaire */
+    left: 100%;         /* juste à droite du formulaire */
+    margin-left: 20px;  /* espace entre formulaire et erreur */
+    margin-top: 60px;
+    
+    flex: 0 0 340px;
+    width: 340px;       /* largeur fixe de la carte erreur */
+    padding: 20px;
+    border-radius: 12px;
+    background: rgba(20,20,40,0.92);
+    border: 1px solid #ff4d4d;
+    color: #E0E6F0;
+
+    box-shadow:
+        0 0 8px rgba(255,0,0,0.3),
+        0 0 18px rgba(255,0,0,0.2);
+
+    animation: errorSlide 0.4s ease;
+    flex-shrink: 0;     /* éviter qu’elle rétrécisse */
+
+    /* CENTRAGE DU CONTENU */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* centre verticalement */
+    align-items: center;     /* centre horizontalement */
+    text-align: center;      /* centre le texte multi-lignes */
+}
+
+/* ============================= */
+/* Animation apparition erreur */
+/* ============================= */
+
+@keyframes errorSlide {
+
+    from {
+        opacity: 0;
+        transform: translateX(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Conteneur fixe pour le formulaire */
+.auth-form-wrapper {
+    flex: 0 0 320px; /* largeur fixe identique à .auth-card */
+    position: relative; /* pour positionner la carte erreur absolument par rapport à ce wrapper */
+}

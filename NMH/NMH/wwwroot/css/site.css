@@ -1,22 +1,72 @@
 /* ============================================================ */
+/* ----------------- Header Global (Netflix effect) ------------*/
+/* ============================================================ */
+
+.main-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    z-index: 1000;
+
+    transition: background 0.4s ease, backdrop-filter 0.4s ease;
+}
+
+/* effet quand on scroll */
+.main-header.scrolled {
+    background: rgba(15,15,47,0.95);
+    backdrop-filter: blur(8px);
+}
+
+/* ============================================================ */
 /* ----------------- Header1 (MainLayout) ----------------- */
 /* ============================================================ */
 
-
 .header1 {
-     width: 100%;
-    height: 33vw;    /* hauteur = 30% de la largeur de l’écran */
-    max-height: 350px; /* limite la hauteur pour grands écrans */
-    background-image: url('/images/ban003.png');
+    width: 100%;
+    height: clamp(250px, 20vw, 450px);
+    background-image: url('/images/ban004.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+
+    display: flex;
+    align-items: center;
+    padding: 0 40px;
+    position: relative;
+
+    /* Bordure  */
+    border: 2px solid #0F4F8F;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.header1::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background: linear-gradient(
+        to bottom,
+        rgba(15,15,47,0.1) 0%,   /* haut encore plus léger */
+        rgba(15,15,47,0.3) 60%,  /* milieu moins sombre */
+        rgba(15,15,47,0.6) 100%
+    );
+
+    pointer-events: none;
+
+}
+
+.header1 nav {
+    position: relative;
+    z-index: 2;
 }
 
 .header1 .logo {
     font-weight: bold;
     font-size: 1.5em;
-    color: #52C5FF; /* accent bleu néon */
+    color: #52C5FF;
 }
 
 .header1 nav ul {
@@ -29,7 +79,7 @@
 
 .header1 nav ul li a {
     text-decoration: none;
-    color: #A8B4C8; /* texte secondaire */
+    color: #A8B4C8;
     font-weight: 500;
     transition: color 0.3s, text-shadow 0.3s;
 }
@@ -41,21 +91,119 @@
 }
 
 /* ============================================================ */
+/* ----------- Bouton connexion formulaire Login -------------- */
+/* ============================================================ */
+/* Wrapper du bouton pour ajouter seulement un espace */
+.login-form-button-wrapper {
+    margin-top: 1rem; /* espace au-dessus du bouton */
+}
+
+/* Bouton connexion centré */
+.login-form-button {
+    background: rgba(15,15,47,0.85); /* même couleur que le formulaire */
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+
+    display: block;       /* important pour le centrage avec margin auto */
+    margin: 0 auto;       /* centre horizontalement */
+    padding: 0;
+
+    width: fit-content;   /* s’adapte à la largeur de l’image */
+    height: fit-content;  /* s’adapte à la hauteur de l’image */
+}
+
+.login-form-button img {
+    display: block; 
+    height: 55px;
+    width: auto;
+    border-radius: 8px;
+    transition: opacity 0.25s ease, transform 0.25s ease, filter 0.25s ease;
+}
+
+.login-form-button img:hover {
+    content: url('/images/co002.png');  /* image au survol */
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 6px #52C5FF) drop-shadow(0 0 12px #52C5FF);
+}
+
+/* ============================================================ */
+/* ----------- Bouton connexion image -------------------------- */
+/* ============================================================ */
+
+.login-button {
+    position: absolute;
+    bottom: 30px;        /* place le bouton en bas */
+    right: 520px;        /* place le bouton à droite */
+    z-index: 5;
+}
+
+.login-button img {
+    height: 55px;
+    width: auto;
+    cursor: pointer;
+    border-radius: 8px; /* bords légèrement arrondis */
+
+    transition:
+        opacity 0.25s ease,
+        transform 0.25s ease,
+        filter 0.25s ease;
+}
+
+.login-button:hover {
+    background-image: url('/images/co002.png'); /* image au survol */
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 6px #52C5FF) drop-shadow(0 0 12px #52C5FF);
+}
+
+/* ============================================================ */
+/* ----------- Bouton Nouveautés image ------------------------ */
+/* ============================================================ */
+
+.new-button {
+    position: absolute;
+    bottom: 30px;       /* place le bouton en bas */
+    left: 450px;         /* place le bouton à gauche */
+    z-index: 5;
+}
+
+.new-button img {
+    height: 55px;
+    width: auto;
+    cursor: pointer;
+    border-radius: 8px; /* bords légèrement arrondis */
+
+    transition:
+        opacity 0.25s ease,
+        transform 0.25s ease,
+        filter 0.25s ease;
+}
+
+.new-button img:hover {
+    content: url('/images/new002.png');  /* image au survol */
+    transform: scale(1.08);              /* léger zoom */
+    filter:
+        drop-shadow(0 0 6px #52C5FF)
+        drop-shadow(0 0 12px #52C5FF);   /* glow bleu comme bouton connexion */
+}
+
+/* ============================================================ */
 /* ----------------- Header2 (LandingLayout) ----------------- */
 /* ============================================================ */
+
 .header2 {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 15px 30px;
-    background-color: #0F0F2F; /* bleu nuit sombre */
+    background-color: #0F0F2F;
     border-bottom: 1px solid #0F4F8F;
     color: #E0E6F0;
     font-family: sans-serif;
 }
 
 .header2 .logo img {
-    height: 50px;       /* tu choisis la hauteur */
+    height: 50px;
     width: auto;
 }
 
@@ -69,7 +217,7 @@
 
 .header2 nav ul li a {
     text-decoration: none;
-    color: #A8B4C8; /* texte secondaire */
+    color: #A8B4C8;
     font-weight: 500;
     transition: color 0.3s, text-shadow 0.3s;
 }
@@ -80,8 +228,66 @@
     text-shadow: 0 0 6px #52C5FF;
 }
 
-/* ===== SEPARATOR ===== */
+/* ============================================================ */
+/* ----------------- Body offset (header fixe) ---------------- */
+/* ============================================================ */
 
+body {
+    padding-top: 80px;
+}
+
+.banner-content {
+    position: absolute;
+    bottom: 30px;
+    left: 50px;
+    color: #fff;
+    max-width: 600px;
+    z-index: 2;
+}
+
+.banner-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px rgba(0,0,0,0.7);
+}
+
+.banner-description {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    text-shadow: 0 0 8px rgba(0,0,0,0.6);
+}
+
+.banner-buttons button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    padding: 10px 20px;
+    margin-right: 10px;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.btn-watch {
+    background-color: #fff;
+    color: #000;
+}
+
+.btn-watch:hover {
+    background-color: #e6e6e6;
+}
+
+.btn-list {
+    background-color: rgba(109, 109, 110, 0.7);
+    color: #fff;
+}
+
+.btn-list:hover {
+    background-color: rgba(109, 109, 110, 0.9);
+}
+
+/* ===== SEPARATOR ===== */
 .section-divider {
     height: 2px;
     width: 100%;
@@ -101,7 +307,6 @@
     align-items: center;
 }
 
-
 /* ===== TITRE HERO ===== */
 .home-title {
     font-size: 3.5rem;
@@ -109,13 +314,11 @@
     color: #52C5FF;
     text-shadow: 0 0 20px rgba(82,197,255,0.7);
     margin-bottom: 1rem;
-
     border: none;
     outline: none;
     background: transparent;
     box-shadow: none;
 }
-
 
 /* ===== DESCRIPTION ===== */
 .home-desc {
@@ -124,7 +327,6 @@
     max-width: 700px;
     margin-bottom: 2.5rem;
 }
-
 
 /* ===== SECTION FEATURES ===== */
 .home-features {
@@ -136,7 +338,6 @@
     margin-bottom: 3rem;
 }
 
-
 /* ===== CARTES ===== */
 .feature-card {
     background: rgba(15,15,47,0.8);
@@ -146,35 +347,27 @@
     transition: all 0.3s ease;
 }
 
-
-/* TITRE CARTE */
 .feature-card h2 {
     color: #52C5FF;
     font-size: 1.4rem;
     margin-bottom: 0.8rem;
 }
 
-
-/* TEXTE CARTE */
 .feature-card p {
     color: #E0E6F0;
     font-size: 0.95rem;
 }
 
-
-/* HOVER STYLE COMME TEMPLATE */
 .feature-card:hover {
     border-color: #C96BFF;
     transform: translateY(-5px);
     box-shadow: 0 0 20px rgba(201,107,255,0.45);
 }
 
-
 /* ===== BOUTONS ===== */
 .home-buttons {
     margin-top: 1.5rem;
 }
-
 
 .home-buttons a {
     display: inline-block;
@@ -186,54 +379,44 @@
     transition: all 0.3s ease;
 }
 
-
-/* Bouton login */
 .btn-login {
     background: #C96BFF;
     color: black;
     box-shadow: 0 0 20px rgba(201,107,255,0.45);
 }
 
-
 .btn-login:hover {
     transform: scale(1.05);
     box-shadow: 0 0 30px rgba(201,107,255,0.7);
 }
 
-
-/* Bouton register */
 .btn-register {
     background: #52C5FF;
     color: black;
     box-shadow: 0 0 15px rgba(82,197,255,0.45);
 }
 
-
 .btn-register:hover {
     transform: scale(1.05);
     box-shadow: 0 0 25px rgba(82,197,255,0.7);
 }
 
-
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
-
     .home-title {
         font-size: 2.5rem;
     }
-
     .home-desc {
         font-size: 1rem;
     }
-
 }
 
 /* ============================================================ */
 /* ----------------- NMH Footer Compact Netflix-style ----------------- */
 .nmh-footer {
-    background-color: #0F0F2F;  /* fond bleu nuit sombre */
-    color: #A8B4C8;             /* texte secondaire gris bleu clair */
-    padding: 30px 20px;         /* compact */
+    background-color: #0F0F2F;
+    color: #A8B4C8;
+    padding: 30px 20px;
     font-size: 0.9rem;
     font-family: sans-serif;
     margin-top: auto;
@@ -246,43 +429,43 @@
 
 .footer-top {
     margin-bottom: 15px;
-    color: #E0E6F0;  /* texte principal clair */
+    color: #E0E6F0;
     font-weight: 500;
     line-height: 1.2;
 }
 
 .footer-links {
     display: flex;
-    flex-wrap: wrap;          /* responsive : stack sur mobile */
+    flex-wrap: wrap;
     justify-content: space-between;
     margin-bottom: 20px;
     position: relative;
 }
 
 .footer-col {
-    flex: 1 1 22%;            /* chaque colonne prend ~1/4 avec marge */
-    min-width: 150px;         /* pour mobile */
+    flex: 1 1 22%;
+    min-width: 150px;
     display: flex;
     flex-direction: column;
     padding: 0 10px;
-    border-right: 1px solid #0F4F8F;  /* séparateur vertical */
+    border-right: 1px solid #0F4F8F;
 }
 
 .footer-col:last-child {
-    border-right: none;       /* pas de séparateur sur la dernière colonne */
+    border-right: none;
 }
 
 .footer-col a {
-    color: #A8B4C8;           /* texte secondaire */
+    color: #A8B4C8;
     text-decoration: none;
-    margin-bottom: 6px;       /* compact */
+    margin-bottom: 6px;
     font-size: 0.85rem;
     line-height: 1.2;
     transition: color 0.3s, text-shadow 0.3s;
 }
 
 .footer-col a:hover {
-    color: #52C5FF;           /* bleu néon accent */
+    color: #52C5FF;
     text-shadow: 0 0 8px #52C5FF;
 }
 
@@ -294,12 +477,11 @@
 }
 
 .footer-bottom span {
-    color: #C96BFF;           /* violet néon pour accent futuriste */
+    color: #C96BFF;
     font-weight: 500;
     text-shadow: 0 0 8px #C96BFF;
 }
 
-/* Ligne top gradient optionnelle */
 .nmh-footer::before {
     content: "";
     display: block;
@@ -335,4 +517,36 @@ body > .container {
     min-height: 100%;
     display: flex;
     flex-direction: column;
+}
+
+/* Bouton inscription centré */
+.register-form-button {
+    background: rgba(15,15,47,0.85); /* même couleur que le formulaire */
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+
+    display: block;       /* centre horizontalement */
+    margin: 0 auto;       /* centre horizontalement */
+    padding: 0;
+
+    width: fit-content;   /* s’adapte à la largeur de l’image */
+    height: fit-content;  /* s’adapte à la hauteur de l’image */
+}
+
+/* Image dans le bouton inscription */
+.register-form-button img {
+    display: block; 
+    height: 55px;
+    width: auto;
+    border-radius: 8px;
+    transition: opacity 0.25s ease, transform 0.25s ease, filter 0.25s ease;
+}
+
+/* Hover pour l’image du bouton inscription */
+.register-form-button img:hover {
+    content: url('/images/regi002.png');  /* image au survol */
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 6px #52C5FF)
+            drop-shadow(0 0 12px #52C5FF);
 }

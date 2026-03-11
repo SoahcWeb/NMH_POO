@@ -12,9 +12,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Nethra Media Hub</title>
 
+    <!-- Base href pour Blazor -->
+    <base href="/" />
+
     <!-- CSS global -->
     <link href="~/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
+    <link href="~/css/auth.css" rel="stylesheet" />
+    <link href="~/css/userhome.css" rel="stylesheet" /> @* CSS spécifique carrousels *@
 
     <link rel="icon" type="image/png" href="~/favicon.png" />
 </head>
@@ -22,5 +27,6 @@
     <component type="typeof(NMH.Components.App)" render-mode="Server" />
 
     <script src="_framework/blazor.server.js"></script>
+    <script src="~/js/site.js"></script> @* JS pour scroll des carrousels *@
 </body>
 </html>

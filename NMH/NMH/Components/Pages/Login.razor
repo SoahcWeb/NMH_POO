@@ -1,4 +1,5 @@
 @page "/login"
+@layout AuthLayout
 @using NMH.Shared.DTOs
 @using Microsoft.AspNetCore.Components.Forms
 @inject HttpClient Http
@@ -6,23 +7,86 @@
 @using Microsoft.JSInterop
 @inject IJSRuntime JS
 
-<h3>Connexion</h3>
+<main class="auth-main auth-offset">
 
-<EditForm Model="@loginModel" OnValidSubmit="@HandleLogin">
-    <InputText @bind-Value="loginModel.UserName" placeholder="Nom d'utilisateur" />
-    <InputText @bind-Value="loginModel.Password" type="password" placeholder="Mot de passe" />
-    <button type="submit">Se connecter</button>
-</EditForm>
+    <div class="auth-container">
 
-<p>@message</p>
+        <!-- WRAPPER FORMULAIRE + ERREUR -->
+        <div class="auth-form-wrapper">
+
+            <!-- FORMULAIRE -->
+            <div class="auth-card">
+
+                <h3 class="auth-title">Connexion</h3>
+
+                <EditForm Model="@loginModel" OnValidSubmit="@HandleLogin">
+
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+
+                    <InputText class="auth-input"
+                               @bind-Value="loginModel.UserName"
+                               placeholder="Nom d'utilisateur" />
+
+                    <div class="password-wrapper">
+                        <InputText class="auth-input"
+                                   @bind-Value="loginModel.Password"
+                                   type="@passwordFieldType"
+                                   placeholder="Mot de passe" />
+
+                        <button type="button"
+                                class="password-toggle"
+                                @onclick="TogglePassword">👁</button>
+                    </div>
+
+                    <!-- BOUTON CENTRÉ AVEC WRAPPER -->
+                    <div class="login-form-button-wrapper">
+                        <button type="submit" class="login-form-button">
+                            <img src="/images/co001.png"
+                                 alt="Se connecter" />
+                        </button>
+                    </div>
+
+                </EditForm>
+
+                <a class="auth-link auth-link-large" href="/register">
+                    Pas encore inscrit ?
+                </a>
+
+            </div>
+
+            <!-- CARTE ERREUR -->
+            @if (!string.IsNullOrWhiteSpace(message))
+            {
+                <div class="auth-error-card">
+
+                    <h4>⚠ Problème de connexion</h4>
+
+                    <p>@message</p>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</main>
 
 @code {
     private LoginDto loginModel = new LoginDto();
     private string message = "";
 
+    private string passwordFieldType = "password";
+
+    private void TogglePassword()
+    {
+        passwordFieldType = passwordFieldType == "password" ? "text" : "password";
+    }
+
     private async Task HandleLogin()
     {
-        var response = await Http.PostAsJsonAsync("api/auth/login", loginModel);
+        var response = await Http.PostAsJsonAsync(Navigation.BaseUri + "api/auth/login", loginModel);
 
         if (response.IsSuccessStatusCode)
         {
@@ -31,7 +95,7 @@
                 await JS.InvokeVoidAsync("localStorage.setItem", "jwtToken", token.Token);
 
             message = "Connexion réussie !";
-            Navigation.NavigateTo("/home");
+            Navigation.NavigateTo("/user/home");
         }
         else
         {
