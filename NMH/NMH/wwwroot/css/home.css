@@ -59,7 +59,7 @@
 /* ===== FOND GLOBAL ===== */
 .home-main {
     min-height: 100vh;
-    padding: 3rem 160px; /* espace pour les bandes */
+    padding: 3rem 160px;
     text-align: center;
     background: #0F0F2F;
 
@@ -74,8 +74,8 @@
     font-weight: bold;
     color: #52C5FF;
     text-shadow: 0 0 20px rgba(82,197,255,0.7);
-    margin-top: 0.5rem; /* espace avec header */
-    margin-bottom: 2rem; /* espace entre titre et texte */
+    margin-top: 0.5rem;
+    margin-bottom: 2rem;
     border: none;
     outline: none;
     background: transparent;
@@ -88,8 +88,8 @@
     font-size: 1.2rem;
     max-width: 700px;
     margin-bottom: 1.5rem;
-    line-height: 1.6; /* rend le texte plus lisible */
-    text-align: justify; /* texte justifié */
+    line-height: 1.6;
+    text-align: justify;
 }
 
 /* ===== COULEURS NETHRA MEDIA HUB ===== */
@@ -110,33 +110,34 @@
     justify-content: center;
     gap: 2rem;
     flex-wrap: wrap;
-    position: relative; /* conteneur relatif pour aligner le texte */
+    position: relative;
 }
 
 /* ===== IMAGE DÉCORATIVE ===== */
 .hero-image {
-    position: fixed;         /* fixe par rapport à l’écran */
-    top: 150px;              /* hauteur à ajuster selon ton design */
-    left: -200px;            /* départ complètement hors écran à gauche */
-    opacity: 0;              /* invisible au départ */
-    width: 190px;            /* taille de l’image agrandie */
+    position: fixed;
+    top: 150px;
+    left: -200px;
+    opacity: 0;
+    width: 190px;
     height: auto;
-    transition: all 1s ease-out; /* glissement fluide */
-    z-index: 5;              /* au-dessus du contenu */
+    transition: all 1s ease-out;
+    z-index: 5;
 }
 
 /* ===== IMAGE ACTIVE AU SCROLL ===== */
 .hero-image.active {
-    left: 180px;            /* arrive à 180px du bord gauche */
-    opacity: 0.6;           /* ombre légère / moins visible */
+    left: 180px;
+    opacity: 0.6;
 }
 
 /* ===== CACHER L'IMAGE SUR PETITS ÉCRANS ===== */
 @media (max-width: 768px) {
     .hero-image {
-        display: none;       /* ne pas afficher sur mobile pour ne pas gêner */
+        display: none;
     }
 }
+
 /* ===== SECTION FEATURES ===== */
 .home-features {
     display: grid;
@@ -164,10 +165,14 @@
 
 .feature-card p {
     color: #E0E6F0;
-    font-size: 0.95rem;
+    font-size: 1rem;
+    line-height: 1.6;
+    text-align: justify;
 }
 
+/* hover */
 .feature-card:hover {
+    background: rgba(15,15,47,1); /* rend la carte totalement opaque */
     border-color: #C96BFF;
     transform: translateY(-5px);
     box-shadow: 0 0 20px rgba(201,107,255,0.45);
@@ -186,4 +191,45 @@
     text-decoration: none;
     margin: 0 0.5rem;
     transition: all 0.3s ease;
+}
+
+/* SECTION AVEC 2 CARTES */
+.home-features-two {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
+    max-width: 900px;
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+/* SECTION AVEC UNE CARTE */
+.home-features-single {
+    display: flex;
+    justify-content: center;
+    max-width: 900px;
+    width: 100%;
+    margin-bottom: 3rem;
+}
+
+/* TEXTE DANS LES CARTES JUSTIFIÉ ET LISIBLE */
+.home-features-two .feature-card p,
+.home-features-single .feature-card p {
+    font-size: 1rem;
+    line-height: 1.6;
+    text-align: justify;
+}
+
+.home-features-bg {
+    background-image: url('../images/bgcarte001.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    padding: 4.7rem 120px 1rem 120px;
+    border-radius: 16px;
+    margin-bottom: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
