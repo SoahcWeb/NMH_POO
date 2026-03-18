@@ -10,11 +10,11 @@
         <div class="poster-track">
             @foreach (var movie in leftMovies)
             {
-                <img src="@GetPosterUrl(movie.PosterPath)" />
+                <img src="@GetPosterUrl(movie.PosterPath)" alt="Affiche film" />
             }
             @foreach (var movie in leftMovies)
             {
-                <img src="@GetPosterUrl(movie.PosterPath)" />
+                <img src="@GetPosterUrl(movie.PosterPath)" alt="Affiche film" />
             }
         </div>
     </div>
@@ -22,7 +22,9 @@
     <!-- CONTENU PRINCIPAL -->
     <main class="home-main">
 
-        <h1 class="home-title">Explorez, Organisez et Profitez <br /> de vos Films et Séries</h1>
+        <h1 class="home-title">
+            Explorez, organisez et profitez <br /> de vos films et séries
+        </h1>
 
         <!-- HERO CONTENT AVEC IMAGE DÉCORATIVE -->
         <div class="hero-content">
@@ -31,28 +33,36 @@
                     Bienvenue sur 
                     <strong>
                         <span class="nethra">Nethra</span> <span class="media-hub">Media Hub</span>
-                    </strong>, votre espace dédié au cinéma et aux séries. Découvrez de nouveaux films, retrouvez vos favoris et créez votre bibliothèque personnelle en quelques clics. Suivez vos séries en cours, créez des listes personnalisées et recevez des recommandations adaptées à vos goûts.<br /><br />
+                    </strong>, votre espace dédié au cinéma et aux séries. 
+                    Découvrez de nouveaux films, retrouvez vos favoris et créez votre bibliothèque personnelle en quelques clics. 
+                    Suivez vos séries en cours, créez des listes personnalisées et recevez des recommandations adaptées à vos goûts.
+                    <br /><br />
                     <strong>
                         <span class="nethra">Nethra</span> <span class="media-hub">Media Hub</span>
-                    </strong> rend votre expérience audiovisuelle fluide, intuitive et sur-mesure, transformant chaque séance en un moment unique. Que vous soyez passionné de classiques, de blockbusters ou de séries captivantes, plongez dans votre univers visuel et profitez d’un contenu organisé pour vous. Avec <strong><span class="nethra">Nethra</span> <span class="media-hub">Media Hub</span></strong>, le cinéma et les séries se vivent et se savourent à votre façon.
+                    </strong> rend votre expérience audiovisuelle fluide, intuitive et sur mesure, transformant chaque séance en un moment unique. 
+                    Que vous soyez passionné de classiques, de blockbusters ou de séries captivantes, plongez dans votre univers visuel et profitez d’un contenu organisé pour vous. 
+                    Avec <strong><span class="nethra">Nethra</span> <span class="media-hub">Media Hub</span></strong>, le cinéma et les séries se vivent et se savourent à votre façon.
                 </p>
             </div>
-            <img src="images/micro.png" alt="Décoratif" class="hero-image" id="micro" />
+
+            <img src="images/micro.png" alt="Illustration décorative" class="hero-image" id="micro" />
         </div>
 
         <!-- PREMIER SEPARATEUR -->
         <div class="section-divider"></div>
 
-        <!-- SECTION AVEC 2 CARTES ET FOND -->
+        <!-- SECTION AVEC 2 CARTES -->
         <div class="home-features-bg">
             <div class="home-features-two">
+
                 <div class="feature-card">
                     <img src="images/search001.png" alt="Recherche" class="feature-icon" />
 
                     <h2>Moteur de recherche</h2>
                     <p>
                         Trouvez rapidement n’importe quel film ou série grâce à notre moteur de recherche performant. 
-                        Filtrez par genre, année ou note, explorez des recommandations personnalisées et accédez instantanément aux informations complètes sur chaque titre. Que vous cherchiez un blockbuster récent ou un classique oublié, tout est à portée de clic.
+                        Filtrez par genre, année ou note, explorez des recommandations personnalisées et accédez instantanément aux informations complètes sur chaque titre. 
+                        Que vous cherchiez un blockbuster récent ou un classique oublié, tout est à portée de clic.
                     </p>
                 </div>
 
@@ -61,25 +71,33 @@
 
                     <h2>Favoris</h2>
                     <p>
-                        Gardez en mémoire vos films et séries à voir pour ne jamais les oublier. Créez vos listes personnelles, organisez vos coups de cœur et suivez facilement l’avancée de vos séries en cours. Vos favoris vous accompagnent partout et vous permettent de reprendre exactement là où vous vous étiez arrêté.
+                        Gardez en mémoire vos films et séries à voir pour ne jamais les oublier. 
+                        Créez vos listes personnelles, organisez vos coups de cœur et suivez facilement l’avancée de vos séries en cours. 
+                        Vos favoris vous accompagnent partout et vous permettent de reprendre exactement là où vous vous étiez arrêté.
                     </p>
                 </div>
+
             </div>
         </div>
 
         <!-- DEUXIÈME SEPARATEUR -->
-        <div class="section-divider"></div>
-
-        <!-- SECTION NOUVEAUTÉ AVEC UNE CARTE – BIBLIOTHÈQUE -->
+        <div id="nouveautes" class="section-divider"></div>
+        <!-- SECTION BIBLIOTHÈQUE -->
         <div class="home-features-single">
             <div class="feature-card library-card">
+
                 <img src="images/library001.png" alt="Bibliothèque" class="feature-icon library-icon" />
+
                 <div class="library-text">
-                    <h2>Nouveauté – Ma Bibliothèque</h2>
+                    <h2>Nouveauté – Ma bibliothèque</h2>
                     <p>
-                        Archivez tous vos films et séries pour les retrouver facilement quand vous le souhaitez, où que vous soyez. Grâce à votre bibliothèque personnelle, chaque titre que vous possédez peut être enregistré avec un code unique, vous permettant de le localiser instantanément sur votre ordinateur. Organisez vos collections, classez-les par genre, année ou format, et conservez un historique complet de vos acquisitions. Que vous souhaitiez retrouver un classique que vous avez vu il y a longtemps ou explorer rapidement vos derniers ajouts, votre bibliothèque devient un véritable centre de gestion de vos films et séries, à portée de clic.
+                        Archivez tous vos films et séries pour les retrouver facilement quand vous le souhaitez, où que vous soyez. 
+                        Grâce à votre bibliothèque personnelle, chaque titre que vous possédez peut être enregistré avec un code unique, vous permettant de le localiser instantanément sur votre ordinateur. 
+                        Organisez vos collections, classez-les par genre, année ou format, et conservez un historique complet de vos acquisitions. 
+                        Que vous souhaitiez retrouver un classique vu il y a longtemps ou explorer rapidement vos derniers ajouts, votre bibliothèque devient un véritable centre de gestion à portée de clic.
                     </p>
                 </div>
+
             </div>
         </div>
 
@@ -108,11 +126,11 @@
         <div class="poster-track">
             @foreach (var movie in rightMovies)
             {
-                <img src="@GetPosterUrl(movie.PosterPath)" />
+                <img src="@GetPosterUrl(movie.PosterPath)" alt="Affiche film" />
             }
             @foreach (var movie in rightMovies)
             {
-                <img src="@GetPosterUrl(movie.PosterPath)" />
+                <img src="@GetPosterUrl(movie.PosterPath)" alt="Affiche film" />
             }
         </div>
     </div>
@@ -129,7 +147,7 @@
         var movies = await Tmdb.GetPopularMoviesAsync(20);
 
         var random = new Random();
-        movies = movies.OrderBy(x => random.Next()).ToList();
+        movies = movies.OrderBy(_ => random.Next()).ToList();
 
         leftMovies = movies.Take(6).ToList();
         rightMovies = movies.Skip(6).Take(6).ToList();
@@ -137,9 +155,8 @@
 
     private string GetPosterUrl(string? path)
     {
-        if (string.IsNullOrEmpty(path))
-            return "";
-
-        return $"https://image.tmdb.org/t/p/w342{path}";
+        return string.IsNullOrWhiteSpace(path)
+            ? string.Empty
+            : $"https://image.tmdb.org/t/p/w342{path}";
     }
 }

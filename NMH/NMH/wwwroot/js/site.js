@@ -1,4 +1,3 @@
-// ============================================================
 // ----------------- Fonction scroll carrousel ----------------
 // ============================================================
 function scrollCarousel(element, offset) {
@@ -41,4 +40,14 @@ window.initHeaderLoginHover = () => {
         loginImg.style.transform = 'scale(1)';
         loginImg.style.filter = 'drop-shadow(0 0 0 transparent)';
     });
+};
+
+// ============================================================
+// --------- Scroll vers une ancre (NOUVEAU) ------------------
+// ============================================================
+window.scrollToAnchor = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+    }
 };

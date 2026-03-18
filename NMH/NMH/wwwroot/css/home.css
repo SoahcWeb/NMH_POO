@@ -6,36 +6,31 @@
     position: fixed;
     top: 0;
     height: 100vh;
-    width: 200px; /* largeur de la bande */
+    width: 200px;
     overflow: hidden;
     z-index: 10;
 }
 
-/* bande gauche avec espace de 20px depuis le bord */
 .poster-band.left {
     left: 12px;
 }
 
-/* bande droite avec espace de 20px depuis le bord */
 .poster-band.right {
     right: 12px;
 }
 
-/* conteneur animé */
 .poster-track {
     display: flex;
     flex-direction: column;
     gap: 12px;
-
     animation: scrollPosters 90s linear infinite;
 }
 
-/* images dans les bandes */
 .poster-track img {
-    width: 100%;      /* prend toute la largeur de la bande */
-    max-width: 200px; /* jamais plus large que la bande */
+    width: 100%;
+    max-width: 200px;
     height: auto;
-    object-fit: cover; /* garde proportions */
+    object-fit: cover;
     border-radius: 6px;
     opacity: 0.85;
     transition: transform 0.3s ease, opacity 0.3s ease;
@@ -46,20 +41,18 @@
     opacity: 1;
 }
 
-/* animation verticale */
 @keyframes scrollPosters {
-    0% {
-        transform: translateY(0);
-    }
-    100% {
-        transform: translateY(-50%);
-    }
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-50%); }
 }
 
-/* ===== FOND GLOBAL ===== */
+/* ============================================================ */
+/* ------------------------- LAYOUT ---------------------------- */
+/* ============================================================ */
+
 .home-main {
     min-height: 100vh;
-    padding: 3rem 220px; /* largeur bande (200px) + espace (20px) */
+    padding: 3rem 220px;
     text-align: center;
     background: #0F0F2F;
 
@@ -68,7 +61,10 @@
     align-items: center;
 }
 
-/* ===== TITRE HERO ===== */
+/* ============================================================ */
+/* ------------------------- HERO ------------------------------ */
+/* ============================================================ */
+
 .home-title {
     font-size: 3.5rem;
     font-weight: bold;
@@ -82,7 +78,6 @@
     box-shadow: none;
 }
 
-/* ===== DESCRIPTION ===== */
 .home-desc {
     color: #E0E6F0;
     font-size: 1.2rem;
@@ -92,18 +87,7 @@
     text-align: justify;
 }
 
-/* ===== COULEURS NETHRA MEDIA HUB ===== */
-.nethra {
-    color: #05fcfe;
-    font-weight: bold;
-}
-
-.media-hub {
-    color: #ee46c9;
-    font-weight: bold;
-}
-
-/* ===== HERO CONTENT AVEC IMAGE DÉCORATIVE ===== */
+/* HERO layout */
 .hero-content {
     display: flex;
     align-items: flex-start;
@@ -113,7 +97,7 @@
     position: relative;
 }
 
-/* ===== IMAGE DÉCORATIVE ===== */
+/* image décorative */
 .hero-image {
     position: fixed;
     top: 150px;
@@ -125,75 +109,28 @@
     z-index: 5;
 }
 
-/* ===== IMAGE ACTIVE AU SCROLL ===== */
 .hero-image.active {
     left: 180px;
     opacity: 0.6;
 }
 
-/* ===== CACHER L'IMAGE SUR PETITS ÉCRANS ===== */
+/* responsive Home */
 @media (max-width: 768px) {
+    .home-title {
+        font-size: 2.5rem;
+    }
+    .home-desc {
+        font-size: 1rem;
+    }
     .hero-image {
         display: none;
     }
 }
 
-/* ===== SECTION FEATURES ===== */
-.home-features {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 2rem;
-    max-width: 900px;
-    width: 100%;
-    margin-bottom: 3rem;
-}
+/* ============================================================ */
+/* ------------------------ FEATURES --------------------------- */
+/* ============================================================ */
 
-/* ===== CARTES ===== */
-.feature-card {
-    background: rgba(15,15,47,0.8);
-    border: 1px solid rgba(15,15,47,0.5);
-    border-radius: 16px;
-    padding: 2rem;
-    transition: all 0.3s ease;
-}
-
-.feature-card h2 {
-    color: #52C5FF;
-    font-size: 1.4rem;
-    margin-bottom: 0.8rem;
-}
-
-.feature-card p {
-    color: #E0E6F0;
-    font-size: 1rem;
-    line-height: 1.6;
-    text-align: justify;
-}
-
-/* hover */
-.feature-card:hover {
-    background: rgba(15,15,47,1); /* rend la carte totalement opaque */
-    border-color: #C96BFF;
-    transform: translateY(-5px);
-    box-shadow: 0 0 20px rgba(201,107,255,0.45);
-}
-
-/* ===== BOUTONS ===== */
-.home-buttons {
-    margin-top: 1.5rem;
-}
-
-.home-buttons a {
-    display: inline-block;
-    padding: 0.9rem 2rem;
-    border-radius: 12px;
-    font-weight: bold;
-    text-decoration: none;
-    margin: 0 0.5rem;
-    transition: all 0.3s ease;
-}
-
-/* SECTION AVEC 2 CARTES */
 .home-features-two {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -203,21 +140,12 @@
     margin-bottom: 2rem;
 }
 
-/* SECTION AVEC UNE CARTE */
 .home-features-single {
     display: flex;
     justify-content: center;
     max-width: 900px;
     width: 100%;
     margin-bottom: 3rem;
-}
-
-/* TEXTE DANS LES CARTES JUSTIFIÉ ET LISIBLE */
-.home-features-two .feature-card p,
-.home-features-single .feature-card p {
-    font-size: 1rem;
-    line-height: 1.6;
-    text-align: justify;
 }
 
 .home-features-bg {
@@ -234,64 +162,13 @@
     gap: 1.5rem;
 }
 
-.feature-icon {
-    width: 70px;        /* taille souhaitée */
-    height: 70px;       /* force un cadre carré */
-    object-fit: contain; /* évite la déformation */
-
-    display: block;
-    margin: 0 auto 1rem auto;
-}
-
-/* effet au hover */
-.feature-card:hover .feature-icon {
-    transform: scale(1.1);
-}
-
-.feature-card {
-    text-align: center;
-}
-
-.feature-card p {
-    text-align: justify; /* tu gardes ton texte justifié */
-}
-
-.feature-icon {
-    filter: drop-shadow(0 0 8px rgba(82,197,255,0.5));
-}
-
-/* Carte Bibliothèque – image centrée verticalement et espace réduit */
-.library-card {
-    display: flex;
-    align-items: center; /* centre verticalement l'image par rapport au texte */
-    gap: 24px; /* espace entre image et texte */
-    margin-bottom: 16px; /* réduit l'espace sous la carte */
-}
-
-.library-icon {
-    width: 128px;   /* 2x la taille normale si les autres icônes font 64px */
-    height: auto;
-}
-
-.library-text {
-    flex: 1;
-}
-
-.library-text h2 {
-    margin-bottom: 8px; /* réduit l'espace entre le titre et le texte */
-}
-
-.library-text p {
-    margin-bottom: 0; /* supprime l'espace par défaut sous le paragraphe */
-}
-
-/* Remonter le séparateur après la carte Bibliothèque */
+/* ajustement séparateur */
 .home-features-single + .section-divider {
-    margin-top: 10px; /* réduit l’espace au-dessus du séparateur (ajuste selon besoin) */
+    margin-top: 10px;
 }
 
 /* ============================================================ */
-/* ----------- Bouton connexion FINAL (indépendant) ------------ */
+/* ------------------- BOUTON FINAL LOGIN ---------------------- */
 /* ============================================================ */
 
 .login-button-final {
@@ -301,7 +178,7 @@
 }
 
 .login-button-final a {
-    display: inline-block; /* pour que l'image reste dans le flux */
+    display: inline-block;
 }
 
 .login-button-final img {
@@ -314,12 +191,11 @@
         opacity 0.25s ease,
         transform 0.25s ease,
         filter 0.25s ease,
-        content 0.25s ease; /* pour le changement d'image */
+        content 0.25s ease;
 }
 
-/* 🔥 Effet hover : changement d'image + scale + drop-shadow */
 .login-button-final img:hover {
-    content: url('/images/co002.png'); /* 🔹 image au hover */
+    content: url('/images/co002.png');
     transform: scale(1.08);
     filter: drop-shadow(0 0 6px #52C5FF) drop-shadow(0 0 12px #52C5FF);
 }
