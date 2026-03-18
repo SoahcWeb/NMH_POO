@@ -6,19 +6,19 @@
     position: fixed;
     top: 0;
     height: 100vh;
-    width: 160px;
+    width: 200px; /* largeur de la bande */
     overflow: hidden;
     z-index: 10;
 }
 
-/* bande gauche */
+/* bande gauche avec espace de 20px depuis le bord */
 .poster-band.left {
-    left: 10px;
+    left: 12px;
 }
 
-/* bande droite */
+/* bande droite avec espace de 20px depuis le bord */
 .poster-band.right {
-    right: 10px;
+    right: 12px;
 }
 
 /* conteneur animé */
@@ -30,9 +30,12 @@
     animation: scrollPosters 90s linear infinite;
 }
 
-/* images */
+/* images dans les bandes */
 .poster-track img {
-    width: 100%;
+    width: 100%;      /* prend toute la largeur de la bande */
+    max-width: 200px; /* jamais plus large que la bande */
+    height: auto;
+    object-fit: cover; /* garde proportions */
     border-radius: 6px;
     opacity: 0.85;
     transition: transform 0.3s ease, opacity 0.3s ease;
@@ -45,21 +48,18 @@
 
 /* animation verticale */
 @keyframes scrollPosters {
-
     0% {
         transform: translateY(0);
     }
-
     100% {
         transform: translateY(-50%);
     }
-
 }
 
 /* ===== FOND GLOBAL ===== */
 .home-main {
     min-height: 100vh;
-    padding: 3rem 160px;
+    padding: 3rem 220px; /* largeur bande (200px) + espace (20px) */
     text-align: center;
     background: #0F0F2F;
 
@@ -232,4 +232,94 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+}
+
+.feature-icon {
+    width: 70px;        /* taille souhaitée */
+    height: 70px;       /* force un cadre carré */
+    object-fit: contain; /* évite la déformation */
+
+    display: block;
+    margin: 0 auto 1rem auto;
+}
+
+/* effet au hover */
+.feature-card:hover .feature-icon {
+    transform: scale(1.1);
+}
+
+.feature-card {
+    text-align: center;
+}
+
+.feature-card p {
+    text-align: justify; /* tu gardes ton texte justifié */
+}
+
+.feature-icon {
+    filter: drop-shadow(0 0 8px rgba(82,197,255,0.5));
+}
+
+/* Carte Bibliothèque – image centrée verticalement et espace réduit */
+.library-card {
+    display: flex;
+    align-items: center; /* centre verticalement l'image par rapport au texte */
+    gap: 24px; /* espace entre image et texte */
+    margin-bottom: 16px; /* réduit l'espace sous la carte */
+}
+
+.library-icon {
+    width: 128px;   /* 2x la taille normale si les autres icônes font 64px */
+    height: auto;
+}
+
+.library-text {
+    flex: 1;
+}
+
+.library-text h2 {
+    margin-bottom: 8px; /* réduit l'espace entre le titre et le texte */
+}
+
+.library-text p {
+    margin-bottom: 0; /* supprime l'espace par défaut sous le paragraphe */
+}
+
+/* Remonter le séparateur après la carte Bibliothèque */
+.home-features-single + .section-divider {
+    margin-top: 10px; /* réduit l’espace au-dessus du séparateur (ajuste selon besoin) */
+}
+
+/* ============================================================ */
+/* ----------- Bouton connexion FINAL (indépendant) ------------ */
+/* ============================================================ */
+
+.login-button-final {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+.login-button-final a {
+    display: inline-block; /* pour que l'image reste dans le flux */
+}
+
+.login-button-final img {
+    height: 55px;
+    width: auto;
+    cursor: pointer;
+    border-radius: 8px;
+
+    transition:
+        opacity 0.25s ease,
+        transform 0.25s ease,
+        filter 0.25s ease,
+        content 0.25s ease; /* pour le changement d'image */
+}
+
+/* 🔥 Effet hover : changement d'image + scale + drop-shadow */
+.login-button-final img:hover {
+    content: url('/images/co002.png'); /* 🔹 image au hover */
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 6px #52C5FF) drop-shadow(0 0 12px #52C5FF);
 }

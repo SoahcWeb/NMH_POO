@@ -142,16 +142,12 @@
     height: 55px;
     width: auto;
     cursor: pointer;
-    border-radius: 8px; /* bords légèrement arrondis */
-
-    transition:
-        opacity 0.25s ease,
-        transform 0.25s ease,
-        filter 0.25s ease;
+    border-radius: 8px; 
+    transition: transform 0.25s ease, filter 0.25s ease;
 }
 
-.login-button:hover {
-    background-image: url('/images/co002.png'); /* image au survol */
+/* hover pour zoom + glow (l'image sera changée via JS) */
+.login-button img:hover {
     transform: scale(1.08);
     filter: drop-shadow(0 0 6px #52C5FF) drop-shadow(0 0 12px #52C5FF);
 }
