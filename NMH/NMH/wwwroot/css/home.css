@@ -1,0 +1,201 @@
+/* ============================================================ */
+/* ----------------- TMDB Poster Side Bands ------------------- */
+/* ============================================================ */
+
+.poster-band {
+    position: fixed;
+    top: 0;
+    height: 100vh;
+    width: 200px;
+    overflow: hidden;
+    z-index: 10;
+}
+
+.poster-band.left {
+    left: 12px;
+}
+
+.poster-band.right {
+    right: 12px;
+}
+
+.poster-track {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    animation: scrollPosters 90s linear infinite;
+}
+
+.poster-track img {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 6px;
+    opacity: 0.85;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.poster-track img:hover {
+    transform: scale(1.05);
+    opacity: 1;
+}
+
+@keyframes scrollPosters {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-50%); }
+}
+
+/* ============================================================ */
+/* ------------------------- LAYOUT ---------------------------- */
+/* ============================================================ */
+
+.home-main {
+    min-height: 100vh;
+    padding: 3rem 220px;
+    text-align: center;
+    background: #0F0F2F;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ============================================================ */
+/* ------------------------- HERO ------------------------------ */
+/* ============================================================ */
+
+.home-title {
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: #52C5FF;
+    text-shadow: 0 0 20px rgba(82,197,255,0.7);
+    margin-top: 0.5rem;
+    margin-bottom: 2rem;
+    border: none;
+    outline: none;
+    background: transparent;
+    box-shadow: none;
+}
+
+.home-desc {
+    color: #E0E6F0;
+    font-size: 1.2rem;
+    max-width: 700px;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+    text-align: justify;
+}
+
+/* HERO layout */
+.hero-content {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+/* image décorative */
+.hero-image {
+    position: fixed;
+    top: 150px;
+    left: -200px;
+    opacity: 0;
+    width: 190px;
+    height: auto;
+    transition: all 1s ease-out;
+    z-index: 5;
+}
+
+.hero-image.active {
+    left: 180px;
+    opacity: 0.6;
+}
+
+/* responsive Home */
+@media (max-width: 768px) {
+    .home-title {
+        font-size: 2.5rem;
+    }
+    .home-desc {
+        font-size: 1rem;
+    }
+    .hero-image {
+        display: none;
+    }
+}
+
+/* ============================================================ */
+/* ------------------------ FEATURES --------------------------- */
+/* ============================================================ */
+
+.home-features-two {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
+    max-width: 900px;
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+.home-features-single {
+    display: flex;
+    justify-content: center;
+    max-width: 900px;
+    width: 100%;
+    margin-bottom: 3rem;
+}
+
+.home-features-bg {
+    background-image: url('../images/bgcarte001.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    padding: 4.7rem 120px 1rem 120px;
+    border-radius: 16px;
+    margin-bottom: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* ajustement séparateur */
+.home-features-single + .section-divider {
+    margin-top: 10px;
+}
+
+/* ============================================================ */
+/* ------------------- BOUTON FINAL LOGIN ---------------------- */
+/* ============================================================ */
+
+.login-button-final {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+.login-button-final a {
+    display: inline-block;
+}
+
+.login-button-final img {
+    height: 55px;
+    width: auto;
+    cursor: pointer;
+    border-radius: 8px;
+
+    transition:
+        opacity 0.25s ease,
+        transform 0.25s ease,
+        filter 0.25s ease,
+        content 0.25s ease;
+}
+
+.login-button-final img:hover {
+    content: url('/images/co002.png');
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 6px #52C5FF) drop-shadow(0 0 12px #52C5FF);
+}

@@ -1,0 +1,73 @@
+/* ============================================================ */
+/* ------------------------- CARDS ----------------------------- */
+/* ============================================================ */
+
+.feature-card {
+    background: rgba(15,15,47,0.8);
+    border: 1px solid rgba(15,15,47,0.5);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.feature-card h2 {
+    color: #52C5FF;
+    font-size: 1.4rem;
+    margin-bottom: 0.8rem;
+}
+
+.feature-card p {
+    color: #E0E6F0;
+    font-size: 1rem;
+    line-height: 1.6;
+    text-align: justify;
+}
+
+.feature-card:hover {
+    background: rgba(15,15,47,1);
+    border-color: #C96BFF;
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px rgba(201,107,255,0.45);
+}
+
+.feature-icon {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 1rem auto;
+    filter: drop-shadow(0 0 8px rgba(82,197,255,0.5));
+}
+
+.feature-card:hover .feature-icon {
+    transform: scale(1.1);
+}
+
+/* ============================================================ */
+/* ---------------------- LIBRARY CARD ------------------------- */
+/* ============================================================ */
+
+.library-card {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 16px;
+}
+
+.library-icon {
+    width: 128px;
+    height: auto;
+}
+
+.library-text {
+    flex: 1;
+}
+
+.library-text h2 {
+    margin-bottom: 8px;
+}
+
+.library-text p {
+    margin-bottom: 0;
+}
