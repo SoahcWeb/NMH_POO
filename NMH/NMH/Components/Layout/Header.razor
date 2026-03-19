@@ -1,4 +1,5 @@
 @using Microsoft.AspNetCore.Components.Authorization
+@implements IDisposable
 @inject AuthenticationStateProvider AuthStateProvider
 
 <div>
@@ -17,8 +18,29 @@
 
     protected override async Task OnInitializedAsync()
     {
+        AuthStateProvider.AuthenticationStateChanged += OnAuthStateChanged;
+
+        await UpdateAuthState();
+    }
+
+    private async Task UpdateAuthState()
+    {
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
-        IsAuthenticated = user.Identity != null && user.Identity.IsAuthenticated;
+
+        IsAuthenticated = user.Identity?.IsAuthenticated == true;
+
+        // Important pour forcer le refresh UI
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async void OnAuthStateChanged(Task<AuthenticationState> task)
+    {
+        await UpdateAuthState();
+    }
+
+    public void Dispose()
+    {
+        AuthStateProvider.AuthenticationStateChanged -= OnAuthStateChanged;
     }
 }
