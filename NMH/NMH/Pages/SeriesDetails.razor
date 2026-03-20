@@ -1,0 +1,69 @@
+@page "/series/{Id:int}"
+@using NMH.Shared.DTOs
+@inject NMH.Services.TmdbService TmdbService
+
+<h3>📺 Détails de la série</h3>
+
+@if (series == null)
+{
+    <p>Chargement...</p>
+}
+else
+{
+    <div class="series-details-container">
+
+        @if (!string.IsNullOrEmpty(series.BackdropPath))
+        {
+            <div class="backdrop">
+                <img src="@($"https://image.tmdb.org/t/p/original{series.BackdropPath}")" />
+            </div>
+        }
+
+        <div class="content">
+            <div class="poster">
+                @if (!string.IsNullOrEmpty(series.PosterPath))
+                {
+                    <img src="@($"https://image.tmdb.org/t/p/w500{series.PosterPath}")" />
+                }
+            </div>
+
+            <div class="info">
+                <h1>@series.Name</h1>
+
+                <p class="overview">
+                    @series.Overview
+                </p>
+
+                <p>
+                    <strong>Première diffusion :</strong>
+                    @(series.FirstAirDate?.ToString("yyyy-MM-dd") ?? "N/A")
+                </p>
+
+                <p>
+                    <strong>Langue :</strong> @series.OriginalLanguage
+                </p>
+
+                <p>
+                    <strong>Note :</strong> @series.VoteAverage
+                </p>
+
+                <p>
+                    <strong>Votes :</strong> @series.VoteCount
+                </p>
+            </div>
+        </div>
+
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private SeriesDto? series;
+
+    protected override async Task OnInitializedAsync()
+    {
+        series = await TmdbService.GetSeriesByIdAsync(Id);
+    }
+}

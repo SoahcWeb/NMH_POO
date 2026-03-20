@@ -183,7 +183,7 @@
     align-items: center;
     padding: 15px 30px;
 
-    background: transparent; /* ✅ important */
+    background: transparent;
 
     border-bottom: 1px solid #0F4F8F;
     color: #E0E6F0;
@@ -380,4 +380,16 @@ body > .container {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+}
+
+.home-main .home-desc span.nethra {
+    color: #05fcfe !important;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(5,252,254,0.7);
+}
+
+.home-main .home-desc span.media-hub {
+    color: #ee46c9 !important;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(238,70,201,0.7);
 }
