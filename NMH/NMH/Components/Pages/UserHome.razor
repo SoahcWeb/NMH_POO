@@ -1,5 +1,5 @@
 @page "/userhome"
-@attribute [Authorize] // ✅ corrigé
+@attribute [Authorize]
 
 @using NMH.Services
 @using Microsoft.AspNetCore.Components.Authorization
@@ -14,16 +14,12 @@
 
 <PageTitle>Home Utilisateur</PageTitle>
 
-<h1 class="home-title">Bienvenue, @userName ! 🎬</h1>
-
-<p>Auth: @contextUser?.Identity?.IsAuthenticated</p>
-<p>Name: @contextUser?.Identity?.Name</p>
-
 <section class="carousels">
 
     <div class="carousel-wrapper" style="position:relative; margin-bottom:20px;">
         <h2>Les films à la une</h2>
         <button class="carousel-btn left" @onclick="() => ScrollLeft(carouselMoviesFeatured)" style="position:absolute; left:0; top:50%; transform:translateY(-50%); z-index:10;">‹</button>
+
         <div class="carousel" @ref="carouselMoviesFeatured" style="overflow-x:auto; white-space:nowrap; padding:10px; border:1px solid #ccc;">
             @if (featuredMovies is null)
             {
@@ -33,19 +29,21 @@
             {
                 @foreach (var movie in featuredMovies)
                 {
-                    <div style="display:inline-block; margin-right:10px; text-align:center;">
+                    <NavLink href="@($"/movie/{movie.Id}")" style="display:inline-block; margin-right:10px; text-align:center; text-decoration:none; color:inherit;">
                         <img src="@($"https://image.tmdb.org/t/p/w300{movie.PosterPath}")" alt="@movie.Title" style="width:120px; display:block; margin-bottom:5px;" />
                         <p style="font-size:0.8rem;">@movie.Title</p>
-                    </div>
+                    </NavLink>
                 }
             }
         </div>
+
         <button class="carousel-btn right" @onclick="() => ScrollRight(carouselMoviesFeatured)" style="position:absolute; right:0; top:50%; transform:translateY(-50%); z-index:10;">›</button>
     </div>
 
     <div class="carousel-wrapper" style="position:relative; margin-bottom:20px;">
         <h2>Les films les plus populaires</h2>
         <button class="carousel-btn left" @onclick="() => ScrollLeft(carouselMoviesPopular)" style="position:absolute; left:0; top:50%; transform:translateY(-50%); z-index:10;">‹</button>
+
         <div class="carousel" @ref="carouselMoviesPopular" style="overflow-x:auto; white-space:nowrap; padding:10px; border:1px solid #ccc;">
             @if (popularMovies is null)
             {
@@ -55,19 +53,21 @@
             {
                 @foreach (var movie in popularMovies)
                 {
-                    <div style="display:inline-block; margin-right:10px; text-align:center;">
+                    <NavLink href="@($"/movie/{movie.Id}")" style="display:inline-block; margin-right:10px; text-align:center; text-decoration:none; color:inherit;">
                         <img src="@($"https://image.tmdb.org/t/p/w300{movie.PosterPath}")" alt="@movie.Title" style="width:120px; display:block; margin-bottom:5px;" />
                         <p style="font-size:0.8rem;">@movie.Title</p>
-                    </div>
+                    </NavLink>
                 }
             }
         </div>
+
         <button class="carousel-btn right" @onclick="() => ScrollRight(carouselMoviesPopular)" style="position:absolute; right:0; top:50%; transform:translateY(-50%); z-index:10;">›</button>
     </div>
 
     <div class="carousel-wrapper" style="position:relative; margin-bottom:20px;">
         <h2>Les séries à la une</h2>
         <button class="carousel-btn left" @onclick="() => ScrollLeft(carouselSeriesFeatured)" style="position:absolute; left:0; top:50%; transform:translateY(-50%); z-index:10;">‹</button>
+
         <div class="carousel" @ref="carouselSeriesFeatured" style="overflow-x:auto; white-space:nowrap; padding:10px; border:1px solid #ccc;">
             @if (featuredSeries is null)
             {
@@ -77,19 +77,21 @@
             {
                 @foreach (var s in featuredSeries)
                 {
-                    <div style="display:inline-block; margin-right:10px; text-align:center;">
+                    <NavLink href="@($"/series/{s.Id}")" style="display:inline-block; margin-right:10px; text-align:center; text-decoration:none; color:inherit;">
                         <img src="@($"https://image.tmdb.org/t/p/w300{s.PosterPath}")" alt="@s.Name" style="width:120px; display:block; margin-bottom:5px;" />
                         <p style="font-size:0.8rem;">@s.Name</p>
-                    </div>
+                    </NavLink>
                 }
             }
         </div>
+
         <button class="carousel-btn right" @onclick="() => ScrollRight(carouselSeriesFeatured)" style="position:absolute; right:0; top:50%; transform:translateY(-50%); z-index:10;">›</button>
     </div>
 
     <div class="carousel-wrapper" style="position:relative; margin-bottom:20px;">
         <h2>Les séries les plus populaires</h2>
         <button class="carousel-btn left" @onclick="() => ScrollLeft(carouselSeriesPopular)" style="position:absolute; left:0; top:50%; transform:translateY(-50%); z-index:10;">‹</button>
+
         <div class="carousel" @ref="carouselSeriesPopular" style="overflow-x:auto; white-space:nowrap; padding:10px; border:1px solid #ccc;">
             @if (popularSeries is null)
             {
@@ -99,13 +101,14 @@
             {
                 @foreach (var s in popularSeries)
                 {
-                    <div style="display:inline-block; margin-right:10px; text-align:center;">
+                    <NavLink href="@($"/series/{s.Id}")" style="display:inline-block; margin-right:10px; text-align:center; text-decoration:none; color:inherit;">
                         <img src="@($"https://image.tmdb.org/t/p/w300{s.PosterPath}")" alt="@s.Name" style="width:120px; display:block; margin-bottom:5px;" />
                         <p style="font-size:0.8rem;">@s.Name</p>
-                    </div>
+                    </NavLink>
                 }
             }
         </div>
+
         <button class="carousel-btn right" @onclick="() => ScrollRight(carouselSeriesPopular)" style="position:absolute; right:0; top:50%; transform:translateY(-50%); z-index:10;">›</button>
     </div>
 
@@ -118,7 +121,7 @@
     private List<SeriesDto>? popularSeries;
     private string userName = "";
 
-    private ClaimsPrincipal? contextUser; // conservé comme ton code
+    private ClaimsPrincipal? contextUser;
 
     private ElementReference carouselMoviesFeatured;
     private ElementReference carouselMoviesPopular;
@@ -131,7 +134,7 @@
     protected override async Task OnInitializedAsync()
     {
         var authState = await AuthStateTask;
-        contextUser = authState.User; // ✅ conservé
+        contextUser = authState.User;
 
         if (contextUser.Identity != null && contextUser.Identity.IsAuthenticated)
         {

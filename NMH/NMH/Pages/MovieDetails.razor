@@ -1,0 +1,36 @@
+@page "/movie/{Id:int}"
+@using NMH.Shared.DTOs
+@inject NMH.Services.TmdbService TmdbService
+
+<h3>Détails du film</h3>
+
+<p>Movie ID : @Id</p>
+
+@if (movie == null)
+{
+    <p>Chargement...</p>
+}
+else
+{
+    <h1>@movie.Title</h1>
+    <p>@movie.Overview</p>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private MovieDto? movie;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            movie = await TmdbService.GetMovieByIdAsync(Id);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+}

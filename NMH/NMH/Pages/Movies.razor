@@ -1,5 +1,6 @@
 @page "/movies"
 @inject NMH.Services.TmdbService TmdbService
+@inject NavigationManager Navigation
 
 <h3>🎬 Films tendances</h3>
 
@@ -16,7 +17,7 @@ else
     <div class="movie-grid">
         @foreach (var movie in movies)
         {
-            <div class="movie-card">
+            <div class="movie-card" @onclick="() => GoToDetails(movie.Id)" style="cursor:pointer;">
                 @if (!string.IsNullOrEmpty(movie.PosterFullPath))
                 {
                     <img src="@movie.PosterFullPath" alt="@movie.Title" />
@@ -25,6 +26,7 @@ else
                 {
                     <div class="no-poster">Pas d'affiche</div>
                 }
+
                 <h4>@movie.Title (@movie.ReleaseDate?.ToString("yyyy"))</h4>
                 <p>@movie.Overview</p>
             </div>
@@ -38,5 +40,10 @@ else
     protected override async Task OnInitializedAsync()
     {
         movies = await TmdbService.GetTrendingMoviesAsync();
+    }
+
+    private void GoToDetails(int id)
+    {
+        Navigation.NavigateTo($"/movie/{id}");
     }
 }

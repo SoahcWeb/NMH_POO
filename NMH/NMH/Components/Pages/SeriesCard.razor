@@ -1,0 +1,28 @@
+@using NMH.Shared.DTOs
+@inject NavigationManager Navigation
+
+<NavLink href="@($"/series/{Series.Id}")" class="carousel-item card h-100 d-block">
+
+    <img src="@Series.PosterFullPath" class="card-img-top" alt="@Series.Name" />
+
+    <div class="card-body">
+        <h5 class="card-title">@Series.Name</h5>
+
+        <p class="card-text">
+            @(string.IsNullOrEmpty(Series.Overview)
+                ? "Pas de description disponible"
+                : Series.Overview.Substring(0, Math.Min(80, Series.Overview.Length)) + "...")
+        </p>
+
+        <p class="card-text">
+            <small>
+                Année : @(Series.FirstAirDate?.Year.ToString() ?? "N/A")
+            </small>
+        </p>
+    </div>
+
+</NavLink>
+
+@code {
+    [Parameter] public SeriesDto Series { get; set; } = new();
+}

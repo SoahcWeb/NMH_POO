@@ -11,11 +11,17 @@
     <nav>
         <ul>
             <li>🙏 Namasté @username</li>
+
             <li><NavLink href="/">Accueil</NavLink></li>
-            <li><NavLink href="/movies">Films tendances</NavLink></li>
-            <li><NavLink href="/series">Séries tendances</NavLink></li>
-            <li><NavLink href="/profile">Mon compte</NavLink></li>
-            <li><button @onclick="Logout">Déconnexion</button></li>
+            <li><NavLink href="/search">Recherche</NavLink></li>
+            <li><NavLink href="/favorites">Favoris</NavLink></li>
+            <li><NavLink href="/library">Bibliothèque</NavLink></li>
+
+            <li>
+                <a href="#" @onclick="Logout" @onclick:preventDefault>
+                    Déconnexion
+                </a>
+            </li>
         </ul>
     </nav>
 

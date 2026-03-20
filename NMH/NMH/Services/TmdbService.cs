@@ -79,10 +79,10 @@ namespace NMH.Services
                 url += $"&query={Uri.EscapeDataString(query)}";
 
             if (year.HasValue)
-                url += $"&year={year.Value}";
+    url += $"&year={year.Value}";
 
-            if (genreId.HasValue)
-                url += $"&with_genres={genreId.Value}";
+if (genreId.HasValue)
+    url += $"&with_genres={genreId.Value}";
 
             if (!string.IsNullOrWhiteSpace(actor))
             {
@@ -105,6 +105,22 @@ namespace NMH.Services
                 $"https://api.themoviedb.org/3/genre/{mediaType}/list?api_key={_apiKey}&language=en-US");
 
             return response?.Genres ?? new List<GenreDto>();
+        }
+
+        // ✅ AJOUT : Détails d’un film par ID
+        public async Task<MovieDto?> GetMovieByIdAsync(int id)
+        {
+            return await _httpClient.GetFromJsonAsync<MovieDto>(
+                $"https://api.themoviedb.org/3/movie/{id}?api_key={_apiKey}&language=fr-FR"
+            );
+        }
+
+        // ✅ AJOUT : Détails d’une série par ID
+        public async Task<SeriesDto?> GetSeriesByIdAsync(int id)
+        {
+            return await _httpClient.GetFromJsonAsync<SeriesDto>(
+                $"https://api.themoviedb.org/3/tv/{id}?api_key={_apiKey}&language=fr-FR"
+            );
         }
 
         // 🔹 DTO interne pour TMDB Trending

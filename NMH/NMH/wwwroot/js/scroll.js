@@ -1,20 +1,40 @@
-// scroll.js
-window.addEventListener('scroll', function() {
+// ==============================
+// SCROLL ANIMATION (TON CODE)
+// ==============================
+window.addEventListener('scroll', function () {
     const micro = document.getElementById('micro');
 
-    // ne rien faire si l'écran est petit
-    if(window.innerWidth <= 768) return;
+    // Sécurité si l'élément n'existe pas
+    if (!micro) return;
+
+    // Ne rien faire si écran petit
+    if (window.innerWidth <= 768) return;
 
     const scrollY = window.scrollY || window.pageYOffset;
 
-    // Quand l'image doit commencer à entrer (en px de scroll)
-    const triggerEnter = 200; // ajuste selon où tu veux l'image
-    // Quand l'image doit repartir (en px de scroll)
-    const triggerLeave = 420; // ajuste selon où tu veux la faire disparaître
+    // Déclenchement entrée / sortie
+    const triggerEnter = 200;
+    const triggerLeave = 420;
 
-    if(scrollY > triggerEnter && scrollY < triggerLeave) {
-        micro.classList.add('active'); // l'image glisse jusqu'à 180px du bord gauche
+    if (scrollY > triggerEnter && scrollY < triggerLeave) {
+        micro.classList.add('active');
     } else {
-        micro.classList.remove('active'); // l'image repart hors écran
+        micro.classList.remove('active');
     }
 });
+
+
+// ==============================
+// CAROUSEL SCROLL (POUR BLAZOR)
+// ==============================
+window.scrollCarousel = (carousel, amount) => {
+    if (!carousel) {
+        console.warn("❌ Carousel non trouvé");
+        return;
+    }
+
+    carousel.scrollBy({
+        left: amount,
+        behavior: 'smooth'
+    });
+};

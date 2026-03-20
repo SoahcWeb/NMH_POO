@@ -1,22 +1,28 @@
 @using NMH.Shared.DTOs
 @inject NavigationManager Navigation
 
-<div class="card h-100">
-    <a @onclick="() => NavigateToMovie(Movie.Id)">
-        <img src="@Movie.PosterFullPath" class="card-img-top" alt="@Movie.Title" />
-    </a>
+<NavLink href="@($"/movie/{Movie.Id}")" class="carousel-item card h-100 d-block">
+
+    <img src="@Movie.PosterFullPath" class="card-img-top" alt="@Movie.Title" />
+
     <div class="card-body">
         <h5 class="card-title">@Movie.Title</h5>
-        <p class="card-text">@Movie.Overview?.Substring(0, Math.Min(80, Movie.Overview?.Length ?? 0))...</p>
-        <p class="card-text"><small>Année : @(Movie.ReleaseDate?.Year.ToString() ?? "N/A")</small></p>
+
+        <p class="card-text">
+            @(string.IsNullOrEmpty(Movie.Overview)
+                ? "Pas de description disponible"
+                : Movie.Overview.Substring(0, Math.Min(80, Movie.Overview.Length)) + "...")
+        </p>
+
+        <p class="card-text">
+            <small>
+                Année : @(Movie.ReleaseDate?.Year.ToString() ?? "N/A")
+            </small>
+        </p>
     </div>
-</div>
+
+</NavLink>
 
 @code {
-    [Parameter] public MovieDto Movie { get; set; } = new MovieDto();
-
-    private void NavigateToMovie(int id)
-    {
-        Navigation.NavigateTo($"/movie/{id}");
-    }
+    [Parameter] public MovieDto Movie { get; set; } = new();
 }
