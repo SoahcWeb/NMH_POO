@@ -1,7 +1,10 @@
 ﻿@page "/"
 @using NMH.Services
 @using NMH.Shared.DTOs
+@using Microsoft.AspNetCore.Components.Authorization
 @inject TmdbService Tmdb
+@inject AuthenticationStateProvider AuthStateProvider
+@inject NavigationManager Navigation
 
 <div class="home-layout">
 
@@ -26,7 +29,7 @@
             Explorez, organisez et profitez <br /> de vos films et séries
         </h1>
 
-        <!-- HERO CONTENT AVEC IMAGE DÉCORATIVE -->
+        <!-- HERO CONTENT -->
         <div class="hero-content">
             <div class="hero-text">
                 <p class="home-desc">
@@ -41,17 +44,19 @@
                         <span class="nethra">Nethra</span> <span class="media-hub">Media Hub</span>
                     </strong> rend votre expérience audiovisuelle fluide, intuitive et sur mesure, transformant chaque séance en un moment unique. 
                     Que vous soyez passionné de classiques, de blockbusters ou de séries captivantes, plongez dans votre univers visuel et profitez d’un contenu organisé pour vous. 
-                    Avec <strong><span class="nethra">Nethra</span> <span class="media-hub">Media Hub</span></strong>, le cinéma et les séries se vivent et se savourent à votre façon.
+                    Avec <strong>
+                        <span class="nethra">Nethra</span> <span class="media-hub">Media Hub</span>
+                    </strong>, le cinéma et les séries se vivent et se savourent à votre façon.
                 </p>
             </div>
 
             <img src="images/micro.png" alt="Illustration décorative" class="hero-image" id="micro" />
         </div>
 
-        <!-- PREMIER SEPARATEUR -->
+        <!-- SEPARATEUR -->
         <div class="section-divider"></div>
 
-        <!-- SECTION AVEC 2 CARTES -->
+        <!-- FEATURES (2 cartes) -->
         <div class="home-features-bg">
             <div class="home-features-two">
 
@@ -80,9 +85,10 @@
             </div>
         </div>
 
-        <!-- DEUXIÈME SEPARATEUR -->
+        <!-- SEPARATEUR -->
         <div id="nouveautes" class="section-divider"></div>
-        <!-- SECTION BIBLIOTHÈQUE -->
+
+        <!-- BIBLIOTHÈQUE -->
         <div class="home-features-single">
             <div class="feature-card library-card">
 
@@ -101,14 +107,16 @@
             </div>
         </div>
 
-        <!-- TROISIÈME SEPARATEUR -->
+        <!-- SEPARATEUR -->
         <div class="section-divider"></div>
 
         <!-- SECTION FINALE -->
         <div class="final-section">
             <p class="home-desc mt-12 text-justify">
                 Pour vivre une expérience audiovisuelle unique, rejoignez dès maintenant 
-                <strong><span class="nethra">Nethra</span> <span class="media-hub">Media Hub</span></strong> !  
+                <strong>
+                    <span class="nethra">Nethra</span> <span class="media-hub">Media Hub</span>
+                </strong> !  
                 Inscrivez-vous ou connectez-vous pour explorer, organiser et profiter pleinement de tous vos films et séries favoris, où que vous soyez.
             </p>
 
@@ -121,7 +129,7 @@
 
     </main>
 
-    <!-- BANDE DROITE (ANIMÉE) -->
+    <!-- BANDE DROITE -->
     <div class="poster-band right">
         <div class="poster-track">
             @foreach (var movie in rightMovies)
@@ -144,6 +152,15 @@
 
     protected override async Task OnInitializedAsync()
     {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity?.IsAuthenticated == true)
+        {
+            Navigation.NavigateTo("/userhome", forceLoad: true);
+            return;
+        }
+
         var movies = await Tmdb.GetPopularMoviesAsync(20);
 
         var random = new Random();

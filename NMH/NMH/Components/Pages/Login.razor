@@ -1,107 +1,100 @@
 @page "/login"
 @layout AuthLayout
-@using NMH.Shared.DTOs
+
 @using Microsoft.AspNetCore.Components.Forms
-@inject HttpClient Http
+@using System.Net.Http.Json
 @inject NavigationManager Navigation
-@using Microsoft.JSInterop
-@inject IJSRuntime JS
+@inject HttpClient Http
+@inject NMH.Services.CustomAuthStateProvider AuthStateProvider
 
 <main class="auth-main auth-offset">
-
     <div class="auth-container">
-
-        <!-- WRAPPER FORMULAIRE + ERREUR -->
         <div class="auth-form-wrapper">
-
-            <!-- FORMULAIRE -->
             <div class="auth-card">
-
                 <h3 class="auth-title">Connexion</h3>
 
-                <EditForm Model="@loginModel" OnValidSubmit="@HandleLogin">
-
+                <EditForm Model="@model" OnValidSubmit="HandleLogin">
                     <DataAnnotationsValidator />
-                    <ValidationSummary />
 
-                    <InputText class="auth-input"
-                               @bind-Value="loginModel.UserName"
-                               placeholder="Nom d'utilisateur" />
+                    <input class="auth-input"
+                           @bind="model.UserName"
+                           placeholder="Nom d'utilisateur" />
 
                     <div class="password-wrapper">
-                        <InputText class="auth-input"
-                                   @bind-Value="loginModel.Password"
-                                   type="@passwordFieldType"
-                                   placeholder="Mot de passe" />
+                        <input class="auth-input"
+                               type="@passwordFieldType"
+                               @bind="model.Password"
+                               placeholder="Mot de passe" />
 
                         <button type="button"
                                 class="password-toggle"
                                 @onclick="TogglePassword">👁</button>
                     </div>
 
-                    <!-- BOUTON CENTRÉ AVEC WRAPPER -->
                     <div class="login-form-button-wrapper">
                         <button type="submit" class="login-form-button">
                             <img src="/images/co001.png"
                                  alt="Se connecter" />
                         </button>
                     </div>
-
                 </EditForm>
 
                 <a class="auth-link auth-link-large" href="/register">
                     Pas encore inscrit ?
                 </a>
-
             </div>
 
-            <!-- CARTE ERREUR -->
             @if (!string.IsNullOrWhiteSpace(message))
             {
                 <div class="auth-error-card">
-
                     <h4>⚠ Problème de connexion</h4>
-
                     <p>@message</p>
-
                 </div>
             }
-
         </div>
-
     </div>
-
 </main>
 
 @code {
-    private LoginDto loginModel = new LoginDto();
+    private LoginModel model = new();
     private string message = "";
-
     private string passwordFieldType = "password";
+
+    private async Task HandleLogin()
+    {
+        var response = await Http.PostAsJsonAsync("api/auth/login", model);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var result = await response.Content.ReadFromJsonAsync<LoginResponse>();
+
+            if (result != null && !string.IsNullOrEmpty(result.Token))
+            {
+                // ✅ CORRECTION ICI (plus de username en paramètre)
+                await AuthStateProvider.NotifyUserAuthentication(result.Token);
+
+                Navigation.NavigateTo("/userhome", true);
+            }
+            else
+            {
+                message = "Erreur lors de la récupération du token";
+            }
+        }
+        else
+        {
+            message = "Identifiants incorrects";
+        }
+    }
 
     private void TogglePassword()
     {
         passwordFieldType = passwordFieldType == "password" ? "text" : "password";
     }
 
-    private async Task HandleLogin()
+    public class LoginModel
     {
-        var response = await Http.PostAsJsonAsync(Navigation.BaseUri + "api/auth/login", loginModel);
-
-        if (response.IsSuccessStatusCode)
-        {
-            var token = await response.Content.ReadFromJsonAsync<LoginResponse>();
-            if (token != null)
-                await JS.InvokeVoidAsync("localStorage.setItem", "jwtToken", token.Token);
-
-            message = "Connexion réussie !";
-            Navigation.NavigateTo("/user/home");
-        }
-        else
-        {
-            var error = await response.Content.ReadAsStringAsync();
-            message = $"Erreur : {error}";
-        }
+        public string UserName { get; set; } = "";
+        public string Password { get; set; } = "";
     }
 
     public class LoginResponse

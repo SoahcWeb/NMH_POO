@@ -1,7 +1,12 @@
-@page "/user/home"
+@page "/userhome"
+@attribute [Authorize]
+
 @using NMH.Services
 @using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Authorization
 @using Microsoft.JSInterop
+@using System.Security.Claims
+
 @inject AuthenticationStateProvider AuthStateProvider
 @inject TmdbService Tmdb
 @inject IJSRuntime JS
@@ -9,14 +14,12 @@
 
 <PageTitle>Home Utilisateur</PageTitle>
 
-<h1 class="home-title">Bienvenue, @userName ! 🎬</h1>
-
 <section class="carousels">
 
-    @* CARROUSEL 1 : Films à la une *@
     <div class="carousel-wrapper" style="position:relative; margin-bottom:20px;">
         <h2>Les films à la une</h2>
         <button class="carousel-btn left" @onclick="() => ScrollLeft(carouselMoviesFeatured)" style="position:absolute; left:0; top:50%; transform:translateY(-50%); z-index:10;">‹</button>
+
         <div class="carousel" @ref="carouselMoviesFeatured" style="overflow-x:auto; white-space:nowrap; padding:10px; border:1px solid #ccc;">
             @if (featuredMovies is null)
             {
@@ -24,22 +27,23 @@
             }
             else
             {
-                @foreach (var movie in featuredMovies.Take(15))
+                @foreach (var movie in featuredMovies)
                 {
-                    <div style="display:inline-block; margin-right:10px; text-align:center;">
+                    <NavLink href="@($"/movie/{movie.Id}")" style="display:inline-block; margin-right:10px; text-align:center; text-decoration:none; color:inherit;">
                         <img src="@($"https://image.tmdb.org/t/p/w300{movie.PosterPath}")" alt="@movie.Title" style="width:120px; display:block; margin-bottom:5px;" />
                         <p style="font-size:0.8rem;">@movie.Title</p>
-                    </div>
+                    </NavLink>
                 }
             }
         </div>
+
         <button class="carousel-btn right" @onclick="() => ScrollRight(carouselMoviesFeatured)" style="position:absolute; right:0; top:50%; transform:translateY(-50%); z-index:10;">›</button>
     </div>
 
-    @* CARROUSEL 2 : Films populaires *@
     <div class="carousel-wrapper" style="position:relative; margin-bottom:20px;">
         <h2>Les films les plus populaires</h2>
         <button class="carousel-btn left" @onclick="() => ScrollLeft(carouselMoviesPopular)" style="position:absolute; left:0; top:50%; transform:translateY(-50%); z-index:10;">‹</button>
+
         <div class="carousel" @ref="carouselMoviesPopular" style="overflow-x:auto; white-space:nowrap; padding:10px; border:1px solid #ccc;">
             @if (popularMovies is null)
             {
@@ -47,22 +51,23 @@
             }
             else
             {
-                @foreach (var movie in popularMovies.Take(15))
+                @foreach (var movie in popularMovies)
                 {
-                    <div style="display:inline-block; margin-right:10px; text-align:center;">
+                    <NavLink href="@($"/movie/{movie.Id}")" style="display:inline-block; margin-right:10px; text-align:center; text-decoration:none; color:inherit;">
                         <img src="@($"https://image.tmdb.org/t/p/w300{movie.PosterPath}")" alt="@movie.Title" style="width:120px; display:block; margin-bottom:5px;" />
                         <p style="font-size:0.8rem;">@movie.Title</p>
-                    </div>
+                    </NavLink>
                 }
             }
         </div>
+
         <button class="carousel-btn right" @onclick="() => ScrollRight(carouselMoviesPopular)" style="position:absolute; right:0; top:50%; transform:translateY(-50%); z-index:10;">›</button>
     </div>
 
-    @* CARROUSEL 3 : Séries à la une *@
     <div class="carousel-wrapper" style="position:relative; margin-bottom:20px;">
         <h2>Les séries à la une</h2>
         <button class="carousel-btn left" @onclick="() => ScrollLeft(carouselSeriesFeatured)" style="position:absolute; left:0; top:50%; transform:translateY(-50%); z-index:10;">‹</button>
+
         <div class="carousel" @ref="carouselSeriesFeatured" style="overflow-x:auto; white-space:nowrap; padding:10px; border:1px solid #ccc;">
             @if (featuredSeries is null)
             {
@@ -70,22 +75,23 @@
             }
             else
             {
-                @foreach (var s in featuredSeries.Take(15))
+                @foreach (var s in featuredSeries)
                 {
-                    <div style="display:inline-block; margin-right:10px; text-align:center;">
+                    <NavLink href="@($"/series/{s.Id}")" style="display:inline-block; margin-right:10px; text-align:center; text-decoration:none; color:inherit;">
                         <img src="@($"https://image.tmdb.org/t/p/w300{s.PosterPath}")" alt="@s.Name" style="width:120px; display:block; margin-bottom:5px;" />
                         <p style="font-size:0.8rem;">@s.Name</p>
-                    </div>
+                    </NavLink>
                 }
             }
         </div>
+
         <button class="carousel-btn right" @onclick="() => ScrollRight(carouselSeriesFeatured)" style="position:absolute; right:0; top:50%; transform:translateY(-50%); z-index:10;">›</button>
     </div>
 
-    @* CARROUSEL 4 : Séries populaires *@
     <div class="carousel-wrapper" style="position:relative; margin-bottom:20px;">
         <h2>Les séries les plus populaires</h2>
         <button class="carousel-btn left" @onclick="() => ScrollLeft(carouselSeriesPopular)" style="position:absolute; left:0; top:50%; transform:translateY(-50%); z-index:10;">‹</button>
+
         <div class="carousel" @ref="carouselSeriesPopular" style="overflow-x:auto; white-space:nowrap; padding:10px; border:1px solid #ccc;">
             @if (popularSeries is null)
             {
@@ -93,15 +99,16 @@
             }
             else
             {
-                @foreach (var s in popularSeries.Take(15))
+                @foreach (var s in popularSeries)
                 {
-                    <div style="display:inline-block; margin-right:10px; text-align:center;">
+                    <NavLink href="@($"/series/{s.Id}")" style="display:inline-block; margin-right:10px; text-align:center; text-decoration:none; color:inherit;">
                         <img src="@($"https://image.tmdb.org/t/p/w300{s.PosterPath}")" alt="@s.Name" style="width:120px; display:block; margin-bottom:5px;" />
                         <p style="font-size:0.8rem;">@s.Name</p>
-                    </div>
+                    </NavLink>
                 }
             }
         </div>
+
         <button class="carousel-btn right" @onclick="() => ScrollRight(carouselSeriesPopular)" style="position:absolute; right:0; top:50%; transform:translateY(-50%); z-index:10;">›</button>
     </div>
 
@@ -114,27 +121,39 @@
     private List<SeriesDto>? popularSeries;
     private string userName = "";
 
+    private ClaimsPrincipal? contextUser;
+
     private ElementReference carouselMoviesFeatured;
     private ElementReference carouselMoviesPopular;
     private ElementReference carouselSeriesFeatured;
     private ElementReference carouselSeriesPopular;
 
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthStateTask { get; set; } = default!;
+
     protected override async Task OnInitializedAsync()
     {
-        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-        userName = user.Identity?.IsAuthenticated == true ? user.Identity.Name ?? "Utilisateur" : "Invité";
+        var authState = await AuthStateTask;
+        contextUser = authState.User;
 
-        // Charger les données TMDB et limiter à 15 éléments
+        if (contextUser.Identity != null && contextUser.Identity.IsAuthenticated)
+        {
+            userName = contextUser.Identity.Name ?? "Utilisateur";
+        }
+        else
+        {
+            userName = "Invité";
+        }
+
         featuredMovies = (await Tmdb.GetTrendingMoviesAsync()).Take(15).ToList();
         popularMovies = (await Tmdb.GetPopularMoviesAsync(15)).Take(15).ToList();
         featuredSeries = (await Tmdb.GetTrendingSeriesAsync()).Take(15).ToList();
         popularSeries = (await Tmdb.GetPopularSeriesAsync(15)).Take(15).ToList();
     }
 
-    private async Task ScrollLeft(ElementReference carousel) => 
+    private async Task ScrollLeft(ElementReference carousel) =>
         await JS.InvokeVoidAsync("scrollCarousel", carousel, -300);
 
-    private async Task ScrollRight(ElementReference carousel) => 
+    private async Task ScrollRight(ElementReference carousel) =>
         await JS.InvokeVoidAsync("scrollCarousel", carousel, 300);
 }

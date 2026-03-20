@@ -182,10 +182,15 @@
     justify-content: space-between;
     align-items: center;
     padding: 15px 30px;
-    background-color: #0F0F2F;
+
+    background: transparent;
+
     border-bottom: 1px solid #0F4F8F;
     color: #E0E6F0;
     font-family: sans-serif;
+
+    position: relative;
+    z-index: 2;
 }
 
 .header2 .logo img {
@@ -368,4 +373,23 @@ body > .container {
     transform: scale(1.08);
     filter: drop-shadow(0 0 6px #52C5FF)
             drop-shadow(0 0 12px #52C5FF);
+}
+
+.header-bg {
+    background-image: url('/images/ban004.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.home-main .home-desc span.nethra {
+    color: #05fcfe !important;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(5,252,254,0.7);
+}
+
+.home-main .home-desc span.media-hub {
+    color: #ee46c9 !important;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(238,70,201,0.7);
 }

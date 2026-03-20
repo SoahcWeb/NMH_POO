@@ -6,7 +6,19 @@
 
 <div class="page">
     
-    <Header />
+    <CascadingAuthenticationState>
+
+    <AuthorizeView>
+        <Authorized>
+            <HeaderConnected />
+        </Authorized>
+
+        <NotAuthorized>
+            <HeaderDisconnected />
+        </NotAuthorized>
+    </AuthorizeView>
+
+</CascadingAuthenticationState>
 
     <main>
         <article class="content">

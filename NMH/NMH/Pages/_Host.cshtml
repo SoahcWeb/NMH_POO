@@ -1,6 +1,7 @@
 @page "/"
 @namespace NMH.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.AspNetCore.Components.Authorization
 @{
     Layout = null;
 }
@@ -12,27 +13,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Nethra Media Hub</title>
 
-    <!-- Base href pour Blazor -->
     <base href="/" />
 
-    <!-- CSS global -->
-    <link href="~/bootstrap/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/css/site.css" rel="stylesheet" />         <!-- global -->
-    <link href="~/css/auth.css" rel="stylesheet" />         <!-- styles formulaire login -->
-    <link href="~/css/home.css" rel="stylesheet" />         <!-- styles home -->
-    <link href="~/css/userhome.css" rel="stylesheet" />     <!-- carrousels / bande de posters -->
-    <link href="~/css/components.css" rel="stylesheet" />   <!-- <-- ton nouveau fichier -->
+    <link href="bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/site.css" rel="stylesheet" />
+    <link href="css/auth.css" rel="stylesheet" />
+    <link href="css/home.css" rel="stylesheet" />
+    <link href="css/userhome.css" rel="stylesheet" />
+    <link href="css/components.css" rel="stylesheet" />
 
     <link rel="icon" type="image/png" href="~/favicon.png" />
 </head>
 <body>
-    <component type="typeof(NMH.Components.App)" render-mode="Server" />
 
-    <!-- JS pour scroll des carrousels -->
-    <script src="~/js/site.js"></script> 
+    <CascadingAuthenticationState>
+        <component type="typeof(NMH.Components.App)" render-mode="Server" />
+    </CascadingAuthenticationState>
 
-    <!-- JS pour l'image décorative qui glisse -->
-    <script src="~/js/scroll.js"></script>
+    <script src="js/site.js"></script> 
+    <script src="js/scroll.js"></script>
 
     <script src="_framework/blazor.server.js"></script>
 </body>

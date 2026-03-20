@@ -2,6 +2,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Server;
+using Blazored.LocalStorage;
+
 using NMH.Shared;
 using NMH.Data;
 using System.Text;
@@ -10,97 +15,100 @@ using NMH.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 🔹 Récupérer le JWT depuis la config
+// 🔹 JWT (pour API uniquement)
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var jwtKey = jwtSettings.GetValue<string>("Key");
 var jwtIssuer = jwtSettings.GetValue<string>("Issuer");
 var jwtAudience = jwtSettings.GetValue<string>("Audience");
-var jwtExpireHours = jwtSettings.GetValue<int>("ExpireHours");
 
-// 🔹 Services
+// 🔹 DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=nmh.db"));
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+// 🔹 Identity
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+{
+    options.Password.RequireDigit = true;
+    options.Password.RequiredLength = 6;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireLowercase = true;
+})
+.AddEntityFrameworkStores<ApplicationDbContext>()
+.AddDefaultTokenProviders();
 
+// 🔥 Blazor auth state
+builder.Services.AddCascadingAuthenticationState();
+
+// ✅ LocalStorage (AJOUT)
+builder.Services.AddBlazoredLocalStorage();
+
+// ✅ CustomAuthStateProvider (déjà bon)
+builder.Services.AddScoped<AuthenticationStateProvider, NMH.Services.CustomAuthStateProvider>();
+builder.Services.AddScoped<NMH.Services.CustomAuthStateProvider>();
+
+// 🔹 Cookie config
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/login";
+    options.ExpireTimeSpan = TimeSpan.FromHours(8);
+    options.SlidingExpiration = true;
+    options.Cookie.HttpOnly = true;
+});
+
+// 🔹 Razor + Blazor
 builder.Services.AddRazorPages();
-
-// 🔹 Blazor Server avec erreurs détaillées
 builder.Services.AddServerSideBlazor()
-    .AddCircuitOptions(options =>
-    {
-        options.DetailedErrors = true;
-    });
+    .AddCircuitOptions(options => { options.DetailedErrors = true; });
+
+// 🔹 HttpClient
+builder.Services.AddScoped(sp => new HttpClient
+{
+    BaseAddress = new Uri("http://localhost:5244")
+});
 
 builder.Services.AddControllers();
 
-// 🔹 JWT Authentication
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
+// 🔹 Auth JWT
+builder.Services.AddAuthentication()
+    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
     {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidIssuer = jwtIssuer,
-        ValidAudience = jwtAudience,
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
-        ValidateLifetime = true
-    };
-});
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidIssuer = jwtIssuer,
+            ValidAudience = jwtAudience,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey ?? "")),
+            ValidateLifetime = true
+        };
+    });
+
+builder.Services.AddAuthorization();
 
 // 🔹 Service TMDB
 builder.Services.AddHttpClient<NMH.Services.TmdbService>();
 
 var app = builder.Build();
 
-// Middleware
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
 }
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseAntiforgery();
 
-// 🔹 Endpoints API
-app.MapGet("/api/test", () => "Hello NMH API is working 🚀");
-
-app.MapGet("/api/movies", [Microsoft.AspNetCore.Authorization.Authorize] async (ApplicationDbContext db) =>
-    await db.Movies.ToListAsync());
-
-app.MapPost("/api/movies", [Microsoft.AspNetCore.Authorization.Authorize] async (MovieEntity movie, ApplicationDbContext db) =>
-{
-    db.Movies.Add(movie);
-    await db.SaveChangesAsync();
-    return Results.Created($"/api/movies/{movie.Id}", movie);
-});
-
-app.MapGet("/api/tmdb/movies", async (NMH.Services.TmdbService tmdb) =>
-{
-    var movies = await tmdb.GetTrendingMoviesAsync();
-    return Results.Ok(movies);
-});
-
-app.MapGet("/api/tmdb/series", async (NMH.Services.TmdbService tmdb) =>
-{
-    var series = await tmdb.GetTrendingSeriesAsync();
-    return Results.Ok(series);
-});
-
 app.MapControllers();
 
-// 🔹 Blazor Server endpoints
-app.MapBlazorHub();               // WebSocket pour @onclick et interactivité
-app.MapFallbackToPage("/_Host"); // Fallback vers ton App.razor / Search.razor
+// Blazor
+app.MapBlazorHub();
+app.MapFallbackToPage("/_Host");
 
 app.Run();

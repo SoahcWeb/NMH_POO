@@ -1,13 +1,57 @@
-<header class="main-header header2">
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.JSInterop
+@inject AuthenticationStateProvider AuthStateProvider
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject IJSRuntime JS
+@inject NMH.Services.CustomAuthStateProvider AuthProvider
+
+<header class="main-header header2 header-bg">
 
     <nav>
         <ul>
+            <li>🙏 Namasté @username</li>
+
             <li><NavLink href="/">Accueil</NavLink></li>
-            <li><NavLink href="/movies">Films tendances</NavLink></li>
-            <li><NavLink href="/series">Séries tendances</NavLink></li>
-            <li><NavLink href="/profile">Mon compte</NavLink></li>
-            <li><NavLink href="/logout">Déconnexion</NavLink></li>
+            <li><NavLink href="/search">Recherche</NavLink></li>
+            <li><NavLink href="/favorites">Favoris</NavLink></li>
+            <li><NavLink href="/library">Bibliothèque</NavLink></li>
+
+            <li>
+                <a href="#" @onclick="Logout" @onclick:preventDefault>
+                    Déconnexion
+                </a>
+            </li>
         </ul>
     </nav>
 
 </header>
+
+@code {
+    private string? username;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity != null && user.Identity.IsAuthenticated)
+        {
+            username = user.Identity.Name;
+        }
+    }
+
+    private async Task Logout()
+    {
+        await Http.PostAsync("api/auth/logout", null);
+
+        // 🔥 Supprime le token JWT
+        await JS.InvokeVoidAsync("localStorage.removeItem", "jwtToken");
+
+        // 🔥 Informe Blazor que l'utilisateur est déconnecté
+        await AuthProvider.NotifyUserLogout();
+
+        // 🔥 Recharge complètement l'app pour reset l'état
+        Navigation.NavigateTo("/", forceLoad: true);
+    }
+}
