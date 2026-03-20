@@ -18,6 +18,7 @@ else
         @foreach (var movie in movies)
         {
             <div class="movie-card" @onclick="() => GoToDetails(movie.Id)" style="cursor:pointer;">
+                
                 @if (!string.IsNullOrEmpty(movie.PosterFullPath))
                 {
                     <img src="@movie.PosterFullPath" alt="@movie.Title" />
@@ -27,8 +28,19 @@ else
                     <div class="no-poster">Pas d'affiche</div>
                 }
 
-                <h4>@movie.Title (@movie.ReleaseDate?.ToString("yyyy"))</h4>
-                <p>@movie.Overview</p>
+                <h4>
+                    @movie.Title 
+                    (@(movie.ReleaseDate.HasValue ? movie.ReleaseDate.Value.ToString("yyyy") : "N/A"))
+                </h4>
+
+                <p>
+                    @(string.IsNullOrEmpty(movie.Overview)
+                        ? "Aucun synopsis disponible."
+                        : (movie.Overview.Length > 120
+                            ? movie.Overview.Substring(0, 120) + "..."
+                            : movie.Overview))
+                </p>
+
             </div>
         }
     </div>

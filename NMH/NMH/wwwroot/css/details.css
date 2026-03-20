@@ -1,0 +1,279 @@
+/* ============================================================ */
+/* ------------------ DETAIL CARD NETHRA ---------------------- */
+/* ============================================================ */
+
+.nethra-detail-card {
+    margin: 20px;
+    padding: 20px;
+
+    border: 2px solid #C96BFF;
+    border-radius: 16px;
+
+    background: rgba(15,15,47,0.85);
+    backdrop-filter: blur(8px);
+
+    color: #E0E6F0;
+
+    box-shadow: 0 0 15px rgba(201,107,255,0.45);
+
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.nethra-detail-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(10,10,30,0.85);
+    backdrop-filter: blur(6px);
+}
+
+.nethra-detail-card > * {
+    position: relative;
+    z-index: 2;
+}
+
+/* ============================================================ */
+/* HEADER */
+/* ============================================================ */
+
+.detail-header {
+    text-align: center;
+}
+
+/* ROW HEADER CENTRÉ */
+.header-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+/* BACK ICON (2x + position fixe) */
+.back-icon {
+    width: 5rem;
+    height: 5rem;
+    cursor: pointer;
+    transition: 0.25s;
+
+    position: absolute;
+    left: 0;
+}
+
+.back-icon:hover {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 8px #52C5FF);
+}
+
+/* TITRE GROUP */
+.title-group {
+    text-align: center;
+}
+
+/* TITRE */
+.detail-header h1 {
+    color: #52C5FF;
+    text-shadow: 0 0 10px rgba(82,197,255,0.6);
+
+    display: inline-flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* INLINE TAGLINE */
+.inline-tagline {
+    font-size: 1rem;
+    font-weight: normal;
+    color: #A8B4C8;
+    margin-left: 10px;
+    font-style: italic;
+}
+
+/* ============================================================ */
+/* SEPARATOR */
+/* ============================================================ */
+
+.separator {
+    height: 2px;
+    margin: 20px 0;
+    background: linear-gradient(to right, #0F0F2F, #0F4F8F, #0F0F2F);
+}
+
+.nethra-detail-card .separator {
+    margin: 10px 0;
+}
+
+/* ============================================================ */
+/* BODY LAYOUT */
+/* ============================================================ */
+
+.detail-body {
+    display: flex;
+    gap: 20px;
+}
+
+/* LEFT */
+.detail-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* RIGHT */
+.detail-right {
+    flex: 2;
+}
+
+/* ============================================================ */
+/* POSTER */
+/* ============================================================ */
+
+.detail-poster {
+    width: 100%;
+    max-width: 250px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(82,197,255,0.4);
+}
+
+/* ============================================================ */
+/* RATING */
+/* ============================================================ */
+
+.rating-trailer {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.rating {
+    font-size: 1.2rem;
+    color: #52C5FF;
+}
+
+.rating-trailer a {
+    color: #C96BFF;
+    text-decoration: none;
+}
+
+/* ============================================================ */
+/* ACTIONS */
+/* ============================================================ */
+
+.actions {
+    margin-top: 15px;
+    display: flex;
+    gap: 15px;
+}
+
+.action-icon {
+    width: 40px;
+    cursor: pointer;
+    transition: transform 0.3s, filter 0.3s;
+}
+
+.action-icon:hover {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 8px #52C5FF);
+}
+
+.actions-right {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+.detail-right .actions {
+    margin: 10px 0 15px 0;
+}
+
+/* ============================================================ */
+/* TAGLINE (bloc existant) */
+/* ============================================================ */
+
+.tagline {
+    font-style: italic;
+    color: #A8B4C8;
+    margin-bottom: 10px;
+}
+
+/* ============================================================ */
+/* TRAILER */
+/* ============================================================ */
+
+.trailer-container {
+    margin-top: 15px;
+    width: 100%;
+    max-width: 250px;
+}
+
+.trailer-container iframe {
+    width: 100%;
+    height: 150px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+/* ============================================================ */
+/* RATING BADGE */
+/* ============================================================ */
+
+.rating-badge {
+    background: #0F4F8F;
+    padding: 8px 14px;
+    border-radius: 20px;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(82,197,255,0.6);
+}
+
+/* ============================================================ */
+/* TRAILER BUTTON */
+/* ============================================================ */
+
+.trailer-btn {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 8px 16px;
+
+    background: linear-gradient(45deg, #C96BFF, #52C5FF);
+    border-radius: 20px;
+
+    color: white;
+    text-decoration: none;
+
+    transition: transform 0.3s;
+}
+
+.trailer-btn:hover {
+    transform: scale(1.05);
+}
+
+/* ============================================================ */
+/* CAROUSEL */
+/* ============================================================ */
+
+.carousel {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+.carousel-item {
+    min-width: 120px;
+    text-align: center;
+}
+
+.carousel-item img {
+    width: 100%;
+    border-radius: 10px;
+    transition: transform 0.3s;
+}
+
+.carousel-item img:hover {
+    transform: scale(1.05);
+}

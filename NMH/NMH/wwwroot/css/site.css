@@ -393,3 +393,7 @@ body > .container {
     font-weight: bold;
     text-shadow: 0 0 8px rgba(238,70,201,0.7);
 }
+
+body {
+    background-color: #0F0F2F;
+}

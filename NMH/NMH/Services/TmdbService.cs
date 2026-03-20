@@ -34,7 +34,6 @@ namespace NMH.Services
             return response?.Results ?? new List<SeriesDto>();
         }
 
-        // 🔹 NOUVELLES MÉTHODES POUR LES POPULAIRES
         public async Task<List<MovieDto>> GetPopularMoviesAsync(int count = 10)
         {
             var response = await _httpClient.GetFromJsonAsync<TmdbTrendingResponse<MovieDto>>(
@@ -51,7 +50,6 @@ namespace NMH.Services
             return response?.Results?.Take(count).ToList() ?? new List<SeriesDto>();
         }
 
-        // 🔎 RECHERCHE MULTI SIMPLE
         public async Task<SearchResponseDto> SearchMultiAsync(string query, int page = 1)
         {
             var response = await _httpClient.GetFromJsonAsync<SearchResponseDto>(
@@ -61,7 +59,6 @@ namespace NMH.Services
             return response ?? new SearchResponseDto();
         }
 
-        // 🔎 RECHERCHE AVANCÉE POUR BLAZOR
         public async Task<SearchResponseDto> SearchAsync(
             string query,
             string mediaType = "movie",
@@ -79,10 +76,10 @@ namespace NMH.Services
                 url += $"&query={Uri.EscapeDataString(query)}";
 
             if (year.HasValue)
-    url += $"&year={year.Value}";
+                url += $"&year={year.Value}";
 
-if (genreId.HasValue)
-    url += $"&with_genres={genreId.Value}";
+            if (genreId.HasValue)
+                url += $"&with_genres={genreId.Value}";
 
             if (!string.IsNullOrWhiteSpace(actor))
             {
@@ -98,7 +95,6 @@ if (genreId.HasValue)
             return response ?? new SearchResponseDto();
         }
 
-        // 🔹 Liste des genres pour dropdown
         public async Task<List<GenreDto>> GetGenresAsync(string mediaType = "movie")
         {
             var response = await _httpClient.GetFromJsonAsync<GenresResponseDto>(
@@ -107,26 +103,106 @@ if (genreId.HasValue)
             return response?.Genres ?? new List<GenreDto>();
         }
 
-        // ✅ AJOUT : Détails d’un film par ID
+        // =====================================================
+        // ✅ GET MOVIE BY ID (ENRICHI)
+        // =====================================================
         public async Task<MovieDto?> GetMovieByIdAsync(int id)
         {
-            return await _httpClient.GetFromJsonAsync<MovieDto>(
+            var movie = await _httpClient.GetFromJsonAsync<MovieDto>(
                 $"https://api.themoviedb.org/3/movie/{id}?api_key={_apiKey}&language=fr-FR"
             );
+
+            if (movie == null)
+                return null;
+
+            // Credits
+            var credits = await _httpClient.GetFromJsonAsync<CreditsResponse>(
+                $"https://api.themoviedb.org/3/movie/{id}/credits?api_key={_apiKey}&language=fr-FR"
+            );
+
+            if (credits?.Cast != null)
+            {
+                movie.Cast = credits.Cast.Select(c => new CastDto
+                {
+                    Name = c.Name,
+                    ProfilePath = c.ProfilePath
+                }).ToList();
+            }
+
+            // Similar movies
+            var similar = await _httpClient.GetFromJsonAsync<TmdbTrendingResponse<MovieDto>>(
+                $"https://api.themoviedb.org/3/movie/{id}/similar?api_key={_apiKey}&language=fr-FR&page=1"
+            );
+
+            movie.SimilarMovies = similar?.Results ?? new List<MovieDto>();
+
+            // Videos (Trailer)
+            var videos = await _httpClient.GetFromJsonAsync<VideosResponse>(
+                $"https://api.themoviedb.org/3/movie/{id}/videos?api_key={_apiKey}&language=fr-FR"
+            );
+
+            var trailer = videos?.Results?
+                .FirstOrDefault(v => v.Type == "Trailer" && v.Site == "YouTube");
+
+            if (trailer != null)
+            {
+                movie.TrailerUrl = $"https://www.youtube.com/watch?v={trailer.Key}";
+            }
+
+            // Genres text
+            if (movie.Genres != null)
+            {
+                movie.GenresText = string.Join(", ", movie.Genres.Select(g => g.Name));
+            }
+
+            // Production companies text
+            if (movie.ProductionCompanies != null)
+            {
+                movie.ProductionCompaniesText = string.Join(", ", movie.ProductionCompanies.Select(p => p.Name));
+            }
+
+            return movie;
         }
 
-        // ✅ AJOUT : Détails d’une série par ID
         public async Task<SeriesDto?> GetSeriesByIdAsync(int id)
         {
-            return await _httpClient.GetFromJsonAsync<SeriesDto>(
+            var response = await _httpClient.GetFromJsonAsync<SeriesDto>(
                 $"https://api.themoviedb.org/3/tv/{id}?api_key={_apiKey}&language=fr-FR"
             );
+
+            return response;
         }
 
-        // 🔹 DTO interne pour TMDB Trending
+        // =====================================================
+        // INTERNAL DTOs
+        // =====================================================
+
         private class TmdbTrendingResponse<T>
         {
             public List<T>? Results { get; set; }
+        }
+
+        private class CreditsResponse
+        {
+            public List<CastItem>? Cast { get; set; }
+        }
+
+        private class CastItem
+        {
+            public string Name { get; set; } = string.Empty;
+            public string? ProfilePath { get; set; }
+        }
+
+        private class VideosResponse
+        {
+            public List<VideoItem>? Results { get; set; }
+        }
+
+        private class VideoItem
+        {
+            public string Key { get; set; } = string.Empty;
+            public string Site { get; set; } = string.Empty;
+            public string Type { get; set; } = string.Empty;
         }
     }
 }
