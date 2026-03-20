@@ -1,9 +1,12 @@
 @using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.JSInterop
 @inject AuthenticationStateProvider AuthStateProvider
 @inject HttpClient Http
 @inject NavigationManager Navigation
+@inject IJSRuntime JS
+@inject NMH.Services.CustomAuthStateProvider AuthProvider
 
-<header class="main-header header2">
+<header class="main-header header2 header-bg">
 
     <nav>
         <ul>
@@ -35,6 +38,14 @@
     private async Task Logout()
     {
         await Http.PostAsync("api/auth/logout", null);
-        Navigation.NavigateTo("/", true);
+
+        // 🔥 Supprime le token JWT
+        await JS.InvokeVoidAsync("localStorage.removeItem", "jwtToken");
+
+        // 🔥 Informe Blazor que l'utilisateur est déconnecté
+        await AuthProvider.NotifyUserLogout();
+
+        // 🔥 Recharge complètement l'app pour reset l'état
+        Navigation.NavigateTo("/", forceLoad: true);
     }
 }
