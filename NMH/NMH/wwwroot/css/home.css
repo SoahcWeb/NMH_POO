@@ -9,6 +9,9 @@
     width: 200px;
     overflow: hidden;
     z-index: 10;
+
+    /* ✅ font globale */
+    font-family: 'Roboto Mono', monospace;
 }
 
 .poster-band.left {
@@ -59,6 +62,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    /* ✅ font globale */
+    font-family: 'Roboto Mono', monospace;
 }
 
 /* ============================================================ */
@@ -76,6 +82,9 @@
     outline: none;
     background: transparent;
     box-shadow: none;
+
+    /* ✅ Orbitron pour titre */
+    font-family: 'Orbitron', sans-serif;
 }
 
 .home-desc {
@@ -85,6 +94,9 @@
     margin-bottom: 1.5rem;
     line-height: 1.6;
     text-align: justify;
+
+    /* déjà global Roboto Mono */
+    font-family: 'Roboto Mono', monospace;
 }
 
 /* HERO layout */
@@ -138,6 +150,8 @@
     max-width: 900px;
     width: 100%;
     margin-bottom: 2rem;
+
+    font-family: 'Roboto Mono', monospace;
 }
 
 .home-features-single {
@@ -146,6 +160,8 @@
     max-width: 900px;
     width: 100%;
     margin-bottom: 3rem;
+
+    font-family: 'Roboto Mono', monospace;
 }
 
 .home-features-bg {
@@ -160,6 +176,8 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+
+    font-family: 'Roboto Mono', monospace;
 }
 
 /* ajustement séparateur */
@@ -199,4 +217,3 @@
     transform: scale(1.08);
     filter: drop-shadow(0 0 6px #52C5FF) drop-shadow(0 0 12px #52C5FF);
 }
-

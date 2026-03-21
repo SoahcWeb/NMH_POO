@@ -3,11 +3,10 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @inject NavigationManager Navigation
 @inject AuthenticationStateProvider AuthStateProvider
+@inject NMH.Services.FavoritesService FavoritesService
 
 <div class="page">
     
-    <CascadingAuthenticationState>
-
     <AuthorizeView>
         <Authorized>
             <HeaderConnected />
@@ -17,8 +16,6 @@
             <HeaderDisconnected />
         </NotAuthorized>
     </AuthorizeView>
-
-</CascadingAuthenticationState>
 
     <main>
         <article class="content">
@@ -34,6 +31,8 @@
 
     protected override async Task OnInitializedAsync()
     {
+        // ✅ Initialisation des favoris (AJOUT UNIQUEMENT)
+
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
         if (user.Identity?.IsAuthenticated ?? false)

@@ -5,6 +5,9 @@
 .carousels {
     padding: 2rem 1rem;
     background: #0F0F2F;
+
+    /* ✅ police globale */
+    font-family: 'Roboto Mono', monospace;
 }
 
 /* Wrapper */
@@ -20,6 +23,9 @@
     margin-bottom: 1rem;
     color: #52C5FF;
     text-shadow: 0 0 10px rgba(82,197,255,0.5);
+
+    /* ✅ Orbitron pour titres */
+    font-family: 'Orbitron', sans-serif;
 }
 
 /* ============================================================ */
@@ -32,6 +38,8 @@
     gap: 1rem;
     scroll-behavior: smooth;
     padding-bottom: 0.5rem;
+
+    font-family: 'Roboto Mono', monospace;
 }
 
 .carousel::-webkit-scrollbar {
@@ -59,10 +67,12 @@
     box-shadow: 0 0 10px rgba(82,197,255,0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 
-    /* ✅ IMPORTANT pour le clic */
     display: block;
     text-decoration: none;
     color: inherit;
+
+    /* ✅ police texte carte */
+    font-family: 'Roboto Mono', monospace;
 }
 
 .carousel-item:hover {
@@ -76,7 +86,6 @@
     height: 270px;
     object-fit: cover;
 
-    /* ✅ évite blocage clic */
     pointer-events: auto;
 }
 
@@ -85,6 +94,8 @@
     font-size: 0.85rem;
     color: #E0E6F0;
     margin-top: 5px;
+
+    font-family: 'Roboto Mono', monospace;
 }
 
 /* ============================================================ */
@@ -110,6 +121,9 @@
 
     backdrop-filter: blur(6px);
     transition: all 0.3s ease;
+
+    /* ✅ police boutons */
+    font-family: 'Orbitron', sans-serif;
 }
 
 .carousel-btn.left {
@@ -146,31 +160,30 @@
 /* ---------------- FIX NAVLINK / BOOTSTRAP -------------------- */
 /* ============================================================ */
 
-/* Override Bootstrap card */
 .carousel-item.card {
     background: transparent;
     border: none;
 }
 
-/* Corps de carte */
 .carousel-item .card-body {
     padding: 0.5rem;
 }
 
-/* Titre */
 .carousel-item .card-title {
     font-size: 0.9rem;
     color: #E0E6F0;
     margin-bottom: 4px;
+
+    font-family: 'Orbitron', sans-serif;
 }
 
-/* Description */
 .carousel-item .card-text {
     font-size: 0.75rem;
     color: #AAB0D0;
+
+    font-family: 'Roboto Mono', monospace;
 }
 
-/* Année */
 .carousel-item small {
     color: #888;
 }

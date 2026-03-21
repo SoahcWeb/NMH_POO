@@ -1,0 +1,128 @@
+@page "/favoris"
+
+@inject NMH.Services.FavoritesService FavoritesService
+@inject NMH.Services.TmdbService TmdbService
+@inject NavigationManager Navigation
+
+<h3>⭐ Mes favoris</h3>
+
+<div>
+    <input type="text" @bind="search" placeholder="Rechercher un film..." />
+
+    <select @bind="sortOption">
+        <option value="title">Titre</option>
+        <option value="date">Date</option>
+    </select>
+</div>
+
+@if (movies == null)
+{
+    <p>Chargement...</p>
+}
+else if (!FilteredMovies.Any())
+{
+    <p>Aucun film favori.</p>
+}
+else
+{
+    <div class="movie-grid">
+        @foreach (var movie in FilteredMovies)
+        {
+            <div class="movie-card" style="cursor:pointer;" @key="movie.Id">
+
+                <!-- bouton supprimer -->
+                <button class="remove-btn"
+                        @onclick:stopPropagation="true"
+                        @onclick="() => RemoveFavorite(movie.Id)">
+                    ❌
+                </button>
+
+                <div @onclick="() => GoToMovie(movie.Id)">
+
+                    @if (!string.IsNullOrEmpty(movie.PosterFullPath))
+                    {
+                        <img src="@movie.PosterFullPath" alt="@movie.Title" />
+                    }
+                    else
+                    {
+                        <div class="no-poster">Pas d'affiche</div>
+                    }
+
+                    <h4>
+                        @movie.Title
+                        (@(movie.ReleaseDate.HasValue ? movie.ReleaseDate.Value.ToString("yyyy") : "N/A"))
+                    </h4>
+
+                    <p>
+                        @(string.IsNullOrEmpty(movie.Overview)
+                            ? "Aucun synopsis disponible."
+                            : (movie.Overview.Length > 120
+                                ? movie.Overview.Substring(0, 120) + "..."
+                                : movie.Overview))
+                    </p>
+
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private string search = "";
+    private string sortOption = "title";
+
+    private List<NMH.Shared.DTOs.MovieDto> movies = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await FavoritesService.InitializeAsync();
+
+        var ids = FavoritesService.GetAll();
+
+        movies = new List<NMH.Shared.DTOs.MovieDto>();
+
+        foreach (var id in ids)
+        {
+            var movie = await TmdbService.GetMovieByIdAsync(id);
+            if (movie != null)
+                movies.Add(movie);
+        }
+    }
+
+    private async Task RemoveFavorite(int id)
+    {
+        FavoritesService.Toggle(id);
+
+        var movie = movies.FirstOrDefault(m => m.Id == id);
+        if (movie != null)
+        {
+            movies.Remove(movie);
+        }
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private IEnumerable<NMH.Shared.DTOs.MovieDto> FilteredMovies
+    {
+        get
+        {
+            var query = movies.Where(m =>
+                string.IsNullOrWhiteSpace(search) ||
+                m.Title.Contains(search, StringComparison.OrdinalIgnoreCase)
+            );
+
+            query = sortOption switch
+            {
+                "date" => query.OrderByDescending(m => m.ReleaseDate),
+                _ => query.OrderBy(m => m.Title)
+            };
+
+            return query;
+        }
+    }
+
+    void GoToMovie(int id)
+    {
+        Navigation.NavigateTo($"/movie/{id}");
+    }
+}

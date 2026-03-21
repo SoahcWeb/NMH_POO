@@ -1,4 +1,45 @@
 /* ============================================================ */
+/* ----------------- FONTS LOCALES ----------------------------*/
+/* ============================================================ */
+
+@font-face {
+    font-family: 'Orbitron';
+    src: url('/fonts/Orbitron-Regular.ttf') format('truetype');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'Orbitron';
+    src: url('/fonts/Orbitron-Bold.ttf') format('truetype');
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: 'Roboto Mono';
+    src: url('/fonts/RobotoMono-Regular.ttf') format('truetype');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'Roboto Mono';
+    src: url('/fonts/RobotoMono-Bold.ttf') format('truetype');
+    font-weight: 700;
+}
+
+/* ============================================================ */
+/* ----------------- TYPOGRAPHY GLOBAL ------------------------*/
+/* ============================================================ */
+
+body {
+    font-family: 'Roboto Mono', monospace;
+    background-color: #0F0F2F;
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: 'Orbitron', sans-serif;
+}
+
+/* ============================================================ */
 /* ----------------- Header Global (Netflix effect) ------------*/
 /* ============================================================ */
 
@@ -59,10 +100,12 @@
 .header1 nav {
     position: relative;
     z-index: 2;
+    font-family: 'Roboto Mono', monospace;
 }
 
 .header1 .logo {
-    font-weight: bold;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
     font-size: 1.5em;
     color: #52C5FF;
 }
@@ -79,6 +122,7 @@
     text-decoration: none;
     color: #A8B4C8;
     font-weight: 500;
+    font-family: 'Roboto Mono', monospace;
     transition: color 0.3s, text-shadow 0.3s;
 }
 
@@ -187,7 +231,7 @@
 
     border-bottom: 1px solid #0F4F8F;
     color: #E0E6F0;
-    font-family: sans-serif;
+    font-family: 'Roboto Mono', monospace;
 
     position: relative;
     z-index: 2;
@@ -210,6 +254,7 @@
     text-decoration: none;
     color: #A8B4C8;
     font-weight: 500;
+    font-family: 'Roboto Mono', monospace;
     transition: color 0.3s, text-shadow 0.3s;
 }
 
@@ -244,9 +289,11 @@ body {
     color: #A8B4C8;
     padding: 30px 20px;
     font-size: 0.9rem;
-    font-family: sans-serif;
+    font-family: 'Roboto Mono', monospace;
     margin-top: auto;
 }
+
+/* (le reste inchangé) */
 
 .footer-container {
     max-width: 1000px;
@@ -288,6 +335,7 @@ body {
     font-size: 0.85rem;
     line-height: 1.2;
     transition: color 0.3s, text-shadow 0.3s;
+    font-family: 'Roboto Mono', monospace;
 }
 
 .footer-col a:hover {

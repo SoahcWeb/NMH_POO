@@ -43,6 +43,9 @@ builder.Services.AddCascadingAuthenticationState();
 // ✅ LocalStorage (AJOUT)
 builder.Services.AddBlazoredLocalStorage();
 
+// ✅ FavoritesService (AJOUT)
+builder.Services.AddScoped<NMH.Services.FavoritesService>();
+
 // ✅ CustomAuthStateProvider (déjà bon)
 builder.Services.AddScoped<AuthenticationStateProvider, NMH.Services.CustomAuthStateProvider>();
 builder.Services.AddScoped<NMH.Services.CustomAuthStateProvider>();

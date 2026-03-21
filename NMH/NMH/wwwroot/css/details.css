@@ -20,6 +20,8 @@
     background-position: center;
     position: relative;
     overflow: hidden;
+
+    font-family: 'Roboto Mono', monospace;
 }
 
 .nethra-detail-card::before {
@@ -41,25 +43,38 @@
 
 .detail-header {
     text-align: center;
+
+    /* ✅ PLUS D'ESPACE GLOBAL */
+    margin-bottom: 20px;
 }
 
-/* ROW HEADER CENTRÉ */
 .header-row {
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
+
+    /* ✅ AUGMENTER ESPACE ENTRE LIGNE */
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
-/* BACK ICON (2x + position fixe) */
+/* BACK */
+.back-container {
+    position: absolute;
+    left: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    cursor: pointer;
+}
+
 .back-icon {
     width: 5rem;
     height: 5rem;
-    cursor: pointer;
     transition: 0.25s;
-
-    position: absolute;
-    left: 0;
 }
 
 .back-icon:hover {
@@ -67,12 +82,19 @@
     filter: drop-shadow(0 0 8px #52C5FF);
 }
 
-/* TITRE GROUP */
+/* ✅ ESPACE RÉDUIT */
+.back-label {
+    margin-top: 2px;
+    font-size: 0.85rem;
+    color: #52C5FF;
+    text-shadow: 0 0 6px rgba(82,197,255,0.6);
+}
+
+/* TITRE */
 .title-group {
     text-align: center;
 }
 
-/* TITRE */
 .detail-header h1 {
     color: #52C5FF;
     text-shadow: 0 0 10px rgba(82,197,255,0.6);
@@ -82,9 +104,10 @@
     justify-content: center;
     gap: 10px;
     flex-wrap: wrap;
+
+    font-family: 'Orbitron', sans-serif;
 }
 
-/* INLINE TAGLINE */
 .inline-tagline {
     font-size: 1rem;
     font-weight: normal;
@@ -108,7 +131,7 @@
 }
 
 /* ============================================================ */
-/* BODY LAYOUT */
+/* BODY */
 /* ============================================================ */
 
 .detail-body {
@@ -116,7 +139,6 @@
     gap: 20px;
 }
 
-/* LEFT */
 .detail-left {
     flex: 1;
     display: flex;
@@ -124,7 +146,6 @@
     align-items: center;
 }
 
-/* RIGHT */
 .detail-right {
     flex: 2;
 }
@@ -138,35 +159,33 @@
     max-width: 250px;
     border-radius: 12px;
     box-shadow: 0 0 15px rgba(82,197,255,0.4);
-}
 
-/* ============================================================ */
-/* RATING */
-/* ============================================================ */
-
-.rating-trailer {
-    margin-top: 10px;
-    text-align: center;
-}
-
-.rating {
-    font-size: 1.2rem;
-    color: #52C5FF;
-}
-
-.rating-trailer a {
-    color: #C96BFF;
-    text-decoration: none;
+    /* ✅ ESPACE AUGMENTÉ */
+    margin-top: 20px;
 }
 
 /* ============================================================ */
 /* ACTIONS */
 /* ============================================================ */
 
-.actions {
-    margin-top: 15px;
+.actions-centered {
     display: flex;
-    gap: 15px;
+    justify-content: center;
+    gap: 40px;
+    margin: 20px 0;
+}
+
+.action-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.action-item span {
+    font-size: 0.85rem;
+    color: #52C5FF;
+    text-align: center;
 }
 
 .action-icon {
@@ -180,29 +199,29 @@
     filter: drop-shadow(0 0 8px #52C5FF);
 }
 
-.actions-right {
-    display: flex;
-    justify-content: flex-end;
-    gap: 15px;
+/* ============================================================ */
+/* RESTE */
+/* ============================================================ */
+
+.rating-trailer {
+    margin-top: 10px;
+    text-align: center;
 }
 
-.detail-right .actions {
-    margin: 10px 0 15px 0;
+.rating-badge {
+    background: #0F4F8F;
+    padding: 8px 14px;
+    border-radius: 20px;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(82,197,255,0.6);
 }
-
-/* ============================================================ */
-/* TAGLINE (bloc existant) */
-/* ============================================================ */
 
 .tagline {
     font-style: italic;
     color: #A8B4C8;
     margin-bottom: 10px;
 }
-
-/* ============================================================ */
-/* TRAILER */
-/* ============================================================ */
 
 .trailer-container {
     margin-top: 15px;
@@ -216,45 +235,6 @@
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
-
-/* ============================================================ */
-/* RATING BADGE */
-/* ============================================================ */
-
-.rating-badge {
-    background: #0F4F8F;
-    padding: 8px 14px;
-    border-radius: 20px;
-    color: white;
-    font-weight: bold;
-    box-shadow: 0 0 10px rgba(82,197,255,0.6);
-}
-
-/* ============================================================ */
-/* TRAILER BUTTON */
-/* ============================================================ */
-
-.trailer-btn {
-    display: inline-block;
-    margin-top: 8px;
-    padding: 8px 16px;
-
-    background: linear-gradient(45deg, #C96BFF, #52C5FF);
-    border-radius: 20px;
-
-    color: white;
-    text-decoration: none;
-
-    transition: transform 0.3s;
-}
-
-.trailer-btn:hover {
-    transform: scale(1.05);
-}
-
-/* ============================================================ */
-/* CAROUSEL */
-/* ============================================================ */
 
 .carousel {
     display: flex;
@@ -276,4 +256,18 @@
 
 .carousel-item img:hover {
     transform: scale(1.05);
+}
+
+.fade-item {
+    transition: all 0.3s ease;
+}
+
+.movie-card {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.movie-card.removing {
+    opacity: 0;
+    transform: scale(0.9);
 }

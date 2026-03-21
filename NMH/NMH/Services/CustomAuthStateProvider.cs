@@ -17,25 +17,32 @@ namespace NMH.Services
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            var token = await _js.InvokeAsync<string>("localStorage.getItem", "jwtToken");
+            try
+            {
+                var token = await _js.InvokeAsync<string>("localStorage.getItem", "jwtToken");
 
-            if (string.IsNullOrEmpty(token))
+                if (string.IsNullOrEmpty(token))
+                {
+                    return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
+                }
+
+                _http.DefaultRequestHeaders.Authorization =
+                    new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+                var jwtPayload = ParseJwt(token);
+                var username = jwtPayload.GetValueOrDefault("unique_name") ?? "Utilisateur";
+
+                var identity = new ClaimsIdentity(new[]
+                {
+                    new Claim(ClaimTypes.Name, username)
+                }, "jwt");
+
+                return new AuthenticationState(new ClaimsPrincipal(identity));
+            }
+            catch
             {
                 return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
             }
-
-            _http.DefaultRequestHeaders.Authorization =
-                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-
-            var jwtPayload = ParseJwt(token);
-            var username = jwtPayload.GetValueOrDefault("unique_name") ?? "Utilisateur";
-
-            var identity = new ClaimsIdentity(new[]
-            {
-                new Claim(ClaimTypes.Name, username)
-            }, "jwt");
-
-            return new AuthenticationState(new ClaimsPrincipal(identity));
         }
 
         public async Task NotifyUserAuthentication(string token)
@@ -72,21 +79,32 @@ namespace NMH.Services
         }
 
         private Dictionary<string, string> ParseJwt(string jwt)
-{
-    var payload = jwt.Split('.')[1];
+        {
+            try
+            {
+                var parts = jwt.Split('.');
+                if (parts.Length < 2)
+                    return new Dictionary<string, string>();
 
-    payload = payload.PadRight(payload.Length + (4 - payload.Length % 4) % 4, '=');
+                var payload = parts[1];
 
-    var bytes = Convert.FromBase64String(payload);
-    var json = System.Text.Encoding.UTF8.GetString(bytes);
+                payload = payload.PadRight(payload.Length + (4 - payload.Length % 4) % 4, '=');
 
-    var dict = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(json)
-               ?? new Dictionary<string, object>();
+                var bytes = Convert.FromBase64String(payload);
+                var json = System.Text.Encoding.UTF8.GetString(bytes);
 
-    return dict.ToDictionary(
-        kvp => kvp.Key,
-        kvp => kvp.Value?.ToString() ?? ""
-    );
-}
+                var dict = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(json)
+                           ?? new Dictionary<string, object>();
+
+                return dict.ToDictionary(
+                    kvp => kvp.Key,
+                    kvp => kvp.Value?.ToString() ?? ""
+                );
+            }
+            catch
+            {
+                return new Dictionary<string, string>();
+            }
+        }
     }
 }

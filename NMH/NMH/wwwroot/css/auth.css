@@ -9,14 +9,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Segoe UI', sans-serif;
+
+    /* ✅ FONT AJOUTÉE */
+    font-family: 'Roboto Mono', monospace;
+
     margin: 0;
     overflow: hidden;
 
     /* IMAGE DE FOND */
     background-image: url('/images/bg.png');
-    background-size: cover;           /* changez en contain si vous voulez toute l'image visible */
-    background-position: center 20%;  /* ajustez pour descendre l'image */
+    background-size: cover;
+    background-position: center 20%;
     background-repeat: no-repeat;
 }
 
@@ -48,11 +51,14 @@
 
     display: flex;
     flex-direction: row;
-    flex-wrap: nowrap;          /* empêcher le wrap */
-    justify-content: center; /* aligner les éléments à gauche */
+    flex-wrap: nowrap;
+    justify-content: center;
     align-items: flex-start;
 
     gap: 40px;
+
+    /* cohérence */
+    font-family: 'Roboto Mono', monospace;
 }
 
 /* ===== LOGO NMH ===== */
@@ -63,6 +69,9 @@
     text-shadow: 0 0 30px rgba(82,197,255,0.8), 0 0 60px rgba(201,107,255,0.6);
     margin-bottom: 2rem;
     animation: logoFadeIn 1.5s ease forwards;
+
+    /* ✅ FONT AJOUTÉE */
+    font-family: 'Orbitron', sans-serif;
 }
 
 @keyframes logoFadeIn {
@@ -72,7 +81,7 @@
 
 /* ===== CARTE LOGIN / REGISTER ===== */
 .auth-card {
-    flex: 0 0 320px; /* ne prend que 420px de largeur max */
+    flex: 0 0 320px;
     max-width: 320px;
     background: rgba(15,15,47,0.85);
     border: 1px solid rgba(15,15,47,0.5);
@@ -86,6 +95,9 @@
     opacity: 0;
     transform: translateY(-20px);
     animation: cardFadeIn 1s ease forwards 0.3s;
+
+    /* cohérence typo */
+    font-family: 'Roboto Mono', monospace;
 }
 
 .auth-card:hover {
@@ -105,6 +117,9 @@
     text-shadow: 0 0 15px rgba(82,197,255,0.6);
     margin-bottom: 2rem;
     text-align: center;
+
+    /* ✅ FONT AJOUTÉE */
+    font-family: 'Orbitron', sans-serif;
 }
 
 /* ===== INPUTS ===== */
@@ -116,10 +131,12 @@
     border-radius: 10px;
     border: 1px solid rgba(82,197,255,0.2);
 
-    background: rgba(15,15,47,0.9); /* même couleur que le password */
+    background: rgba(15,15,47,0.9);
     color: white;
 
     transition: all 0.25s ease;
+
+    font-family: 'Roboto Mono', monospace;
 }
 
 .auth-input::placeholder {
@@ -132,7 +149,6 @@
     box-shadow: 0 0 10px rgba(82,197,255,0.5);
 }
 
-/* Compatibilité pour tous types de champs (notamment Blazor InputText) */
 .auth-input[type="text"],
 .auth-input[type="email"],
 .auth-input[type="password"] {
@@ -142,9 +158,12 @@
 
 /* Titre de la carte erreur */
 .auth-error-card h4 {
-    color: #52C5FF;   /* bleu identique au titre du formulaire */
-    text-align: center; /* pour être sûr que le texte reste centré */
-    margin-bottom: 10px; /* un petit espacement sous le titre */
+    color: #52C5FF;
+    text-align: center;
+    margin-bottom: 10px;
+
+    /* ✅ FONT AJOUTÉE */
+    font-family: 'Orbitron', sans-serif;
 }
 
 /* ===== BOUTONS ===== */
@@ -163,6 +182,8 @@
     box-shadow: 0 0 15px rgba(201,107,255,0.45);
 
     transition: all 0.25s ease;
+
+    font-family: 'Roboto Mono', monospace;
 }
 
 .auth-button:hover {
@@ -174,6 +195,8 @@
 .auth-message {
     margin-top: 1rem;
     color: #E0E6F0;
+
+    font-family: 'Roboto Mono', monospace;
 }
 
 /* Lien "Pas encore inscrit ?" plus grand */
@@ -182,13 +205,17 @@
     display: block;
     text-align: center;
     margin-top: 1.5rem;
+
+    font-family: 'Roboto Mono', monospace;
 }
 
 .auth-link {
     margin-top: 1.5rem;
     color: #52C5FF;
     text-decoration: none;
-    display: block;       /* passer en block pour que text-align fonctionne */
+    display: block;
+
+    font-family: 'Roboto Mono', monospace;
 }
 
 .auth-link:hover {
@@ -204,9 +231,9 @@
 
     .auth-card, .auth-error-card {
         flex: 0 0 auto;
-        width: 90%; /* s'adapte à l'écran */
+        width: 90%;
         margin-left: 0;
-        margin-top: 15px; /* espacement vertical pour erreur */
+        margin-top: 15px;
     }
 }
 
@@ -228,6 +255,8 @@
     color: #E0E6F0;
     font-size: 1.2rem;
     padding: 0;
+
+    font-family: 'Roboto Mono', monospace;
 }
 
 /* Assurer que le texte reste blanc pour le password */
@@ -245,34 +274,16 @@
     color: #E0E6F0;
 }
 
-.password-wrapper {
-    position: relative;
-    width: 100%;
-}
-
-.password-toggle {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #E0E6F0; /* couleur de l’œil */
-    font-size: 1.2rem;
-    padding: 0;
-}
-
 /* Carte erreur positionnée à droite du formulaire */
 .auth-error-card {
-    position: absolute; /* sort du flux flex */
-    top: 0;             /* alignée avec le haut du formulaire */
-    left: 100%;         /* juste à droite du formulaire */
-    margin-left: 20px;  /* espace entre formulaire et erreur */
+    position: absolute;
+    top: 0;
+    left: 100%;
+    margin-left: 20px;
     margin-top: 60px;
     
     flex: 0 0 340px;
-    width: 340px;       /* largeur fixe de la carte erreur */
+    width: 340px;
     padding: 20px;
     border-radius: 12px;
     background: rgba(20,20,40,0.92);
@@ -284,14 +295,15 @@
         0 0 18px rgba(255,0,0,0.2);
 
     animation: errorSlide 0.4s ease;
-    flex-shrink: 0;     /* éviter qu’elle rétrécisse */
+    flex-shrink: 0;
 
-    /* CENTRAGE DU CONTENU */
     display: flex;
     flex-direction: column;
-    justify-content: center; /* centre verticalement */
-    align-items: center;     /* centre horizontalement */
-    text-align: center;      /* centre le texte multi-lignes */
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    font-family: 'Roboto Mono', monospace;
 }
 
 /* ============================= */
@@ -313,6 +325,8 @@
 
 /* Conteneur fixe pour le formulaire */
 .auth-form-wrapper {
-    flex: 0 0 320px; /* largeur fixe identique à .auth-card */
-    position: relative; /* pour positionner la carte erreur absolument par rapport à ce wrapper */
+    flex: 0 0 320px;
+    position: relative;
+
+    font-family: 'Roboto Mono', monospace;
 }

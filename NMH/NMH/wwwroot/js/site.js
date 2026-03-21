@@ -43,11 +43,43 @@ window.initHeaderLoginHover = () => {
 };
 
 // ============================================================
-// --------- Scroll vers une ancre (NOUVEAU) ------------------
+// --------- Scroll vers une ancre ----------------------------
 // ============================================================
 window.scrollToAnchor = (id) => {
     const element = document.getElementById(id);
     if (element) {
         element.scrollIntoView({ behavior: "smooth" });
+    }
+};
+
+// ============================================================
+// 🔥 FAVORITES (AJOUT CRITIQUE)
+// ============================================================
+window.favorites = {
+    get: function () {
+        try {
+            return localStorage.getItem("favorites");
+        } catch {
+            return null;
+        }
+    },
+    set: function (value) {
+        try {
+            localStorage.setItem("favorites", JSON.stringify(value));
+        } catch (e) {
+            console.error("LocalStorage error:", e);
+        }
+    }
+};
+
+// ============================================================
+// ----------------- FAVORITES LOCALSTORAGE -------------------
+// ============================================================
+window.favorites = {
+    get: function () {
+        return localStorage.getItem("favorites");
+    },
+    set: function (list) {
+        localStorage.setItem("favorites", JSON.stringify(list));
     }
 };
