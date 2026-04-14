@@ -1,7 +1,9 @@
 @page "/movie/{Id:int}"
 @using NMH.Shared.DTOs
+@using System.Net.Http.Json
+
 @inject NMH.Services.TmdbService TmdbService
-@inject NMH.Services.FavoritesService FavoritesService
+@inject HttpClient Http
 @inject NavigationManager Navigation
 @implements IDisposable
 
@@ -85,18 +87,16 @@ else
                 <div class="actions-centered">
 
                     <!-- FAVORIS -->
-                    <div class="action-item" @onclick="ToggleFavorite" style="cursor:pointer;">
+                    <div class="action-item"
+                         @onclick="ToggleFavorite"
+                         style="cursor:pointer;">
+
                         <img src="/images/favoris001.png"
                              class="action-icon @(isFavorite ? "active" : "")" />
 
                         <span style="color:@(isFavorite ? "#52C5FF" : "#E0E6F0")">
                             @(isFavorite ? "Retirer des Favoris" : "Ajouter aux Favoris")
                         </span>
-                    </div>
-
-                    <div class="action-item">
-                        <img src="/images/library.png" class="action-icon" />
-                        <span>Ajouter à la Bibliothèque</span>
                     </div>
 
                 </div>
@@ -117,23 +117,16 @@ else
                 }
 
                 <h3>Synopsis</h3>
+
                 <p>
                     @(string.IsNullOrEmpty(movie.Overview)
                         ? "Aucun synopsis disponible."
                         : movie.Overview)
                 </p>
 
-                <p><strong>Votes :</strong> @movie.VoteCount</p>
-                <p><strong>Production :</strong> @movie.ProductionCompaniesText</p>
-
             </div>
 
         </div>
-
-        <div class="separator"></div>
-
-        <!-- CAST + SIMILAR (inchangé) -->
-        <!-- ... ton code inchangé ici ... -->
 
     </div>
 }
@@ -144,35 +137,55 @@ else
 
     private MovieDto? movie;
     private bool isFavorite;
-    private bool initialized = false;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    private List<FavoriteDto> favorites = new();
+
+    protected override async Task OnInitializedAsync()
     {
-        if (firstRender && !initialized)
+        movie = await TmdbService.GetMovieByIdAsync(Id);
+
+        await LoadFavorites();
+        UpdateFavoriteState();
+    }
+
+    private async Task LoadFavorites()
+    {
+        try
         {
-            initialized = true;
-
-            await FavoritesService.InitializeAsync();
-
-            movie = await TmdbService.GetMovieByIdAsync(Id);
-            isFavorite = FavoritesService.IsFavorite(Id);
-
-            FavoritesService.OnChange += HandleFavoritesChanged;
-
-            StateHasChanged();
+            favorites = await Http.GetFromJsonAsync<List<FavoriteDto>>("api/favorites")
+                        ?? new List<FavoriteDto>();
+        }
+        catch
+        {
+            favorites = new List<FavoriteDto>();
         }
     }
 
-    async Task ToggleFavorite()
+    private void UpdateFavoriteState()
     {
-        await FavoritesService.Toggle(Id);
-        isFavorite = FavoritesService.IsFavorite(Id);
+        isFavorite = favorites.Any(f => f.MovieId == Id);
     }
 
-    void HandleFavoritesChanged()
+    private async Task ToggleFavorite()
     {
-        isFavorite = FavoritesService.IsFavorite(Id);
-        InvokeAsync(StateHasChanged);
+        var existing = favorites.FirstOrDefault(f => f.MovieId == Id);
+
+        if (existing != null)
+        {
+            await Http.DeleteAsync($"api/favorites/{existing.MovieId}");
+        }
+        else
+        {
+            await Http.PostAsJsonAsync("api/favorites",
+                new FavoriteDto
+                {
+                    MovieId = Id,
+                    Comment = null
+                });
+        }
+
+        await LoadFavorites();
+        UpdateFavoriteState();
     }
 
     void GoHome()
@@ -180,13 +193,7 @@ else
         Navigation.NavigateTo("/userhome", true);
     }
 
-    void GoToMovie(int id)
-    {
-        Navigation.NavigateTo($"/movie/{id}");
-    }
-
     public void Dispose()
     {
-        FavoritesService.OnChange -= HandleFavoritesChanged;
     }
 }

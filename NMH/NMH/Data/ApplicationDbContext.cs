@@ -3,9 +3,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace NMH.Data
 {
-    /// <summary>
-    /// Database context for the application, integrating EF Core with ASP.NET Core Identity.
-    /// </summary>
     public class ApplicationDbContext : IdentityDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -14,14 +11,6 @@ namespace NMH.Data
         }
 
         public DbSet<Movie> Movies { get; set; } = default!;
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlite("Data Source=nmh.db");
-            }
-            base.OnConfiguring(optionsBuilder);
-        }
+        public DbSet<Favorite> Favorites { get; set; } = default!;
     }
 }

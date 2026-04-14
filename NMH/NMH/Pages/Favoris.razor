@@ -1,6 +1,7 @@
 @page "/favoris"
 
-@inject NMH.Services.FavoritesService FavoritesService
+@using NMH.Shared.DTOs
+@inject HttpClient Http
 @inject NMH.Services.TmdbService TmdbService
 @inject NavigationManager Navigation
 
@@ -30,7 +31,6 @@ else
         {
             <div class="movie-card" style="cursor:pointer;" @key="movie.Id">
 
-                <!-- bouton supprimer -->
                 <button class="remove-btn"
                         @onclick:stopPropagation="true"
                         @onclick="() => RemoveFavorite(movie.Id)">
@@ -41,7 +41,7 @@ else
 
                     @if (!string.IsNullOrEmpty(movie.PosterFullPath))
                     {
-                        <img src="@movie.PosterFullPath" alt="@movie.Title" />
+                        <img src="@movie.PosterFullPath" />
                     }
                     else
                     {
@@ -49,15 +49,14 @@ else
                     }
 
                     <h4>
-                        @movie.Title
-                        (@(movie.ReleaseDate.HasValue ? movie.ReleaseDate.Value.ToString("yyyy") : "N/A"))
+                        @movie.Title (@movie.ReleaseDate?.Year ?? "N/A")
                     </h4>
 
                     <p>
                         @(string.IsNullOrEmpty(movie.Overview)
                             ? "Aucun synopsis disponible."
                             : (movie.Overview.Length > 120
-                                ? movie.Overview.Substring(0, 120) + "..."
+                                ? movie.Overview[..120] + "..."
                                 : movie.Overview))
                     </p>
 
@@ -75,54 +74,48 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        await FavoritesService.InitializeAsync();
+        await LoadFavorites();
+    }
 
-        var ids = FavoritesService.GetAll();
+    private async Task LoadFavorites()
+    {
+        var favorites = await Http.GetFromJsonAsync<List<NMH.Data.Favorite>>("api/favorites")
+                        ?? new List<NMH.Data.Favorite>();
 
-        movies = new List<NMH.Shared.DTOs.MovieDto>();
+        movies = new();
 
-        foreach (var id in ids)
+        foreach (var fav in favorites)
         {
-            var movie = await TmdbService.GetMovieByIdAsync(id);
+            var movie = await TmdbService.GetMovieByIdAsync(fav.MovieId);
             if (movie != null)
                 movies.Add(movie);
         }
     }
 
-    private async Task RemoveFavorite(int id)
+    private async Task RemoveFavorite(int movieId)
     {
-        FavoritesService.Toggle(id);
+        var favorites = await Http.GetFromJsonAsync<List<NMH.Data.Favorite>>("api/favorites");
 
-        var movie = movies.FirstOrDefault(m => m.Id == id);
-        if (movie != null)
+        var fav = favorites?.FirstOrDefault(f => f.MovieId == movieId);
+
+        if (fav != null)
         {
-            movies.Remove(movie);
+            await Http.DeleteAsync($"api/favorites/{fav.Id}");
         }
 
-        await InvokeAsync(StateHasChanged);
+        await LoadFavorites();
     }
 
-    private IEnumerable<NMH.Shared.DTOs.MovieDto> FilteredMovies
-    {
-        get
+    private IEnumerable<NMH.Shared.DTOs.MovieDto> FilteredMovies =>
+        (sortOption switch
         {
-            var query = movies.Where(m =>
-                string.IsNullOrWhiteSpace(search) ||
-                m.Title.Contains(search, StringComparison.OrdinalIgnoreCase)
-            );
-
-            query = sortOption switch
-            {
-                "date" => query.OrderByDescending(m => m.ReleaseDate),
-                _ => query.OrderBy(m => m.Title)
-            };
-
-            return query;
-        }
-    }
+            "date" => movies.OrderByDescending(m => m.ReleaseDate),
+            _ => movies.OrderBy(m => m.Title)
+        })
+        .Where(m =>
+            string.IsNullOrWhiteSpace(search) ||
+            m.Title.Contains(search, StringComparison.OrdinalIgnoreCase));
 
     void GoToMovie(int id)
-    {
-        Navigation.NavigateTo($"/movie/{id}");
-    }
+        => Navigation.NavigateTo($"/movie/{id}");
 }

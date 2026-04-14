@@ -1,65 +1,49 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json;
-using System.Threading.Tasks;
-using Microsoft.JSInterop;
+using System.Net.Http.Json;
+using NMH.Shared.DTOs;
 
 namespace NMH.Services
 {
     public class FavoritesService
     {
-        private readonly IJSRuntime _js;
-        private HashSet<int> _favorites = new();
+        private readonly HttpClient _http;
 
-        public event Action? OnChange;
-
-        public FavoritesService(IJSRuntime js)
+        public FavoritesService(HttpClient http)
         {
-            _js = js;
+            _http = http;
         }
 
-        // 🔹 Initialisation depuis le LocalStorage
-        public async Task InitializeAsync()
+        // ⭐ AJOUTER UN FAVORI
+        public async Task AddFavorite(int movieId)
         {
-            try
+            var dto = new FavoriteDto
             {
-                var json = await _js.InvokeAsync<string>("favorites.get");
+                MovieId = movieId,
+                Comment = ""
+            };
 
-                if (!string.IsNullOrEmpty(json))
-                {
-                    var list = JsonSerializer.Deserialize<List<int>>(json);
-                    _favorites = list != null ? new HashSet<int>(list) : new HashSet<int>();
-                }
-            }
-            catch
-            {
-                _favorites = new HashSet<int>();
-            }
+            var response = await _http.PostAsJsonAsync("api/favorites", dto);
+            response.EnsureSuccessStatusCode();
         }
 
-        // 🔹 Sauvegarde dans le LocalStorage
-        private async Task SaveAsync()
+        // ❌ SUPPRIMER UN FAVORI
+        public async Task RemoveFavorite(int movieId)
         {
-            var list = _favorites.ToList();
-            var json = JsonSerializer.Serialize(list);
-
-            await _js.InvokeVoidAsync("favorites.set", list);
+            var response = await _http.DeleteAsync($"api/favorites/{movieId}");
+            response.EnsureSuccessStatusCode();
         }
 
-        public bool IsFavorite(int id) => _favorites.Contains(id);
-
-        public async Task Toggle(int id)
+        // 📥 RÉCUPÉRER LES FAVORIS
+        public async Task<List<FavoriteDto>> GetFavorites()
         {
-            if (_favorites.Contains(id))
-                _favorites.Remove(id);
-            else
-                _favorites.Add(id);
-
-            await SaveAsync();
-            OnChange?.Invoke();
+            var result = await _http.GetFromJsonAsync<List<FavoriteDto>>("api/favorites");
+            return result ?? new List<FavoriteDto>();
         }
 
-        public List<int> GetAll() => _favorites.ToList();
+        // ⭐ CHECK SI FAVORI EXISTE
+        public async Task<bool> IsFavorite(int movieId)
+        {
+            var favs = await GetFavorites();
+            return favs.Any(f => f.MovieId == movieId);
+        }
     }
 }

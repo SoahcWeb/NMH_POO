@@ -40,13 +40,13 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 // 🔥 Blazor auth state
 builder.Services.AddCascadingAuthenticationState();
 
-// ✅ LocalStorage (AJOUT)
+// ✅ LocalStorage
 builder.Services.AddBlazoredLocalStorage();
 
-// ✅ FavoritesService (AJOUT)
+// ⭐ FAVORITES SERVICE (CORRIGÉ)
 builder.Services.AddScoped<NMH.Services.FavoritesService>();
 
-// ✅ CustomAuthStateProvider (déjà bon)
+// ✅ CustomAuthStateProvider
 builder.Services.AddScoped<AuthenticationStateProvider, NMH.Services.CustomAuthStateProvider>();
 builder.Services.AddScoped<NMH.Services.CustomAuthStateProvider>();
 
@@ -57,6 +57,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.ExpireTimeSpan = TimeSpan.FromHours(8);
     options.SlidingExpiration = true;
     options.Cookie.HttpOnly = true;
+    options.Cookie.SameSite = SameSiteMode.Lax;
 });
 
 // 🔹 Razor + Blazor
@@ -64,10 +65,15 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor()
     .AddCircuitOptions(options => { options.DetailedErrors = true; });
 
-// 🔹 HttpClient
-builder.Services.AddScoped(sp => new HttpClient
+// 🔥 HttpClient
+builder.Services.AddScoped(sp =>
 {
-    BaseAddress = new Uri("http://localhost:5244")
+    var config = sp.GetRequiredService<IConfiguration>();
+
+    return new HttpClient
+    {
+        BaseAddress = new Uri(config["BaseUrl"] ?? "http://localhost:5244")
+    };
 });
 
 builder.Services.AddControllers();
@@ -90,7 +96,7 @@ builder.Services.AddAuthentication()
 
 builder.Services.AddAuthorization();
 
-// 🔹 Service TMDB
+// 🔹 TMDB Service
 builder.Services.AddHttpClient<NMH.Services.TmdbService>();
 
 var app = builder.Build();
