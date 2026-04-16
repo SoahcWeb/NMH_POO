@@ -28,18 +28,31 @@ namespace NMH.Controllers
             return Ok(favorites);
         }
 
-        // 🟢 POST (TEST SANS AUTH)
+        // 🟢 POST (CORRIGÉ SAFE MODEL BINDING)
         [HttpPost]
-        public async Task<IActionResult> AddFavorite(Favorite fav)
+        public async Task<IActionResult> AddFavorite([FromBody] Favorite fav)
         {
+            if (fav == null)
+                return BadRequest();
+
+            // 🔥 DEBUG AJOUTÉ
+            Console.WriteLine("🔥 ADD FAVORITE CALLED");
+            Console.WriteLine($"MovieId = {fav.MovieId}");
+            Console.WriteLine($"Comment = {fav.Comment}");
+
             var userId = "test-user";
 
-            fav.UserId = userId;
+            var newFav = new Favorite
+            {
+                MovieId = fav.MovieId,
+                Comment = fav.Comment,
+                UserId = userId
+            };
 
-            _context.Favorites.Add(fav);
+            _context.Favorites.Add(newFav);
             await _context.SaveChangesAsync();
 
-            return Ok(fav);
+            return Ok(newFav);
         }
 
         // 🟡 PUT (TEST SANS AUTH)

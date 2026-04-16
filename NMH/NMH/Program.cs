@@ -43,7 +43,7 @@ builder.Services.AddCascadingAuthenticationState();
 // ✅ LocalStorage
 builder.Services.AddBlazoredLocalStorage();
 
-// ⭐ FAVORITES SERVICE (CORRIGÉ)
+// ⭐ FAVORITES SERVICE
 builder.Services.AddScoped<NMH.Services.FavoritesService>();
 
 // ✅ CustomAuthStateProvider
@@ -62,17 +62,24 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 // 🔹 Razor + Blazor
 builder.Services.AddRazorPages();
+
+// 💥 BLazor Server (stable config)
 builder.Services.AddServerSideBlazor()
-    .AddCircuitOptions(options => { options.DetailedErrors = true; });
+    .AddHubOptions(options =>
+    {
+        options.MaximumReceiveMessageSize = 32 * 1024;
+    })
+    .AddCircuitOptions(options =>
+    {
+        options.DetailedErrors = true;
+    });
 
 // 🔥 HttpClient
 builder.Services.AddScoped(sp =>
 {
-    var config = sp.GetRequiredService<IConfiguration>();
-
     return new HttpClient
     {
-        BaseAddress = new Uri(config["BaseUrl"] ?? "http://localhost:5244")
+        BaseAddress = new Uri("http://localhost:5244/")
     };
 });
 
@@ -116,7 +123,8 @@ app.UseAntiforgery();
 
 app.MapControllers();
 
-// Blazor
+// 💥 IMPORTANT FIX BLazor Server CIRCUIT
+app.UseWebSockets();
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 

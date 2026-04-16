@@ -3,8 +3,11 @@
 /* ============================================================ */
 
 .nethra-detail-card {
-    margin: 20px;
+    margin: 40px auto; /* 🔥 CENTRAGE */
     padding: 20px;
+
+    max-width: 1100px; /* 🔥 LIMITE LARGEUR */
+    width: 90%; /* 🔥 RESPONSIVE */
 
     border: 2px solid #C96BFF;
     border-radius: 16px;
@@ -30,6 +33,7 @@
     inset: 0;
     background: rgba(10,10,30,0.85);
     backdrop-filter: blur(6px);
+    pointer-events: none;
 }
 
 .nethra-detail-card > * {
@@ -43,8 +47,6 @@
 
 .detail-header {
     text-align: center;
-
-    /* ✅ PLUS D'ESPACE GLOBAL */
     margin-bottom: 20px;
 }
 
@@ -53,8 +55,6 @@
     align-items: center;
     justify-content: center;
     position: relative;
-
-    /* ✅ AUGMENTER ESPACE ENTRE LIGNE */
     padding-top: 10px;
     padding-bottom: 10px;
 }
@@ -63,11 +63,9 @@
 .back-container {
     position: absolute;
     left: 0;
-
     display: flex;
     flex-direction: column;
     align-items: center;
-
     cursor: pointer;
 }
 
@@ -82,7 +80,6 @@
     filter: drop-shadow(0 0 8px #52C5FF);
 }
 
-/* ✅ ESPACE RÉDUIT */
 .back-label {
     margin-top: 2px;
     font-size: 0.85rem;
@@ -137,10 +134,12 @@
 .detail-body {
     display: flex;
     gap: 20px;
+    flex-wrap: wrap; /* 🔥 RESPONSIVE FIX */
 }
 
 .detail-left {
     flex: 1;
+    min-width: 250px; /* 🔥 évite écrasement */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -148,6 +147,7 @@
 
 .detail-right {
     flex: 2;
+    min-width: 300px; /* 🔥 évite bug affichage */
 }
 
 /* ============================================================ */
@@ -159,8 +159,6 @@
     max-width: 250px;
     border-radius: 12px;
     box-shadow: 0 0 15px rgba(82,197,255,0.4);
-
-    /* ✅ ESPACE AUGMENTÉ */
     margin-top: 20px;
 }
 
@@ -173,6 +171,7 @@
     justify-content: center;
     gap: 40px;
     margin: 20px 0;
+    flex-wrap: wrap; /* 🔥 mobile */
 }
 
 .action-item {

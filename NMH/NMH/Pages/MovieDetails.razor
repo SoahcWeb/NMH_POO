@@ -1,199 +1,67 @@
 @page "/movie/{Id:int}"
 @using NMH.Shared.DTOs
-@using System.Net.Http.Json
 
 @inject NMH.Services.TmdbService TmdbService
-@inject HttpClient Http
 @inject NavigationManager Navigation
-@implements IDisposable
+@inject HttpClient Http
 
-@if (movie == null)
+<h1>TEST PAGE</h1>
+
+<p style="color:red">COMPONENT IS ALIVE</p>
+<p style="color:blue">DEBUG ID = @Id</p>
+
+<button @onclick="() => TestClick()" type="button"
+        style="padding:20px;background:lime;">
+    CLICK
+</button>
+
+<p @onclick="TestClick" style="cursor:pointer;color:red;">
+    CLICK TEST TEXT (CLICK ME TOO)
+</p>
+
+<p>STATE = @clickState</p>
+
+<button @onclick="TestClick">CLICK TEST</button>
+
+@if (movie != null)
 {
-    <p>Chargement...</p>
+    <p>@movie.Title</p>
 }
 else
 {
-    <div class="nethra-detail-card"
-         style="background-image:url('@movie.BackdropFullPath')">
-
-        <!-- HEADER -->
-        <div class="detail-header">
-
-            <div class="header-row">
-
-                <!-- RETOUR -->
-                <div class="back-container">
-                    <img src="Images/retour.png"
-                         class="back-icon"
-                         title="Accueil"
-                         @onclick="GoHome">
-
-                    <span class="back-label">
-                        Accueil
-                    </span>
-                </div>
-
-                <div class="title-group">
-                    <h1>
-                        @movie.Title (@movie.ReleaseDate?.Year)
-
-                        @if (!string.IsNullOrEmpty(movie.Tagline))
-                        {
-                            <span class="inline-tagline">
-                                "@movie.Tagline"
-                            </span>
-                        }
-                    </h1>
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="separator"></div>
-
-        <!-- BODY -->
-        <div class="detail-body">
-
-            <div class="detail-left">
-
-                @if (!string.IsNullOrEmpty(movie.PosterFullPath))
-                {
-                    <img src="@movie.PosterFullPath" class="detail-poster" />
-                }
-
-                <div class="rating-trailer">
-                    <div class="rating-badge">
-                        ⭐ @(movie.VoteAverage?.ToString("0.0") ?? "N/A")
-                    </div>
-                </div>
-
-                @if (!string.IsNullOrEmpty(movie.TrailerUrl))
-                {
-                    <div class="trailer-container">
-                        <iframe src="@movie.TrailerUrl.Replace("watch?v=", "embed/")"
-                                frameborder="0"
-                                allowfullscreen>
-                        </iframe>
-                    </div>
-                }
-
-                <div class="separator"></div>
-
-            </div>
-
-            <div class="detail-right">
-
-                <div class="actions-centered">
-
-                    <!-- FAVORIS -->
-                    <div class="action-item"
-                         @onclick="ToggleFavorite"
-                         style="cursor:pointer;">
-
-                        <img src="/images/favoris001.png"
-                             class="action-icon @(isFavorite ? "active" : "")" />
-
-                        <span style="color:@(isFavorite ? "#52C5FF" : "#E0E6F0")">
-                            @(isFavorite ? "Retirer des Favoris" : "Ajouter aux Favoris")
-                        </span>
-                    </div>
-
-                </div>
-
-                <div class="section-divider"></div>
-
-                <h3>Informations</h3>
-
-                <p><strong>Genres :</strong> @movie.GenresText</p>
-                <p><strong>Durée :</strong> @movie.Runtime min</p>
-                <p><strong>Langue :</strong> @movie.OriginalLanguage</p>
-
-                @if (!string.IsNullOrEmpty(movie.Tagline))
-                {
-                    <div class="tagline">
-                        "@movie.Tagline"
-                    </div>
-                }
-
-                <h3>Synopsis</h3>
-
-                <p>
-                    @(string.IsNullOrEmpty(movie.Overview)
-                        ? "Aucun synopsis disponible."
-                        : movie.Overview)
-                </p>
-
-            </div>
-
-        </div>
-
-    </div>
+    <p>Chargement film...</p>
 }
 
 @code {
     [Parameter]
     public int Id { get; set; }
 
+    private string clickState = "NO CLICK";
     private MovieDto? movie;
-    private bool isFavorite;
-
-    private List<FavoriteDto> favorites = new();
 
     protected override async Task OnInitializedAsync()
     {
+        Console.WriteLine("🔥 INIT OK ID = " + Id);
         movie = await TmdbService.GetMovieByIdAsync(Id);
-
-        await LoadFavorites();
-        UpdateFavoriteState();
     }
 
-    private async Task LoadFavorites()
+    protected override void OnParametersSet()
     {
-        try
-        {
-            favorites = await Http.GetFromJsonAsync<List<FavoriteDto>>("api/favorites")
-                        ?? new List<FavoriteDto>();
-        }
-        catch
-        {
-            favorites = new List<FavoriteDto>();
-        }
+        Console.WriteLine("🔥 PARAM RECEIVED ID = " + Id);
     }
 
-    private void UpdateFavoriteState()
+    protected override void OnAfterRender(bool firstRender)
     {
-        isFavorite = favorites.Any(f => f.MovieId == Id);
+        if (firstRender)
+            Console.WriteLine("🔥 BLazor INTERACTIVITY ACTIVE");
     }
 
-    private async Task ToggleFavorite()
+    private void TestClick()
     {
-        var existing = favorites.FirstOrDefault(f => f.MovieId == Id);
+        Console.WriteLine("🔥 CLICK OK");
 
-        if (existing != null)
-        {
-            await Http.DeleteAsync($"api/favorites/{existing.MovieId}");
-        }
-        else
-        {
-            await Http.PostAsJsonAsync("api/favorites",
-                new FavoriteDto
-                {
-                    MovieId = Id,
-                    Comment = null
-                });
-        }
+        clickState = "CLICKED AT " + DateTime.Now.ToLongTimeString();
 
-        await LoadFavorites();
-        UpdateFavoriteState();
-    }
-
-    void GoHome()
-    {
-        Navigation.NavigateTo("/userhome", true);
-    }
-
-    public void Dispose()
-    {
+        InvokeAsync(StateHasChanged);
     }
 }

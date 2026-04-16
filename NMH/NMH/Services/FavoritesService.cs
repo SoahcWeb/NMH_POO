@@ -21,14 +21,21 @@ namespace NMH.Services
                 Comment = ""
             };
 
+            // 🔥 IMPORTANT: match controller model
             var response = await _http.PostAsJsonAsync("api/favorites", dto);
+
+            Console.WriteLine($"🔥 POST STATUS = {response.StatusCode}");
+
             response.EnsureSuccessStatusCode();
         }
 
-        // ❌ SUPPRIMER UN FAVORI
-        public async Task RemoveFavorite(int movieId)
+        // ❌ SUPPRIMER UN FAVORI (CORRIGÉ)
+        public async Task RemoveFavorite(int favoriteId)
         {
-            var response = await _http.DeleteAsync($"api/favorites/{movieId}");
+            var response = await _http.DeleteAsync($"api/favorites/{favoriteId}");
+
+            Console.WriteLine($"🔥 DELETE STATUS = {response.StatusCode}");
+
             response.EnsureSuccessStatusCode();
         }
 

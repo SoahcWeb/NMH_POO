@@ -1,6 +1,10 @@
 @page "/movies"
+@using System.Net.Http.Json
+@using NMH.Shared.DTOs
+
 @inject NMH.Services.TmdbService TmdbService
 @inject NavigationManager Navigation
+@inject HttpClient Http
 
 <h3>🎬 Films tendances</h3>
 
@@ -17,30 +21,41 @@ else
     <div class="movie-grid">
         @foreach (var movie in movies)
         {
-            <div class="movie-card" @onclick="() => GoToDetails(movie.Id)" style="cursor:pointer;">
-                
-                @if (!string.IsNullOrEmpty(movie.PosterFullPath))
-                {
-                    <img src="@movie.PosterFullPath" alt="@movie.Title" />
-                }
-                else
-                {
-                    <div class="no-poster">Pas d'affiche</div>
-                }
+            <div class="movie-card" style="cursor:pointer; position:relative;">
 
-                <h4>
-                    @movie.Title 
-                    (@(movie.ReleaseDate.HasValue ? movie.ReleaseDate.Value.ToString("yyyy") : "N/A"))
-                </h4>
+                <!-- ⭐ BOUTON FAVORI -->
+                <button class="fav-btn"
+                        style="position:absolute; top:10px; right:10px; z-index:10;"
+                        @onclick:stopPropagation="true"
+                        @onclick="() => ToggleFavorite(movie.Id)">
+                    @(favoriteIds.Contains(movie.Id) ? "❌" : "⭐")
+                </button>
 
-                <p>
-                    @(string.IsNullOrEmpty(movie.Overview)
-                        ? "Aucun synopsis disponible."
-                        : (movie.Overview.Length > 120
-                            ? movie.Overview.Substring(0, 120) + "..."
-                            : movie.Overview))
-                </p>
+                <div @onclick="() => GoToDetails(movie.Id)">
 
+                    @if (!string.IsNullOrEmpty(movie.PosterFullPath))
+                    {
+                        <img src="@movie.PosterFullPath" alt="@movie.Title" />
+                    }
+                    else
+                    {
+                        <div class="no-poster">Pas d'affiche</div>
+                    }
+
+                    <h4>
+                        @movie.Title
+                        (@(movie.ReleaseDate.HasValue ? movie.ReleaseDate.Value.ToString("yyyy") : "N/A"))
+                    </h4>
+
+                    <p>
+                        @(string.IsNullOrEmpty(movie.Overview)
+                            ? "Aucun synopsis disponible."
+                            : (movie.Overview.Length > 120
+                                ? movie.Overview.Substring(0, 120) + "..."
+                                : movie.Overview))
+                    </p>
+
+                </div>
             </div>
         }
     </div>
@@ -48,10 +63,47 @@ else
 
 @code {
     private List<NMH.Shared.DTOs.MovieDto>? movies;
+    private HashSet<int> favoriteIds = new();
 
     protected override async Task OnInitializedAsync()
     {
         movies = await TmdbService.GetTrendingMoviesAsync();
+
+        var favs = await Http.GetFromJsonAsync<List<FavoriteDto>>("api/favorites");
+
+        if (favs != null)
+        {
+            favoriteIds = favs.Select(f => f.MovieId).ToHashSet();
+        }
+    }
+
+    private async Task ToggleFavorite(int movieId)
+    {
+        if (favoriteIds.Contains(movieId))
+        {
+            var favs = await Http.GetFromJsonAsync<List<FavoriteDto>>("api/favorites");
+            var existing = favs?.FirstOrDefault(f => f.MovieId == movieId);
+
+            if (existing != null)
+            {
+                await Http.DeleteAsync($"api/favorites/{existing.Id}");
+                favoriteIds.Remove(movieId);
+            }
+        }
+        else
+        {
+            var response = await Http.PostAsJsonAsync("api/favorites",
+                new FavoriteDto
+                {
+                    MovieId = movieId,
+                    Comment = null
+                });
+
+            if (response.IsSuccessStatusCode)
+            {
+                favoriteIds.Add(movieId);
+            }
+        }
     }
 
     private void GoToDetails(int id)

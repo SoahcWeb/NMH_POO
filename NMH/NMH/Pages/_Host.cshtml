@@ -2,6 +2,8 @@
 @namespace NMH.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @using Microsoft.AspNetCore.Components.Authorization
+@using NMH.Components
+
 @{
     Layout = null;
 }
@@ -23,17 +25,21 @@
     <link href="css/components.css" rel="stylesheet" />
     <link href="css/details.css" rel="stylesheet" />
 
-    <link rel="icon" type="image/png" href="~/favicon.png" />
+    <link rel="icon" type="image/png" href="favicon.png" />
 </head>
+
 <body>
 
-    <CascadingAuthenticationState>
-        <component type="typeof(NMH.Components.App)" render-mode="Server" />
-    </CascadingAuthenticationState>
+<CascadingAuthenticationState>
 
-    <script src="js/site.js"></script> 
-    <script src="js/scroll.js"></script>
+    <component type="typeof(NMH.App)" render-mode="ServerPrerendered" />
 
-    <script src="_framework/blazor.server.js"></script>
+</CascadingAuthenticationState>
+
+<script src="js/site.js"></script>
+<script src="js/scroll.js"></script>
+
+<script src="_framework/blazor.server.js"></script>
+
 </body>
 </html>
