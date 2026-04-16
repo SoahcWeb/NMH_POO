@@ -1,28 +1,27 @@
 @page "/register"
 @layout AuthLayout
+
 @using NMH.Shared.DTOs
 @using Microsoft.AspNetCore.Components.Forms
+
 @inject HttpClient Http
 @inject NavigationManager Navigation
-@using Microsoft.JSInterop
-@inject IJSRuntime JS
 
 <main class="auth-main auth-offset">
 
     <div class="auth-container">
 
-        <!-- WRAPPER FORMULAIRE + ERREUR -->
         <div class="auth-form-wrapper">
 
-            <!-- FORMULAIRE -->
             <div class="auth-card">
 
-                <h3 class="auth-title">Inscription</h3>
+                <h3>Inscription</h3>
 
-                <EditForm Model="@registerModel" OnValidSubmit="@HandleRegister">
+                <EditForm Model="@registerModel"
+                          OnValidSubmit="@HandleRegister"
+                          FormName="registerForm">
 
                     <DataAnnotationsValidator />
-                    <ValidationSummary />
 
                     <InputText class="auth-input"
                                @bind-Value="registerModel.UserName"
@@ -32,22 +31,16 @@
                                @bind-Value="registerModel.Email"
                                placeholder="Email" />
 
-                    <div class="password-wrapper">
-                        <InputText class="auth-input"
-                                   @bind-Value="registerModel.Password"
-                                   type="@passwordFieldType"
-                                   placeholder="Mot de passe" />
+                    <InputText class="auth-input"
+                               @bind-Value="registerModel.Password"
+                               type="@passwordFieldType"
+                               placeholder="Mot de passe" />
 
-                        <button type="button"
-                                class="password-toggle"
-                                @onclick="TogglePassword">👁</button>
-                    </div>
+                    <button type="button" @onclick="TogglePassword">👁</button>
 
-                    <!-- BOUTON CENTRÉ AVEC WRAPPER -->
-                    <div class="login-form-button-wrapper">
-                        <button type="submit" class="register-form-button">
-                            <img src="/images/regi001.png"
-                                 alt="S'inscrire" />
+                    <div>
+                        <button type="submit">
+                            S'inscrire
                         </button>
                     </div>
 
@@ -55,13 +48,9 @@
 
             </div>
 
-            <!-- CARTE ERREUR -->
             @if (!string.IsNullOrWhiteSpace(message))
             {
-                <div class="auth-error-card">
-                    <h4 style="color:#52C5FF;">⚠ Problème d'inscription</h4>
-                    <p>@message</p>
-                </div>
+                <p>@message</p>
             }
 
         </div>
@@ -71,73 +60,28 @@
 </main>
 
 @code {
-    private RegisterDto registerModel = new RegisterDto();
+    private RegisterDto registerModel = new();
     private string message = "";
     private string passwordFieldType = "password";
 
     private void TogglePassword()
     {
-        passwordFieldType = passwordFieldType == "password" ? "text" : "password";
+        passwordFieldType = passwordFieldType == "password"
+            ? "text"
+            : "password";
     }
 
     private async Task HandleRegister()
     {
-        // Vérifications côté client avant appel API
-        if (string.IsNullOrWhiteSpace(registerModel.UserName))
-        {
-            message = "Erreur : Il manque le nom d'utilisateur";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(registerModel.Email))
-        {
-            message = "Erreur : Il manque l'email";
-            return;
-        }
-
-        // Vérifie que l'email est valide avec une regex simple
-        if (!System.Text.RegularExpressions.Regex.IsMatch(
-                registerModel.Email,
-                @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
-        {
-            message = "Erreur : L'email n'est pas valide";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(registerModel.Password))
-        {
-            message = "Erreur : Le mot de passe est obligatoire";
-            return;
-        }
-
-        var response = await Http.PostAsJsonAsync(Navigation.BaseUri + "api/auth/register", registerModel);
+        var response = await Http.PostAsJsonAsync("api/auth/register", registerModel);
 
         if (response.IsSuccessStatusCode)
         {
-            message = "Inscription réussie !";
             Navigation.NavigateTo("/login");
         }
         else
         {
-            var error = await response.Content.ReadAsStringAsync();
-
-            // Messages d'erreur simplifiés et dans l'ordre souhaité
-            if (error.Contains("UserName"))
-            {
-                message = "Erreur : Le nom d'utilisateur est déjà utilisé ou invalide";
-            }
-            else if (error.Contains("Email"))
-            {
-                message = "Erreur : L'email est déjà utilisé ou invalide";
-            }
-            else if (error.Contains("Password"))
-            {
-                message = "Erreur : Mot de passe incorrect (doit contenir au moins 6 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial)";
-            }
-            else
-            {
-                message = "Erreur : Une erreur est survenue";
-            }
+            message = "Erreur inscription";
         }
     }
 }

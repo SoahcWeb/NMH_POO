@@ -10,7 +10,7 @@
 <p style="color:red">COMPONENT IS ALIVE</p>
 <p style="color:blue">DEBUG ID = @Id</p>
 
-<button @onclick="() => TestClick()" type="button"
+<button @onclick="TestClick" type="button"
         style="padding:20px;background:lime;">
     CLICK
 </button>
@@ -21,7 +21,9 @@
 
 <p>STATE = @clickState</p>
 
-<button @onclick="TestClick">CLICK TEST</button>
+<button @onclick="TestClick" type="button">
+    CLICK TEST
+</button>
 
 @if (movie != null)
 {
@@ -60,8 +62,8 @@ else
     {
         Console.WriteLine("🔥 CLICK OK");
 
-        clickState = "CLICKED AT " + DateTime.Now.ToLongTimeString();
+        clickState = $"CLICKED AT {DateTime.Now.ToLongTimeString()}";
 
-        InvokeAsync(StateHasChanged);
+        StateHasChanged();
     }
 }

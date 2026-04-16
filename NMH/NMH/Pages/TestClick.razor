@@ -1,0 +1,18 @@
+@page "/test-click"
+
+<h1>TEST CLICK</h1>
+
+<p>@message</p>
+
+<button class="btn btn-primary" @onclick="Click">
+    CLICK ME
+</button>
+
+@code {
+    private string message = "NOT CLICKED";
+
+    private void Click()
+    {
+        message = $"CLICKED AT {DateTime.Now:HH:mm:ss}";
+    }
+}
